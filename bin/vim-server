@@ -1,0 +1,79 @@
+
+#!/bin/bash
+
+# Opens files in an existing vim window, if there are multiple windows it will
+# try and find the vim window that has a project for it (based on directories)
+# used for in terminal vim using tmux for windows/panes
+
+# Notate which window/pane we were originally at
+WINDOW_INDEX=`tmux display-message -p '#I'`
+PANE_INDEX=`tmux display-message -p '#P'`
+VIM_COUNT=`vim --serverlist | wc -l`
+
+# No arguments were passed in, assume its a "project" and give it a server
+# "name" and set a project_dir in vim
+if [[ "$1" == "" ]]; then
+  PROJECT_DIR=`pwd`
+  PROJECT_NAME=`basename $(readlink -f .)`
+  vim -c "let project_dir='$PROJECT_DIR'" --servername "$WINDOW_INDEX:$PANE_INDEX:$PROJECT_NAME"
+  exit
+
+# There are no VIM servers running, open a new vim server with the file(s).
+elif [ $VIM_COUNT -eq 0 ]; then
+  vim --servername "$WINDOW_INDEX:$PANE_INDEX" $1 #@TODO: handle multiple files
+  exit
+
+# There is one VIM server, open the file in that server and focus vim (via tmux).
+elif [ $VIM_COUNT -eq 1 ]; then
+  SERVER_NAME=`vim --serverlist | grep .`
+  SERVER_WINDOW=`echo "$SERVER_NAME" | cut -f1 -d ':'`
+  SERVER_PANE=`echo "$SERVER_NAME" | cut -f2 -d ':'`
+  vim --servername "$SERVER_NAME" --remote-tab $1
+  tmux select-window -t "$SERVER_WINDOW"
+  tmux select-pane  -t "$SERVER_PANE"
+  exit
+
+# There are more than one VIM servers running, choose the appropriate one by
+# finding its project root directory
+elif [ $VIM_COUNT -gt 1 ]; then
+
+  # And try and get all the files passed in
+  args=("$@")
+  for ((i=0; i < $#; i++)) {
+    file=${args[$i]}
+    bro=`readlink -f "$file"`
+    files="$files$bro\n"
+  }
+
+  server_to_use=""
+  last_match_count_winner="0"
+
+  # Go through all of the vim servers
+  vim --serverlist | { while read -r servername; do
+    # Find the "project" directory" of the server in question
+    project_dir=`vim --servername "$servername" --remote-expr 'project_dir'`
+    # See if the project directory matches any of the files
+    matched=`echo "$files" | grep -o "$project_dir"`
+    # count the length of the match
+    matched_count=`echo -e $matched | wc -c`
+    # try and find the project that is nearest the file matched
+    if [[ $matched_count -gt $last_match_count_winner ]]; then
+      server_to_use="$servername"
+      last_match_count_winner="$matched_count"
+    fi
+    done
+
+    # once we have the vim server that is the "project" for the file, open the
+    # file in that vim server and focus the tmux tab.
+    if [[ "$server_to_use" != "" ]]; then
+      SERVER_NAME=$server_to_use
+      SERVER_WINDOW=`echo "$SERVER_NAME" | cut -f1 -d ':'`
+      SERVER_PANE=`echo "$SERVER_NAME" | cut -f2 -d ':'`
+      vim --servername "$SERVER_NAME" --remote-tab $1
+      tmux select-window -t "$SERVER_WINDOW"
+      tmux select-pane -t "$SERVER_PANE"
+    fi
+
+  }
+
+fi
