@@ -1,0 +1,6 @@
+[submodule ".config/dranger"]
+	path = .config/ranger
+	url = git@github.com:rafaqz/dranger.git
+[submodule ".config/ranger"]
+	path = .config/ranger
+	url = git@github.com:rafaqz/dranger.git

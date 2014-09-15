@@ -1,0 +1,20 @@
+#increase volume
+"amixer set Master playback 1+"
+  m:0x0 + c:123
+  XF86AudioRaiseVolume
+#decrase volume
+"amixer set Master playback 1-"
+  m:0x0 + c:122
+  XF86AudioLowerVolume
+# Toggle the Touchpad on|off
+"synclient TouchpadOff=`synclient -l | grep -ce TouchpadOff.*0`"
+  m:0x0 + c:199
+  XF86TouchpadToggle
+# Brightness controls
+"xbacklight -inc 5"
+  m:0x0 + c:233
+  XF86MonBrightnessUp
+"xbacklight -dec 5"
+  m:0x0 + c:232
+  XF86MonBrightnessDown
+

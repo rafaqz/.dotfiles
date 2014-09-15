@@ -1,0 +1,19 @@
+[user]
+	email = rafaelschouten@gmail.com
+	name = Rafael Schouten
+[push]
+	default = simple
+[diff]
+	tool = vimdiff
+[difftool]
+	prompt = false
+[alias]
+	d = difftool
+[init]
+	templatedir = ~/.git_template
+[merge]
+	tool = diffconflicts
+[mergetool "diffconflicts"]
+	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
+	trustExitCode = true
+	keepBackup = false
