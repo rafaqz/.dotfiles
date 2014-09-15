@@ -47,8 +47,9 @@ beautiful.init("/home/raf/.config/awesome/themes/solarized/dark/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtr"
-editor = os.getenv("EDITOR") or "vim"
-editor_cmd = terminal .. " -e " .. editor
+terminal_cmd = "urxvtr -e "
+editor = "vim"
+editor_cmd = terminal_cmd .. editor .. " "
 
 -- Default modkey.
 -- Usually, Mod4 is the key with a logo between Control and Alt.
@@ -112,7 +113,7 @@ end
 
 mymainmenu = awful.menu({ items = { { "applications", xdgmenu },
                                     { "open terminal", terminal },
-                                    { "manual", terminal .. " -e man awesome" },
+                                    { "manual", terminal_cmd .. "man awesome" },
                                     { "edit config", editor_cmd .. " " .. awesome.conffile },
                                     { "restart", awesome.restart },
                                     { "quit", awesome.quit }
@@ -300,22 +301,22 @@ globalkeys = awful.util.table.join(
     --ncurses apps and shell script
     awful.key({ modkey, "Mod1",  }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
     awful.key({ modkey, "Mod1"   }, "j", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell('urxvtr -title vim -e vim') end),
-    awful.key({ modkey, "Mod1", "Control",   }, "k", function () awful.util.spawn_with_shell('urxvtr -title sudo_vim -e sudo vim') end),
-    awful.key({ modkey, "Mod1",  }, "l", function () awful.util.spawn_with_shell('urxvtr -title ranger -e vranger') end),
-    awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell('urxvtr -title sudo_ranger -e sudo vranger') end),
+    awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
+    awful.key({ modkey, "Mod1", "Control",   }, "k", function () awful.util.spawn_with_shell(termnial_cmd .. 'sudo ' .. editor) end),
+    awful.key({ modkey, "Mod1",  }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
+    awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
     awful.key({ modkey, "Mod1",  }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
-    awful.key({ modkey, "Mod1",  }, "'", function () awful.util.spawn_with_shell('urxvtr -e htop') end),
+    awful.key({ modkey, "Mod1",  }, "'", function () awful.util.spawn_with_shell(terminal_cmd .. 'htop') end),
     --config
-    awful.key({ modkey, "Mod1"   }, "n", function () awful.util.spawn_with_shell('urxvtr -e vim ~/.config/awesome/rc.lua') end),
-    awful.key({ modkey, "Mod1"   }, "m", function () awful.util.spawn_with_shell('urxvtr -e vim ~/.bashrc') end),
-    awful.key({ modkey, "Mod1"   }, ",", function () awful.util.spawn_with_shell('urxvtr -e vim ~/.vim_runtime/my_configs.vim') end),
-    awful.key({ modkey, "Mod1"   }, ".", function () awful.util.spawn_with_shell('urxvtr -e vim ~/.config/ranger/rc.conf') end),
-    awful.key({ modkey, "Mod1"   }, "/", function () awful.util.spawn_with_shell('urxvtr -e vim ~/.Xdefaults') end),
+    awful.key({ modkey, "Mod1"   }, "n", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/awesome/rc.lua') end),
+    awful.key({ modkey, "Mod1"   }, "m", function () awful.util.spawn_with_shell(editor_cmd .. '~/.bashrc') end),
+    awful.key({ modkey, "Mod1"   }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '~/.vim_runtime/my_configs.vim') end),
+    awful.key({ modkey, "Mod1"   }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
+    awful.key({ modkey, "Mod1"   }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
     --lampp and solr
     awful.key({ modkey, "Mod1"   }, "[", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e sudo /opt/bitnami/ctlscript.sh restart') end),
     awful.key({ modkey, "Mod1"   }, "]", function () awful.util.spawn_with_shell('drush cc all --root=/opt/bitnami/apps/drupal/htdocs/') end),
-    awful.key({ modkey, "Mod1"   }, "\\", function () awful.util.spawn_with_shell('urxvtr -e xrandr --output VGA --mode 1280x1024 --right-of LVDS') end),
+    awful.key({ modkey, "Mod1"   }, "\\", function () awful.util.spawn_with_shell(terminal_cmd .. 'xrandr --output VGA --mode 1280x1024 --right-of LVDS') end),
 --    awful.key({ modkey, "Mod1"   },j"]", function () awful.util.spawn_with_shell('urxvtr -e /home/raf/bin/solr') end),
 
         
