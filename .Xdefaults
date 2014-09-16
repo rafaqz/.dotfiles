@@ -54,11 +54,17 @@ URxvt.termName:             rxvt
 ! URLs
 URxvt.underlineUrls:        true
 !URxvt*perl-ext-common: default,matcher,-option-popup,-selection-popup,-realine
-URxvt.perl-ext-common:		default,clipboard,url-select,keyboard-select
 URxvt.matcher.button:       1
 # don't forget to change this to your favorite browser
 URxvt.urlLauncher:          google-chrome
 Urxvt.url-select.launcher:	google-chrome
+
+URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
+URxvt.url-select.launcher:  google-chrome-stable
+URxvt.url-select.underline: true
+URxvt.keysym.M-u:           perl:url-select:select_next
+URxvt.keysym.M-Escape:      perl:keyboard-select:activate
+URxvt.keysym.M-s:           perl:keyboard-select:search
 
 ! Swap background color for contrast.
 URxvt.keysym.M-C-l: command:\033]4;1;#AA0000\007\033]11;rgba:fd00/f600/e300/e000\007
@@ -71,7 +77,7 @@ URxvt.background: rgba:0000/2b00/3600/eff0
 
 *background: #002b36
 *foreground: #657b83
-*fading: 40
+*fading: k0
 *fadeColor: #002b36
 *cursorColor: #93a1a1
 *pointerColorBackground: #586e75

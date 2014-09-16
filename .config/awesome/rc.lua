@@ -301,8 +301,8 @@ globalkeys = awful.util.table.join(
     --ncurses apps and shell script
     awful.key({ modkey, "Mod1",  }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
     awful.key({ modkey, "Mod1"   }, "j", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
-    awful.key({ modkey, "Mod1", "Control",   }, "k", function () awful.util.spawn_with_shell(termnial_cmd .. 'sudo ' .. editor) end),
+    awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell('urxvt -e vim --servername `openssl rand -hex 12`') end),
+    awful.key({ modkey, "Mod1", "Control",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
     awful.key({ modkey, "Mod1",  }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
     awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
     awful.key({ modkey, "Mod1",  }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),

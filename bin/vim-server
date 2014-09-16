@@ -1,4 +1,3 @@
-
 #!/bin/bash
 
 # Opens files in an existing vim window, if there are multiple windows it will
@@ -15,12 +14,12 @@ VIM_COUNT=`vim --serverlist | wc -l`
 if [[ "$1" == "" ]]; then
   PROJECT_DIR=`pwd`
   PROJECT_NAME=`basename $(readlink -f .)`
-  vim --servername "$WINDOW_INDEX:$PANE_INDEX:$PROJECT_NAME"
+  vim -c "let project_dir='$PROJECT_DIR'" --servername "$WINDOW_INDEX:$PANE_INDEX:$PROJECT_NAME"
   exit
 
 # There are no VIM servers running, open a new vim server with the file(s).
 elif [ $VIM_COUNT -eq 0 ]; then
-  vim --servername "$WINDOW_INDEX:$PANE_INDEX:$1" --remote-tab "$@" #@TODO: handle multiple files
+  vim --servername "$WINDOW_INDEX:$PANE_INDEX" --remote-tab "$@"
   exit
 
 # There is one VIM server, open the file in that server and focus vim (via tmux).
@@ -29,8 +28,8 @@ elif [ $VIM_COUNT -eq 1 ]; then
   SERVER_WINDOW=`echo "$SERVER_NAME" | cut -f1 -d ':'`
   SERVER_PANE=`echo "$SERVER_NAME" | cut -f2 -d ':'`
   vim --servername "$SERVER_NAME" --remote-tab "$@"
-  # tmux select-window -t "$SERVER_WINDOW"
-  # tmux select-pane  -t "$SERVER_PANE"
+  tmux select-window -t "$SERVER_WINDOW"
+  tmux select-pane  -t "$SERVER_PANE"
   exit
 
 # There are more than one VIM servers running, choose the appropriate one by
@@ -70,8 +69,8 @@ elif [ $VIM_COUNT -gt 1 ]; then
       SERVER_WINDOW=`echo "$SERVER_NAME" | cut -f1 -d ':'`
       SERVER_PANE=`echo "$SERVER_NAME" | cut -f2 -d ':'`
       vim --servername "$SERVER_NAME" --remote-tab $1
-      # tmux select-window -t "$SERVER_WINDOW"
-      # tmux select-pane -t "$SERVER_PANE"
+      tmux select-window -t "$SERVER_WINDOW"
+      tmux select-pane -t "$SERVER_PANE"
     fi
 
   }

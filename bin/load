@@ -1,0 +1,5 @@
+#!/bin/bash
+cd ~/scratch/ofn
+urxvtr -e zeus start &
+urxvtr -e zeus server &
+rake karma:start

@@ -3,6 +3,19 @@
 [ -z "$PS1" ] && return
 
 ################################################
+# Path and variables
+
+export PATH="${PATH}:/opt/vagrant/bin"
+export PATH="$HOME/bin:$PATH"
+export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
+#source /opt/bitnami/use_drupal
+
+export EDITOR="vim"
+export BROWSER="google-chrome"
+export PATH="$HOME/.rbenv/bin:$PATH"
+eval "$(rbenv init -)"
+
+################################################
 # Bash setup
 
 bind '"\e[A": history-search-backward'
@@ -168,7 +181,7 @@ cl() {
   fi
 }
 
-note () {
+note() {
   # if file doesn't exist, create it
   if [[ ! -f $HOME/.notes ]]; then
     touch "$HOME/.notes"
@@ -244,15 +257,3 @@ jv() { j "$@"; v;}
 jvs() { j "$@"; vs;}
 ju() { j "$@"; u;}
 
-################################################
-# Path and variables
-
-export PATH="${PATH}:/opt/vagrant/bin"
-export PATH="$HOME/bin:$PATH"
-export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
-#source /opt/bitnami/use_drupal
-
-export EDITOR="vim"
-export BROWSER="google-chrome"
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
