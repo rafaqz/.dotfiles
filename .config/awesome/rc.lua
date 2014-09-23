@@ -62,10 +62,17 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.floating,        --  1
-    awful.layout.suit.tile,            --  2
+    -- awful.layout.suit.tile,            --  2
+    -- awful.layout.suit.tile.bottom,     --  2
     awful.layout.suit.tile.top,        --  3
     awful.layout.suit.tile.left,       --  4
-    awful.layout.suit.tile.bottom,     --  5
+    awful.layout.suit.fair.horizontal,
+    awful.layout.suit.fair,
+    awful.layout.suit.spiral,
+    -- awful.layout.suit.spiral.dwindle,
+    awful.layout.suit.magnifier,
+    awful.layout.suit.max,
+    awful.layout.suit.max.fullscreen
 }
 -- }}}
 
@@ -103,7 +110,7 @@ tags_layout = {
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag(tags_names, s, layouts[5])
+    tags[s] = awful.tag(tags_names, s, layouts[2])
 end
 -- }}}
 
@@ -234,7 +241,7 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    awful.key({                   }, "XF86Display", xrandr),
+    awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell('/home/raf/bin/projector') end),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
     awful.key({ modkey,           }, "Left", awful.tag.viewprev  ),
     awful.key({ modkey,           }, "Right", awful.tag.viewnext  ),
@@ -316,7 +323,7 @@ globalkeys = awful.util.table.join(
     --lampp and solr
     awful.key({ modkey, "Mod1"   }, "[", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e sudo /opt/bitnami/ctlscript.sh restart') end),
     awful.key({ modkey, "Mod1"   }, "]", function () awful.util.spawn_with_shell('drush cc all --root=/opt/bitnami/apps/drupal/htdocs/') end),
-    awful.key({ modkey, "Mod1"   }, "\\", function () awful.util.spawn_with_shell(terminal_cmd .. 'xrandr --output VGA --mode 1280x1024 --right-of LVDS') end),
+    -- awful.key({ modkey, "Mod1"   }, "\\", function () awful.util.spawn_with_shell(terminal_cmd .. 'xrandr --output VGA --mode 1280x1024 --right-of LVDS') end),
 --    awful.key({ modkey, "Mod1"   },j"]", function () awful.util.spawn_with_shell('urxvtr -e /home/raf/bin/solr') end),
 
         

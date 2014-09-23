@@ -135,7 +135,6 @@ alias tmux="TERM=screen-256color tmux"
 alias cp="cp -i"                            # confirm before overwriting something
 alias rm="rm -i"                            # confirm before overwriting something
 alias mv="mv -i"                            # confirm before overwriting something
-alias n="note"
 
 ## New commands
 alias da='date "+%A, %B %d, %Y [%T]"'
@@ -145,6 +144,7 @@ alias hist='history | grep'         # requires an argument
 alias openports='ss --all --numeric --processes --ipv4 --ipv6'
 alias pgg='ps -Af | grep'           # requires an argument
 alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
+alias n="note"
 
 ## ls 
 alias ll='ls -lh'                           # list detailed with human-readable sizes

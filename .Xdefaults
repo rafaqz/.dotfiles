@@ -13,6 +13,7 @@
 ! http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod
 !-------------------------------------------------------------------------------
 
+URxvt*loginShell: true
 URxvt.depth:                32
 URxvt.transparent:          false
 URxvt.geometry:             90x30
