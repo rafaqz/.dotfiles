@@ -23,7 +23,10 @@ bind '"\e[B": history-search-forward'
 bind "TAB:menu-complete"
 bind "set show-all-if-ambiguous on"
 shopt -s autocd
+# shopt -s expand_aliases
 source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
+# Use vi mode
+# set -o vi
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 # Eternal bash history.
@@ -41,9 +44,9 @@ export HISTCONTROL=ignoredups
 # enable programmable completion features (you don't need to enable
 # this, if it's already enabled in /etc/bash.bashrc and /etc/profile
 # sources /etc/bash.bashrc).
-if [ -f /etc/bash_completion ]; then
-  . /etc/bash_completion
-fi
+# if [ -f /etc/bash_completion ]; then
+#   . /etc/bash_completion
+# fi
 
 # enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
@@ -61,7 +64,6 @@ fi
 
 ################################################
 ## Prompt
-
 source /usr/share/git/completion/git-prompt.sh
 GIT_PS1_SHOWDIRTYSTATE=1
 GIT_PS1_SHOWSTASHSTATE=1
@@ -95,22 +97,29 @@ alias r='ranger'
 alias rc='ranger-cd'
 alias u='urxvtr'
 alias v='vim'
+alias k='rake'
 alias vs='vim-server'
+alias g='git'
+alias p='grep -lr --exclude{tags,*.log*,*sprockets*}'
 alias ga='git add'
 alias gb='git branch'
-alias gc='git commit -m'
+alias gc='git commit'
 alias go='git checkout'
 alias gs='git status'
+alias gp='git push'
+alias gpu='git push --set-upstream origin master'
+alias gu='git pull'
+alias gl='git log --show-linear-break'
+alias gls='git log --show-linear-break --stat'
+alias glo='git log --oneline --graph'
 alias gsa='git submodule add'
 alias gr='git remote -v'
 alias gra='git remote add'
 alias grr='git remote rm'
 alias gro='git remote add origin'
-alias gp='git push'
-alias gpu='git push --set-upstream origin master'
-alias gu='git pull'
-alias gl='git log'
 alias rv='ruby -e "print RUBY_VERSION"'
+alias pu='pushd'
+alias po='popd'
 
 alias z='zeus start'
 alias zr='zeus rake'
@@ -256,4 +265,56 @@ jla() { j "$@"; la;}
 jv() { j "$@"; v;}
 jvs() { j "$@"; vs;}
 ju() { j "$@"; u;}
+
+
+####################################
+# Git alias completion
+__git_shortcut () {
+  # Because cherry-pick has the function _git_cherry_pick
+  n2=${2//-/_}
+  type _git_${n2}_shortcut &>/dev/null || make-completion-wrapper _git_$n2 _git_${n2}_shortcut $1 git $2
+  complete -o bashdefault -o default -o nospace -F _git_${n2}_shortcut $1
+}
+
+__apt_cache_shortcut () {
+  type _apt_cache_$2_shortcut &>/dev/null || make-completion-wrapper _apt_cache _apt_cache_$2_shortcut $1 apt-cache $2
+  # is not executed automatically. Normally only on first apt-cache <tab>
+  [ ! -f /usr/share/bash-completion/completions/apt-cache ] || source /usr/share/bash-completion/completions/apt-cache
+  complete -F _apt_cache_$2_shortcut $1
+}
+
+#make-completion-wrapper _git_checkout _git_checkout_shortcut go git checkout
+function make-completion-wrapper () {
+	local comp_function_name="$1"
+	local function_name="$2"
+	local alias_name="$3"
+	local arg_count=$(($#-4))
+	shift 3
+	local args="$*"
+	local function="
+function $function_name {
+	COMP_LINE=\"$@\${COMP_LINE#$alias_name}\"
+	let COMP_POINT+=$((${#args}-${#alias_name}))
+	((COMP_CWORD+=$arg_count))
+	COMP_WORDS=("$@" \"\${COMP_WORDS[@]:1}\")
+ 
+	local cur words cword prev
+	_get_comp_words_by_ref -n =: cur words cword prev
+	"$comp_function_name"
+	return 0
+}"
+	eval "$function"
+}
+
+source /usr/share/git/completion/git-completion.bash
+__git_shortcut  ga   add
+__git_shortcut  gf   fetch
+__git_shortcut  gu   pull
+__git_shortcut  gp   push
+__git_shortcut  gb   branch
+__git_shortcut  gc   commit
+__git_shortcut  gd   diff
+__git_shortcut  go   checkout
+__git_shortcut  gcp  cherry-pick
+__git_shortcut  gl   log
 

@@ -12,6 +12,8 @@
 ! More info at:
 ! http://pod.tst.eu/http://cvs.schmorp.de/rxvt-unicode/doc/rxvt.1.pod
 !-------------------------------------------------------------------------------
+!
+URxvt*meta8:False
 
 URxvt*loginShell: true
 URxvt.depth:                32
