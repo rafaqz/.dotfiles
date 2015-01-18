@@ -1,1 +1,20 @@
-xcompmgr -c &
+/* xcompmgr -n & */
+
+# Cut/copy history
+# clipit -n
+
+# Touchpad monitor - disables when typing
+
+#disable trackpad while typing. 2 second 
+    #-i 2 sets the idle time to 2 seconds. The idle time specifies how many seconds to wait after the last key-press before enabling the touchpad again.
+    #-t tells the daemon not to disable mouse movement when typing and only disable tapping and scrolling.
+    #-k tells the daemon to ignore modifier keys when monitoring keyboard activity (e.g.: allows Ctrl+Left Click).
+    #-d starts as a daemon, in the background.
+syndaemon -t -k -i 2 -d &
+
+# Battery monitor
+# slimebattery
+
+# Fix for virtualbox
+# sh /home/raf/bin/vboxmodprobes.sh
+

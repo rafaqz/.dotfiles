@@ -61,11 +61,11 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
-    awful.layout.suit.floating,        --  1
-    awful.layout.suit.tile,            --  2
-    awful.layout.suit.tile.bottom,     --  2
-    -- awful.layout.suit.tile.top,        --  3
-    -- awful.layout.suit.tile.left,       --  4
+    awful.layout.suit.floating,        
+    -- awful.layout.suit.tile.bottom,    
+    -- awful.layout.suit.tile,          
+    awful.layout.suit.tile.top,  
+    awful.layout.suit.tile.left,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.fair,
     awful.layout.suit.spiral,
@@ -242,7 +242,9 @@ root.buttons(awful.util.table.join(
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
     -- awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell('/home/raf/bin/projector') end),
-    awful.key({}, "XF86Display", xrandr),
+    awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell("/home/raf/bin/projector") end),
+    awful.key({                   }, "Print", function () awful.util.spawn("scrot -e 'mv $f /home/raf/Pictures/scrots/ 2>/dev/null'") end),
+    awful.key({ "Control"         }, "Print", function () awful.util.spawn("/home/raf/bin/scrot-select") end),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
     awful.key({ modkey,           }, "Left", awful.tag.viewprev  ),
     awful.key({ modkey,           }, "Right", awful.tag.viewnext  ),
@@ -477,8 +479,8 @@ awful.rules.rules = {
        properties = { tag = tags[1][tag_bindings['web']],switchtotag = true } },
      { rule = { name = "Karma - Google Chrome" },
        properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
-     { rule = { class = "Pcmanfm" },
-       properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
+     -- { rule = { class = "Pcmanfm" },
+     --   properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
      { rule = { class = "Thunar" },
        properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
      { rule = { name = "Transmission" },
@@ -604,7 +606,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- {{{ Startup Programs
+-- {{{ Startup Programs. 
 
 -- Cut/copy history
 awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
@@ -616,7 +618,7 @@ awful.util.spawn_with_shell('/home/raf/bin/run-once slimebattery')
 awful.util.spawn_with_shell('/home/raf/bin/vboxmodprobes.sh')
 
 -- Get active outputs
-local function outputs()
+function outputs()
    local outputs = {}
    local xrandr = io.popen("xrandr -q")
    if xrandr then
@@ -632,7 +634,7 @@ local function outputs()
    return outputs
 end
 
-local function arrange(out)
+function arrange(out)
    -- We need to enumerate all the way to combinate output. We assume
    -- we want only an horizontal layout.
    local choices  = {}
@@ -658,7 +660,7 @@ local function arrange(out)
 end
 
 -- Build available choices
-local function menu()
+function xrandr_menu()
    local menu = {}
    local out = outputs()
    local choices = arrange(out)
@@ -698,10 +700,14 @@ local function menu()
 end
 
 -- Display xrandr notifications from choices
-local state = { iterator = nil,
+state = { iterator = nil,
 		timer = nil,
 		cid = nil }
-local function xrandr()
+function xrandr()
+   naughty.notify({ preset = naughty.config.presets.critical,
+                         title = "Oops, an error happened!",
+                         text = err })
+
    -- Stop any previous timer
    if state.timer then
       state.timer:stop()
@@ -710,7 +716,7 @@ local function xrandr()
 
    -- Build the list of choices
    if not state.iterator then
-      state.iterator = awful.util.table.iterate(menu(),
+      state.iterator = awful.util.table.iterate(xrandr_menu(),
 					function() return true end)
    end
 
@@ -738,7 +744,7 @@ local function xrandr()
 			     state.timer = nil
 			     state.iterator = nil
 			     if action then
-				awful.util.spawn(action, false)
+                   awful.util.spawn(action, false)
 			     end
 			  end)
    state.timer:start()

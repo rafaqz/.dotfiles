@@ -1,0 +1,10 @@
+#!/bin/bash
+# The first arg is the comment
+comment=$1
+# Loop through folder args
+for folder in ${@:2}
+do
+  pushd ${folder}
+  git commit -a -m "$comment"
+  popd
+done

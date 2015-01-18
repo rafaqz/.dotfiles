@@ -3,15 +3,18 @@
 [ -z "$PS1" ] && return
 
 ################################################
-# Path and variables
+# Paths
 
-export PATH="${PATH}:/opt/vagrant/bin"
 export PATH="$HOME/bin:$PATH"
+export PATH="${PATH}:/opt/vagrant/bin"
 export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
-#source /opt/bitnami/use_drupal
+export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
 
+# Variables
 export EDITOR="vim"
 export BROWSER="google-chrome"
+
+# Rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
 
@@ -23,6 +26,7 @@ bind '"\e[B": history-search-forward'
 bind "TAB:menu-complete"
 bind "set show-all-if-ambiguous on"
 shopt -s autocd
+shopt -s globstar # For recursive globbing with **/* etc
 # shopt -s expand_aliases
 source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
 # Use vi mode
@@ -103,6 +107,8 @@ alias g='git'
 alias p='grep -lr --exclude{tags,*.log*,*sprockets*}'
 alias ga='git add'
 alias gb='git branch'
+alias gm='git merge'
+alias gd='git diff'
 alias gc='git commit'
 alias go='git checkout'
 alias gs='git status'
@@ -117,6 +123,8 @@ alias gr='git remote -v'
 alias gra='git remote add'
 alias grr='git remote rm'
 alias gro='git remote add origin'
+alias hc='hub create'
+alias d='drush'
 alias rv='ruby -e "print RUBY_VERSION"'
 alias pu='pushd'
 alias po='popd'
@@ -129,7 +137,6 @@ alias zs='zeus server'
 alias zg='zeus generate'
 alias zd='zeus dbconsole'
 alias zt='zeus test'
-
 
 ## Modified commands
 alias diff='colordiff'              # requires colordiff package
@@ -311,9 +318,10 @@ __git_shortcut  ga   add
 __git_shortcut  gf   fetch
 __git_shortcut  gu   pull
 __git_shortcut  gp   push
+__git_shortcut  gm   merge
+__git_shortcut  gd   diff
 __git_shortcut  gb   branch
 __git_shortcut  gc   commit
-__git_shortcut  gd   diff
 __git_shortcut  go   checkout
 __git_shortcut  gcp  cherry-pick
 __git_shortcut  gl   log
