@@ -4,22 +4,6 @@
 
 
 ################################################
-## Bash setup
-
-bind '"\e[A": history-search-backward'
-bind '"\e[B": history-search-forward'
-bind "TAB:menu-complete"
-bind "set show-all-if-ambiguous on"
-
-shopt -s autocd
-shopt -s globstar # For recursive globbing with **/* etc
-# shopt -s expand_aliases
-
-# Use vi mode
-set -o vi
-
-
-################################################
 ## Paths
 
 export PATH="$HOME/bin:$PATH"
@@ -34,6 +18,11 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export EDITOR="vim"
 export BROWSER="google-chrome"
 
+
+################################################
+## Options
+shopt -s autocd
+shopt -s globstar # For recursive globbing with **/* etc
 
 ################################################
 ## History
@@ -67,19 +56,6 @@ GIT_PS1_SHOWUPSTREAM="auto git"
 prompt='__git_ps1 "\[\e[40;31m\]\u@\[\e[1;32m\]\h:\[\e[30;44m\] \w \[\e[41m\]" "\\\$\[\e[0m\] "'
 # Don't overwrite, append - autojump uses this 
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a;history -c;history -r; $prompt"
-
-
-################################################
-## Apps that integrate with the cli
-
-## Rbenv
-eval "$(rbenv init -)"
-
-## Keychain
-eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
-
-# Ranger can be used to choose directories. Nice inside vim...
-source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
 
 
 ################################################
@@ -305,7 +281,6 @@ __apt_cache_shortcut () {
   complete -F _apt_cache_$2_shortcut $1
 }
 
-#make-completion-wrapper _git_checkout _git_checkout_shortcut go git checkout
 function make-completion-wrapper () {
 	local comp_function_name="$1"
 	local function_name="$2"
@@ -342,3 +317,15 @@ __git_shortcut  go   checkout
 __git_shortcut  gcp  cherry-pick
 __git_shortcut  gl   log
 
+
+################################################
+## Apps that integrate with the cli
+
+## Rbenv
+eval "$(rbenv init -)"
+
+## Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+
+# Ranger can be used to choose directories. Nice inside vim...
+source /usr/share/doc/ranger/examples/bash_automatic_cd.sh

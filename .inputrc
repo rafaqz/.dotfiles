@@ -1,2 +1,8 @@
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
+
+"TAB:menu-complete"
+## arrow up
+"\e[A":history-search-backward
+## arrow down
+"\e[B":history-search-forward
