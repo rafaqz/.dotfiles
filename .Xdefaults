@@ -16,7 +16,7 @@
 URxvt*meta8:False
 
 URxvt*loginShell: true
-URxvt.depth:                32
+!URxvt.depth:                32
 URxvt.transparent:          false
 URxvt.geometry:             90x30
 URxvt.urgentOnBell:         true

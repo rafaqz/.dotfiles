@@ -32,7 +32,7 @@ theme.bg_systray = theme.bg_normal
 ---- {{{ Borders
 theme.border_width  = 3
 theme.border_normal = "#333333"
-theme.border_focus  = "#1279BF"
+theme.border_focus  = "#FFD200"
 theme.border_marked = "#CC9393"
 ---- }}}
 

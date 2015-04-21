@@ -305,7 +305,8 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['med']], function () awful.util.spawn('vlc') end),
     awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['med']], function () awful.util.spawn('clementine') end),
     awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('transmission-gtk') end),
-    awful.key({ modkey, "Mod1", "Control"  }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
+    awful.key({ modkey, "Mod1",  "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('nicotine.py') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
     --other programs
     awful.key({ modkey, "Mod1"   }, "-", function () awful.util.spawn('gcolor2') end),
     awful.key({ modkey, "Mod1"   }, "=", function () awful.util.spawn('gnome-calculator') end),
@@ -313,7 +314,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1",  }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
     awful.key({ modkey, "Mod1"   }, "j", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell('urxvt -e vim --servername `openssl rand -hex 12`') end),
-    awful.key({ modkey, "Mod1", "Control",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
+    awful.key({ modkey, "Mod1", "Control" }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
     awful.key({ modkey, "Mod1",  }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
     awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
     awful.key({ modkey, "Mod1",  }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
@@ -485,15 +486,21 @@ awful.rules.rules = {
        properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
      { rule = { name = "Transmission" },
        properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
+     { rule = { name = "Nicotine.py" },
+       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
      { rule = { name = "Torrent Options" },
        properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
      { rule = { class = "Vlc" },
+       properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
+     { rule = { class = "Clementine" },
        properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
      { rule = { name = "LibreOffice" },
        properties = { tag = tags[1][tag_bindings['doc']],switchtotag = true } },
      { rule = { name = "Geeqie" },
        properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
 	 --programs that borrow a tag
+     { rule = { class = "Hamster" },
+       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
      { rule = { name = "NetBeans IDE 7.2.1" },
        properties = { tag = tags[1][tag_bindings['cod']],} },
      { rule = { name = "Starting NetBeans IDE" },
@@ -616,136 +623,3 @@ awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
 awful.util.spawn_with_shell('/home/raf/bin/run-once slimebattery')
 -- Fix for virtualbox
 awful.util.spawn_with_shell('/home/raf/bin/vboxmodprobes.sh')
-
--- Get active outputs
-function outputs()
-   local outputs = {}
-   local xrandr = io.popen("xrandr -q")
-   if xrandr then
-      for line in xrandr:lines() do
-	 output = line:match("^([%w-]+) connected ")
-	 if output then
-	    outputs[#outputs + 1] = output
-	 end
-      end
-      xrandr:close()
-   end
-
-   return outputs
-end
-
-function arrange(out)
-   -- We need to enumerate all the way to combinate output. We assume
-   -- we want only an horizontal layout.
-   local choices  = {}
-   local previous = { {} }
-   for i = 1, #out do
-      -- Find all permutation of length `i`: we take the permutation
-      -- of length `i-1` and for each of them, we create new
-      -- permutations by adding each output at the end of it if it is
-      -- not already present.
-      local new = {}
-      for _, p in pairs(previous) do
-	 for _, o in pairs(out) do
-	    if not awful.util.table.hasitem(p, o) then
-	       new[#new + 1] = awful.util.table.join(p, {o})
-	    end
-	 end
-      end
-      choices = awful.util.table.join(choices, new)
-      previous = new
-   end
-
-   return choices
-end
-
--- Build available choices
-function xrandr_menu()
-   local menu = {}
-   local out = outputs()
-   local choices = arrange(out)
-
-   for _, choice in pairs(choices) do
-      local cmd = "xrandr"
-      -- Enabled outputs
-      for i, o in pairs(choice) do
-	 cmd = cmd .. " --output " .. o .. " --auto"
-	 if i > 1 then
-	    cmd = cmd .. " --right-of " .. choice[i-1]
-	 end
-      end
-      -- Disabled outputs
-      for _, o in pairs(out) do
-	 if not awful.util.table.hasitem(choice, o) then
-	    cmd = cmd .. " --output " .. o .. " --off"
-	 end
-      end
-
-      local label = ""
-      if #choice == 1 then
-	 label = 'Only <span weight="bold">' .. choice[1] .. '</span>'
-      else
-	 for i, o in pairs(choice) do
-	    if i > 1 then label = label .. " + " end
-	    label = label .. '<span weight="bold">' .. o .. '</span>'
-	 end
-      end
-
-      menu[#menu + 1] = { label,
-			  cmd,
-                          "/usr/share/icons/Tango/32x32/devices/display.png"}
-   end
-
-   return menu
-end
-
--- Display xrandr notifications from choices
-state = { iterator = nil,
-		timer = nil,
-		cid = nil }
-function xrandr()
-   naughty.notify({ preset = naughty.config.presets.critical,
-                         title = "Oops, an error happened!",
-                         text = err })
-
-   -- Stop any previous timer
-   if state.timer then
-      state.timer:stop()
-      state.timer = nil
-   end
-
-   -- Build the list of choices
-   if not state.iterator then
-      state.iterator = awful.util.table.iterate(xrandr_menu(),
-					function() return true end)
-   end
-
-   -- Select one and display the appropriate notification
-   local next  = state.iterator()
-   local label, action, icon
-   if not next then
-      label, icon = "Keep the current configuration", "/usr/share/icons/Tango/32x32/devices/display.png"
-      state.iterator = nil
-   else
-      label, action, icon = unpack(next)
-   end
-   state.cid = naughty.notify({ text = label,
-				icon = icon,
-				timeout = 4,
-				screen = mouse.screen, -- Important, not all screens may be visible
-				font = "Free Sans 18",
-				replaces_id = state.cid }).id
-
-   -- Setup the timer
-   state.timer = timer { timeout = 4 }
-   state.timer:connect_signal("timeout",
-			  function()
-			     state.timer:stop()
-			     state.timer = nil
-			     state.iterator = nil
-			     if action then
-                   awful.util.spawn(action, false)
-			     end
-			  end)
-   state.timer:start()
-end

@@ -7,7 +7,7 @@
 
 export PATH="$HOME/bin:$PATH"
 export PATH="${PATH}:/opt/vagrant/bin"
-export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
+# export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
 export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
 
 # Variables
@@ -17,6 +17,9 @@ export BROWSER="google-chrome"
 # Rbenv
 export PATH="$HOME/.rbenv/bin:$PATH"
 eval "$(rbenv init -)"
+
+# Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
 
 ################################################
 # Bash setup
@@ -100,7 +103,7 @@ alias .........='cd ../../../../../../../..'
 alias r='ranger'
 alias rc='ranger-cd'
 alias u='urxvtr'
-alias v='vim'
+alias v='vim -p'
 alias k='rake'
 alias vs='vim-server'
 alias g='git'
@@ -129,6 +132,7 @@ alias rv='ruby -e "print RUBY_VERSION"'
 alias pu='pushd'
 alias po='popd'
 
+alias z='zeus'
 alias z='zeus start'
 alias zr='zeus rake'
 alias zu='zeus runner'
@@ -317,6 +321,7 @@ source /usr/share/git/completion/git-completion.bash
 __git_shortcut  ga   add
 __git_shortcut  gf   fetch
 __git_shortcut  gu   pull
+__git_shortcut  gr   remote
 __git_shortcut  gp   push
 __git_shortcut  gm   merge
 __git_shortcut  gd   diff

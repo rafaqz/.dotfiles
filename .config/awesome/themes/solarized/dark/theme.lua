@@ -38,13 +38,13 @@ theme.fg_focus   = theme.colors.base03
 theme.fg_urgent  = theme.colors.base3
 
 theme.bg_normal  = theme.colors.base3
-theme.bg_focus   = theme.colors.base1
+theme.bg_focus   = theme.colors.blue
 theme.bg_urgent  = theme.colors.red
-theme.bg_systray = theme.bg_normal
+theme.bg_systray = theme.colors.yellow
 -- }}}
 
 -- {{{ Borders
-theme.border_width  = "2"
+theme.border_width  = "1"
 theme.border_normal = theme.bg_normal
 theme.border_focus  = theme.bg_focus
 theme.border_marked = theme.bg_urgent
@@ -64,8 +64,8 @@ theme.mouse_finder_color = theme.colors.green
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height = "15"
-theme.menu_width  = "100"
+theme.menu_height = "28"
+theme.menu_width  = "130"
 -- }}}
 
 -- {{{ Icons

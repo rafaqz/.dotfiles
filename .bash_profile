@@ -2,5 +2,6 @@
 VIM=/usr/bin/vim
 VIMRUNTIME=/home/raf/.vim_runtime/
 EDITOR=$VIM
-#eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+# Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
 source $HOME/.bashrc
