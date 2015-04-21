@@ -2,38 +2,41 @@
 # If not running interactively, don't do anything
 [ -z "$PS1" ] && return
 
-################################################
-# Paths
-
-export PATH="$HOME/bin:$PATH"
-export PATH="${PATH}:/opt/vagrant/bin"
-# export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
-export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
-
-# Variables
-export EDITOR="vim"
-export BROWSER="google-chrome"
-
-# Rbenv
-export PATH="$HOME/.rbenv/bin:$PATH"
-eval "$(rbenv init -)"
-
-# Keychain
-eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
 
 ################################################
-# Bash setup
+## Bash setup
 
 bind '"\e[A": history-search-backward'
 bind '"\e[B": history-search-forward'
 bind "TAB:menu-complete"
 bind "set show-all-if-ambiguous on"
+
 shopt -s autocd
 shopt -s globstar # For recursive globbing with **/* etc
 # shopt -s expand_aliases
-source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
+
 # Use vi mode
-# set -o vi
+set -o vi
+
+
+################################################
+## Paths
+
+export PATH="$HOME/bin:$PATH"
+export PATH="${PATH}:/opt/vagrant/bin"
+# export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
+export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
+export PATH="$HOME/.rbenv/bin:$PATH"
+
+
+################################################
+## Variables
+export EDITOR="vim"
+export BROWSER="google-chrome"
+
+
+################################################
+## History
 
 # Don't put duplicate lines in the history. See bash(1) for more options
 # Eternal bash history.
@@ -48,14 +51,41 @@ export HISTTIMEFORMAT="[%F %T] "
 export HISTFILE=~/.bash_eternal_history
 export HISTCONTROL=ignoredups
 
-# enable programmable completion features (you don't need to enable
-# this, if it's already enabled in /etc/bash.bashrc and /etc/profile
-# sources /etc/bash.bashrc).
-# if [ -f /etc/bash_completion ]; then
-#   . /etc/bash_completion
-# fi
+shopt -s histappend
 
-# enable color support of ls and also add handy aliases
+
+################################################
+## Prompt
+
+source /usr/share/git/completion/git-prompt.sh
+GIT_PS1_SHOWDIRTYSTATE=1
+GIT_PS1_SHOWSTASHSTATE=1
+GIT_PS1_SHOWUNTRACKEDFILES=1
+GIT_PS1_SHOWCOLORHINTS=
+GIT_PS1_DESCRIBE_STYLE="branch"
+GIT_PS1_SHOWUPSTREAM="auto git"
+prompt='__git_ps1 "\[\e[40;31m\]\u@\[\e[1;32m\]\h:\[\e[30;44m\] \w \[\e[41m\]" "\\\$\[\e[0m\] "'
+# Don't overwrite, append - autojump uses this 
+export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a;history -c;history -r; $prompt"
+
+
+################################################
+## Apps that integrate with the cli
+
+## Rbenv
+eval "$(rbenv init -)"
+
+## Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
+
+# Ranger can be used to choose directories. Nice inside vim...
+source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
+
+
+################################################
+## Aliases
+
+# Enable color support of ls and also add handy aliases
 if [ -x /usr/bin/dircolors ]; then
   eval "`dircolors -b`"
   alias ls='ls --color=auto'
@@ -68,26 +98,7 @@ if [ -x /usr/bin/dircolors ]; then
   alias pgrep='pgrep --color=auto'
 fi
 
-
-################################################
-## Prompt
-source /usr/share/git/completion/git-prompt.sh
-GIT_PS1_SHOWDIRTYSTATE=1
-GIT_PS1_SHOWSTASHSTATE=1
-GIT_PS1_SHOWUNTRACKEDFILES=1
-GIT_PS1_SHOWCOLORHINTS=
-GIT_PS1_DESCRIBE_STYLE="branch"
-GIT_PS1_SHOWUPSTREAM="auto git"
-prompt='__git_ps1 "\[\e[40;31m\]\u@\[\e[1;32m\]\h:\[\e[30;44m\] \w \[\e[41m\]" "\\\$\[\e[0m\] "'
-# Don't overwrite, append - autojump uses this 
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a;history -c;history -r; $prompt"
-
-shopt -s histappend
-
-################################################
-# Aliases
-
-# Dot cd
+## Dot cd
 alias back='cd $OLDPWD'
 alias .='cd .'
 alias ..='cd ..'
