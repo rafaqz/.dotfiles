@@ -24,6 +24,10 @@ export BROWSER="google-chrome"
 shopt -s autocd
 shopt -s globstar # For recursive globbing with **/* etc
 
+# Use vi mode
+set -o vi
+
+
 ################################################
 ## History
 

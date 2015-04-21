@@ -1,8 +1,20 @@
 set show-all-if-ambiguous on
 set show-all-if-unmodified on
 
-"TAB:menu-complete"
+TAB:menu-complete
 ## arrow up
 "\e[A":history-search-backward
 ## arrow down
 "\e[B":history-search-forward
+"\C-l": clear-screen
+
+# Vi mode
+$if mode=vi
+
+set keymap vi-command
+k: history-search-backward
+j: history-search-forward
+
+set keymap vi-insert
+
+$endif
