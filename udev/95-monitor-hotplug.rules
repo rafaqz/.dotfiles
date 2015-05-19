@@ -1,0 +1,4 @@
+# /etc/udev/rules.d/95-monitor-hotplug.rules
+ 
+#Rule for executing commands when an external screen is plugged in.
+KERNEL=="card0", SUBSYSTEM=="drm", ENV{DISPLAY}=":0", ENV{XAUTHORITY}="/home/raf/.Xauthority", RUN+="/home/raf/bin/projector"

@@ -139,7 +139,6 @@ menubar.utils.terminal = terminal -- Set the terminal for applications that requ
 -- Create a textclock widget
 mytextclock = awful.widget.textclock()
 
--- Create a wibox for each screen and add it
 mywibox = {}
 mypromptbox = {}
 mylayoutbox = {}
@@ -228,6 +227,7 @@ for s = 1, screen.count() do
     layout:set_right(right_layout)
 
     mywibox[s]:set_widget(layout)
+    -- mywibox[s].visible = false
 end
 -- }}}
 
@@ -241,30 +241,10 @@ root.buttons(awful.util.table.join(
 
 -- {{{ Key bindings
 globalkeys = awful.util.table.join(
-    -- awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell('/home/raf/bin/projector') end),
-    awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell("/home/raf/bin/projector") end),
-    awful.key({                   }, "Print", function () awful.util.spawn("scrot -e 'mv $f /home/raf/Pictures/scrots/ 2>/dev/null'") end),
-    awful.key({ "Control"         }, "Print", function () awful.util.spawn("/home/raf/bin/scrot-select") end),
     awful.key({ modkey,           }, "Escape", awful.tag.history.restore),
     awful.key({ modkey,           }, "Left", awful.tag.viewprev  ),
     awful.key({ modkey,           }, "Right", awful.tag.viewnext  ),
---    TODO: get current tag, or movetonexttag function. How??
---    awful.key({ modkey, "Shift"   }, "Left", 
---                  function ()
---                      local screen = mouse.screen
---                      if client.focus and tags[client.focus.screen][i] then
---                          awful.client.movetotag(tags[client.focus.screen][i])
---                          awful.tag.viewnext()
---                      end
---                  end),
---    awful.key({ modkey, "Shift"   }, "Right",
---                  function ()
---                      local screen = mouse.screen
---                      if client.focus and tags[client.focus.screen][i] then
---                          awful.client.movetotag(tags[client.focus.screen][i])
---                          awful.tag.viewnext()
---                      end
---                  end),
+
     awful.key({ modkey,           }, "j",
         function ()
             awful.client.focus.byidx( 1)
@@ -276,6 +256,7 @@ globalkeys = awful.util.table.join(
             if client.focus then client.focus:raise() end
         end),
     awful.key({ modkey,           }, "w", function () mymainmenu:show() end),
+
 
     -- Layout manipulation
     awful.key({ modkey, "Shift"   }, "j", function () awful.client.swap.byidx(  1)    end),
@@ -291,92 +272,11 @@ globalkeys = awful.util.table.join(
             end
         end),
 
-    ---------------------------
-    --Right hand custom commands
-    ---------------------------
-    
-    --tag programs
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['web']], function () awful.util.spawn('google-chrome-stable') end),
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('geeqie') end),
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --calc') end),
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['med']], function () awful.util.spawn('vlc') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['med']], function () awful.util.spawn('clementine') end),
-    awful.key({ modkey, "Mod1"   	  }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('transmission-gtk') end),
-    awful.key({ modkey, "Mod1",  "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('nicotine.py') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
-    --other programs
-    awful.key({ modkey, "Mod1"   }, "-", function () awful.util.spawn('gcolor2') end),
-    awful.key({ modkey, "Mod1"   }, "=", function () awful.util.spawn('gnome-calculator') end),
-    --ncurses apps and shell script
-    awful.key({ modkey, "Mod1",  }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
-    awful.key({ modkey, "Mod1"   }, "j", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Mod1"   }, "k", function () awful.util.spawn_with_shell('urxvt -e vim --servername `openssl rand -hex 12`') end),
-    awful.key({ modkey, "Mod1", "Control" }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
-    awful.key({ modkey, "Mod1",  }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
-    awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
-    awful.key({ modkey, "Mod1",  }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
-    awful.key({ modkey, "Mod1",  }, "'", function () awful.util.spawn_with_shell(terminal_cmd .. 'htop') end),
-    --config
-    awful.key({ modkey, "Mod1"   }, "n", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/awesome/rc.lua') end),
-    awful.key({ modkey, "Mod1"   }, "m", function () awful.util.spawn_with_shell(editor_cmd .. '~/.bashrc') end),
-    awful.key({ modkey, "Mod1"   }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '~/.vim_runtime/my_configs.vim') end),
-    awful.key({ modkey, "Mod1"   }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
-    awful.key({ modkey, "Mod1"   }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
-    --lampp and solr
-    awful.key({ modkey, "Mod1"   }, "[", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e sudo /opt/bitnami/ctlscript.sh restart') end),
-    awful.key({ modkey, "Mod1"   }, "]", function () awful.util.spawn_with_shell('drush cc all --root=/opt/bitnami/apps/drupal/htdocs/') end),
-    -- awful.key({ modkey, "Mod1"   }, "\\", function () awful.util.spawn_with_shell(terminal_cmd .. 'xrandr --output VGA --mode 1280x1024 --right-of LVDS') end),
---    awful.key({ modkey, "Mod1"   },j"]", function () awful.util.spawn_with_shell('urxvtr -e /home/raf/bin/solr') end),
+    -- Standard program
+    awful.key({ modkey,           }, "Return", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Control" }, "r", awesome.restart),
+    awful.key({ modkey, "Shift"   }, "q", awesome.quit),
 
-        
-    ---------------------------
-    --Left hand custom commands
-    ---------------------------
-   
-    --drush commands
-    -- Prompt
-    awful.key({ modkey },           "r",     function () mypromptbox[mouse.screen]:run() end),
-    awful.key({ modkey, "Mod1"   }, "s", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e ssh "bitnami@ec2-54-235-161-194.compute-1.amazonaws.com"') end),
-    awful.key({ modkey, "Mod1"   }, "d", function () awful.util.spawn_with_shell('urxvtr -cd /opt/bitnami/apps/drupal/htdocs') end), 
-    awful.key({ modkey, "Mod1"   }, "x", function () awful.util.spawn_with_shell('xdg_menu --format awesome  >>~/.config/awesome/menu.lua') end), 
-    --drupal links
---    awful.key({ modkey, "Mod1"   }, "a", function () awful.util.spawn_with_shell('chromium example.dev') end),
---    awful.key({ modkey, "Mod1"   }, "s", function () awful.util.spawn_with_shell('chromium example.dev/import/import_xls') end),
---    awful.key({ modkey, "Mod1"   }, "f", function () awful.util.spawn_with_shell('chromium example.dev/node/add/plant') end),
---    awful.key({ modkey, "Mod1"   }, "d", function () awful.util.spawn_with_shell('chromium example.dev/user/1/edit-plants') end),
---    awful.key({ modkey, "Mod1"   }, "g", function () awful.util.spawn_with_shell('chromium example.dev/user/1') end),
---    awful.key({ modkey, "Mod1"   }, "z", function () awful.util.spawn_with_shell('chromium localhost/phpmyadmin') end),
---    awful.key({ modkey, "Mod1"   }, "x", function () awful.util.spawn_with_shell('chromium example.dev/admin/structure/views') end),
---    awful.key({ modkey, "Mod1"   }, "c", function () awful.util.spawn_with_shell('chromium example.dev/admin/modules') end),
---    awful.key({ modkey, "Mod1"   }, "v", function () awful.util.spawn_with_shell('chromium example.dev/admin/config/search/search_api/') end),
-
-    --web links
---    awful.key({ modkey, "Mod1"   }, "q", function () awful.util.spawn_with_shell('google-chrome www.gmail.com') end),
---    awful.key({ modkey, "Mod1"   }, "w", function () awful.util.spawn_with_shell('google-chrome www.facebook.com') end),
---    awful.key({ modkey, "Mod1"   }, "e", function () awful.util.spawn_with_shell('google-chrome www.google.com/reader') end),
---    awful.key({ modkey, "Mod1"   }, "r", function () awful.util.spawn_with_shell('google-chrome drive.google.com') end),
---
---    awful.key({ modkey, "Mod1"   }, "1", function () awful.util.spawn_with_shell("google-chrome 'http://weatherspark.com/#!graphs;a=Australia/VIC/Melbourne'") end),
---    awful.key({ modkey, "Mod1"   }, "2", function () awful.util.spawn_with_shell('google-chrome "www.bom.gov.au/vic/forecasts/melbourne.shtml"') end),
---    awful.key({ modkey, "Mod1"   }, "3", function () awful.util.spawn_with_shell('google-chrome magicseaweed.com/Victoria-Surf-Forecast/46/ ') end),
---
---    --drupal links
---    awful.key({ modkey, "Mod1"   }, "a", function () awful.util.spawn_with_shell('google-chrome example.dev') end),
---    awful.key({ modkey, "Mod1"   }, "s", function () awful.util.spawn_with_shell('google-chrome example.dev/import/import_xls') end),
---    awful.key({ modkey, "Mod1"   }, "f", function () awful.util.spawn_with_shell('google-chrome example.dev/node/add/plant') end),
---    awful.key({ modkey, "Mod1"   }, "d", function () awful.util.spawn_with_shell('google-chrome example.dev/user/1/edit-plants') end),
---    awful.key({ modkey, "Mod1"   }, "g", function () awful.util.spawn_with_shell('google-chrome example.dev/user/1') end),
---    awful.key({ modkey, "Mod1"   }, "z", function () awful.util.spawn_with_shell('google-chrome localhost/phpmyadmin') end),
---    awful.key({ modkey, "Mod1"   }, "x", function () awful.util.spawn_with_shell('google-chrome example.dev/admin/structure/views') end),
---    awful.key({ modkey, "Mod1"   }, "c", function () awful.util.spawn_with_shell('google-chrome example.dev/admin/modules') end),
---    awful.key({ modkey, "Mod1"   }, "v", function () awful.util.spawn_with_shell('google-chrome example.dev/admin/config/search/search_api/') end),
---   
-    awful.key({ modkey, "Control" }, "r",     awesome.restart),
-    awful.key({ modkey, "Shift"   }, "q",     awesome.quit),
-    --tag navigation
     awful.key({ modkey,           }, "l",     function () awful.tag.incmwfact( 0.05)    end),
     awful.key({ modkey,           }, "h",     function () awful.tag.incmwfact(-0.05)    end),
     awful.key({ modkey, "Shift"   }, "h",     function () awful.tag.incnmaster( 1)      end),
@@ -385,7 +285,64 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Control" }, "l",     function () awful.tag.incncol(-1)         end),
     awful.key({ modkey,           }, "space", function () awful.layout.inc(layouts,  1) end),
     awful.key({ modkey, "Shift"   }, "space", function () awful.layout.inc(layouts, -1) end),
-    awful.key({ modkey, "Control" }, "n", awful.client.restore)
+
+    awful.key({ modkey, "Control" }, "n", awful.client.restore),
+
+    -- Prompt
+    awful.key({ modkey },            "r",     function () mypromptbox[mouse.screen]:run() end),
+    awful.key({ modkey },            "x",
+        function ()
+            awful.prompt.run({ prompt = "Run Lua code: " },
+            mypromptbox[mouse.screen].widget,
+            awful.util.eval, nil,
+            awful.util.getdir("cache") .. "/history_eval")
+        end),
+    -- Menubar
+    awful.key({ modkey },            "s", function() menubar.show() end),
+
+    ---------------------------
+    -- Custom
+    
+    awful.key({ modkey            }, "[",     function () mywibox[mouse.screen].visible = true end),
+    awful.key({ modkey            }, "]",     function () mywibox[mouse.screen].visible = false end),
+    awful.key({ modkey            }, "\\",     function () mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible end),
+    awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell("/home/raf/bin/projector") end),
+    awful.key({                   }, "Print", function () awful.util.spawn("scrot -e 'mv $f /home/raf/Pictures/scrots/ 2>/dev/null'") end),
+    awful.key({ "Control"         }, "Print", function () awful.util.spawn("/home/raf/bin/scrot-select") end),
+
+    --tag programs
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('google-chrome-stable') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('geeqie') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --calc') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['med']], function () awful.util.spawn('vlc') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['med']], function () awful.util.spawn('clementine') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('transmission-gtk') end),
+    awful.key({ modkey, "Mod1",  "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('nicotine.py') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
+    --other programs
+    awful.key({ modkey, "Mod1"    }, "-", function () awful.util.spawn('gcolor2') end),
+    awful.key({ modkey, "Mod1"    }, "=", function () awful.util.spawn('gnome-calculator') end),
+    --ncurses apps and shell script
+    awful.key({ modkey, "Mod1",   }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
+    awful.key({ modkey, "Mod1"    }, "j", function () awful.util.spawn(terminal) end),
+    awful.key({ modkey, "Mod1",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
+    awful.key({ modkey, "Mod1",   }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
+    awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
+    awful.key({ modkey, "Mod1",   }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
+    awful.key({ modkey, "Mod1",   }, "'", function () awful.util.spawn_with_shell(terminal_cmd .. 'htop') end),
+    --config
+    awful.key({ modkey, "Mod1"    }, "n", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/awesome/rc.lua') end),
+    awful.key({ modkey, "Mod1"    }, "m", function () awful.util.spawn_with_shell(editor_cmd .. '~/.bashrc') end),
+    awful.key({ modkey, "Mod1"    }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '-p ~/.vim_runtime/vimrcs/*') end),
+    awful.key({ modkey, "Mod1"    }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
+    awful.key({ modkey, "Mod1"    }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
+    --lampp and solr
+    awful.key({ modkey, "Mod1"    }, "[", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e sudo /opt/bitnami/ctlscript.sh restart') end),
+    awful.key({ modkey, "Mod1"    }, "]", function () awful.util.spawn_with_shell('drush cc all --root=/opt/bitnami/apps/drupal/htdocs/') end),
+    awful.key({ modkey, "Mod1"    }, "x", function () awful.util.spawn_with_shell('xdg_menu --format awesome  >>~/.config/awesome/menu.lua') end)
 )
 
 
@@ -394,7 +351,7 @@ clientkeys = awful.util.table.join(
     awful.key({ modkey,           }, "c",      function (c) c:kill()                         end),
     awful.key({ modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
     awful.key({ modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-    awful.key({ modkey, "Shift"   }, "r",      function (c) c:redraw()                       end),
+    awful.key({ modkey, "Shift"   }, "r",      function (c) c.redraw()                       end),
     awful.key({ modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
     awful.key({ modkey,           }, "n",
         function (c)
@@ -406,7 +363,8 @@ clientkeys = awful.util.table.join(
         function (c)
             c.maximized_horizontal = not c.maximized_horizontal
             c.maximized_vertical   = not c.maximized_vertical
-        end)
+        end),
+    awful.key({ modkey            }, "b",      function (c) c.border_width = bit32.band(c.border_width + 1, 1) end)
 )
 
 -- Compute the maximum number of digit we need, limited to 9
@@ -466,78 +424,67 @@ root.keys(globalkeys)
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
-    -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     size_hints_honor = false,
-                     keys = clientkeys,
-                     buttons = clientbuttons } },
-	--tag programs
-     { rule = { class = "Google-chrome-stable" },
-       properties = { tag = tags[1][tag_bindings['web']],switchtotag = true } },
-     { rule = { name = "Karma - Google Chrome" },
-       properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
-     -- { rule = { class = "Pcmanfm" },
-     --   properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
-     { rule = { class = "Thunar" },
-       properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
-     { rule = { name = "Transmission" },
-       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
-     { rule = { name = "Nicotine.py" },
-       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
-     { rule = { name = "Torrent Options" },
-       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
-     { rule = { class = "Vlc" },
-       properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
-     { rule = { class = "Clementine" },
-       properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
-     { rule = { name = "LibreOffice" },
-       properties = { tag = tags[1][tag_bindings['doc']],switchtotag = true } },
-     { rule = { name = "Geeqie" },
-       properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
-	 --programs that borrow a tag
-     { rule = { class = "Hamster" },
-       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
-     { rule = { name = "NetBeans IDE 7.2.1" },
-       properties = { tag = tags[1][tag_bindings['cod']],} },
-     { rule = { name = "Starting NetBeans IDE" },
-       properties = { tag = tags[1][tag_bindings['cod']],} },
-     { rule = { class = "Deadbeef" },
-       properties = { tag = tags[1][tag_bindings['med']],switchtotag = true } },
-     { rule = { name = "GNU Image Manipulation Program" },
-       properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
-     { rule = { role = "gimp-toolbox" },
-       properties = { floating = true, ontop = true}, },
-     { rule = { role = "gimp-dock" },
-       properties = { floating = true, ontop = true}, },
-     { rule = { class = "Skype" },
-       properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true },
-       callback = awful.client.setslave  },
-     --programs that load on current tag
-     { rule = { name = "File Operation Progress" },
-       callback = awful.client.setslave  },
-     { rule = { class = "URxvt" },
-       callback = awful.client.setslave  },
-     { rule = { instance = "Download" },
-       properties = { floating = true }, },
-     { rule = { instance = "GtkFileChooserDialog" },
-       properties = { floating = true }, },       
-     { rule = { name = "Find Files" },
-       callback = awful.client.setslave  },
-     --programs that load on every tag
-     { rule = { instance = "avant-window-navigator" },
-       properties = { border_width = 0 }, },       
-     { rule = { instance = "weather.py" },
-       properties = { border_width = 0 }, },
-     { rule = { instance = "cairo-dock" },
---     type = "dock",
-       properties = {
-               floating = true,
-               ontop = true, 
-               focus = false } }
+  -- All clients will match this rule.
+  { rule = { },
+    properties = { border_width = beautiful.border_width,
+                   border_color = beautiful.border_normal,
+                   focus = awful.client.focus.filter,
+                   raise = true,
+                   size_hints_honor = false,
+                   keys = clientkeys,
+                   buttons = clientbuttons } },
+  --tag programs
+   { rule = { class = "Google-chrome-stable" },
+     properties = { tag = tags[1][tag_bindings['web']],switchtotag = true } },
+   { rule = { name = "Karma - Google Chrome" },
+     properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
+   -- { rule = { class = "Pcmanfm" },
+   --   properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
+   { rule = { class = "Thunar" },
+     properties = { tag = tags[1][tag_bindings['file']],switchtotag = true } },
+   { rule = { name = "Transmission" },
+     properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
+   { rule = { name = "Nicotine.py" },
+     properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
+   { rule = { name = "Torrent Options" },
+     properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
+   { rule = { class = "Vlc" },
+     properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
+   { rule = { class = "Clementine" },
+     properties = { tag = tags[1][tag_bindings['med']],switchtotag = true  } },
+   { rule = { name = "LibreOffice" },
+     properties = { tag = tags[1][tag_bindings['doc']],switchtotag = true } },
+   { rule = { name = "Geeqie" },
+     properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
+ --programs that borrow a tag
+   { rule = { class = "Hamster" },
+     properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true } },
+   { rule = { name = "NetBeans IDE 7.2.1" },
+     properties = { tag = tags[1][tag_bindings['cod']],} },
+   { rule = { name = "Starting NetBeans IDE" },
+     properties = { tag = tags[1][tag_bindings['cod']],} },
+   { rule = { class = "Deadbeef" },
+     properties = { tag = tags[1][tag_bindings['med']],switchtotag = true } },
+   { rule = { name = "GNU Image Manipulation Program" },
+     properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
+   { rule = { role = "gimp-toolbox" },
+     properties = { floating = true, ontop = true}, },
+   { rule = { role = "gimp-dock" },
+     properties = { floating = true, ontop = true}, },
+   { rule = { class = "Skype" },
+     properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true },
+     callback = awful.client.setslave  },
+   --programs that load on current tag
+   { rule = { name = "File Operation Progress" },
+     callback = awful.client.setslave  },
+   { rule = { class = "URxvt" },
+     callback = awful.client.setslave  },
+   { rule = { instance = "Download" },
+     properties = { floating = true }, },
+   { rule = { instance = "GtkFileChooserDialog" },
+     properties = { floating = true }, },       
+   { rule = { name = "Find Files" },
+     callback = awful.client.setslave  },
 }
 -- }}}
 
@@ -618,7 +565,11 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- Cut/copy history
 awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
 -- Touchpad monitor - disables when typing
---awful.util.spawn_with_shell('/home/raf/bin/run-once syndaemon -t -k -i 2 -d &')
+-- awful.util.spawn_with_shell('/home/raf/bin/run-once syndaemon -t -k -i 2 -d &')
+-- Auto mount drives
+awful.util.spawn_with_shell('/home/raf/bin/run-once hamster')
+-- Auto mount drives
+awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d')
 -- Battery monitor
 awful.util.spawn_with_shell('/home/raf/bin/run-once slimebattery')
 -- Fix for virtualbox

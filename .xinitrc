@@ -25,7 +25,3 @@ export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 [ -f ~/.xprofile ] && source ~/.xprofile
 
 exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
-# exec gnome-session
-# exec startkde
-# exec startxfce4
-# ...or the Window Manager of your choice

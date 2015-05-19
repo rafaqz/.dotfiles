@@ -46,7 +46,6 @@ export HISTCONTROL=ignoredups
 
 shopt -s histappend
 
-
 ################################################
 ## Prompt
 
@@ -57,17 +56,14 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWCOLORHINTS=
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
-prompt='__git_ps1 "\[\e[40;31m\]\u@\[\e[1;32m\]\h:\[\e[30;44m\] \w \[\e[41m\]" "\\\$\[\e[0m\] "'
+prompt='__git_ps1 "\[\e[40;31m\]@\u\[\e[39;40m\] \w \[\e[30;43m\]" "\\\$\[\e[0m\] "'
 # Don't overwrite, append - autojump uses this 
 export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a;history -c;history -r; $prompt"
 
-
 ################################################
-## Aliases
-
-# Enable color support of ls and also add handy aliases
+# Color 
 if [ -x /usr/bin/dircolors ]; then
-  eval "`dircolors -b`"
+  eval "`dircolors ~/.dircolors`"
   alias ls='ls --color=auto'
   alias dir='dir --color=auto'
   alias vdir='vdir --color=auto'
@@ -77,6 +73,9 @@ if [ -x /usr/bin/dircolors ]; then
   alias egrep='egrep --color=auto'
   alias pgrep='pgrep --color=auto'
 fi
+
+################################################
+## Aliases
 
 ## Dot cd
 alias back='cd $OLDPWD'
@@ -91,6 +90,7 @@ alias ........='cd ../../../../../../..'
 alias .........='cd ../../../../../../../..'
 
 ## Shortcuts 
+alias vim='vim --servername `openssl rand -hex 12`'
 alias r='ranger'
 alias rc='ranger-cd'
 alias u='urxvtr'
