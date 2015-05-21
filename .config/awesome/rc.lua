@@ -303,6 +303,7 @@ globalkeys = awful.util.table.join(
     ---------------------------
     -- Custom
     
+    awful.key({ modkey            }, "d",     function () awful.util.spawn('xcalib -invert -alter') end),
     awful.key({ modkey            }, "[",     function () mywibox[mouse.screen].visible = true end),
     awful.key({ modkey            }, "]",     function () mywibox[mouse.screen].visible = false end),
     awful.key({ modkey            }, "\\",     function () mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible end),
@@ -314,6 +315,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
     awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('google-chrome-stable') end),
+    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['web']], function () awful.util.spawn('firefox') end),
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('geeqie') end),
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
     awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --calc') end),
