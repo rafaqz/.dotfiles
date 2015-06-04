@@ -3,7 +3,6 @@ ack
 acpi
 acpi_call
 alsa-utils
-anki
 ansible
 arandr
 archlinux-xdg-menu
@@ -24,10 +23,13 @@ bison
 brasero
 bzip2
 cairo
+caps
 chromium
 chromium-pepper-flash
+circle-flat-icons-git
 clementine
 clipit
+colordiff
 coreutils
 corkscrew
 cronie
@@ -44,10 +46,10 @@ downgrade
 dtrx
 e2fsprogs
 easytag
+expac
 extundelete
 faience-icon-theme
 fakeroot
-feh
 ffmpegthumbnailer
 file
 file-roller
@@ -62,7 +64,6 @@ freetype2
 gawk
 gcc
 gcolor2
-geeqie
 gettext
 gimp
 gimp-dbp
@@ -76,6 +77,7 @@ google-chrome
 google-earth
 google-talkplugin
 gparted
+gpicview
 gprename
 grep
 grub
@@ -123,6 +125,7 @@ lua-filesystem
 luakit
 lvm2
 lxappearance
+lxsession
 m4
 make
 man-db
@@ -132,6 +135,7 @@ mediainfo
 memcached
 mesa
 mimeo
+mlocate
 mtpfs
 mupdf
 nano
@@ -140,8 +144,11 @@ nfs-utils
 nicotine-plus-git
 nodejs
 ntp
+numix-icon-theme-git
+numix-themes
 openssh
 os-prober
+owncloud-client
 pacbuilder-svn
 pacman
 patch
@@ -208,12 +215,9 @@ tk
 tmux
 tor
 tp_smapi
-tpacpi-bat
 transmission-gtk
 tree
-typespeed
-typetrainer
-unetbootin
+ultra-flat-icons
 unrar
 unzip
 urxvt-perls
@@ -236,6 +240,7 @@ wireless_tools
 wmname
 wpa_supplicant
 xbindkeys
+xcalib
 xclip
 xcompmgr
 xdotool

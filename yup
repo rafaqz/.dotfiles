@@ -1,0 +1,2 @@
+yaourt -Qqe > yaourt
+less yaourt

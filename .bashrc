@@ -144,7 +144,7 @@ alias dmesg='dmesg -HL'
 alias feh='feh --auto-zoom --geometry 500x375 --sort filename'
 alias tmux="TERM=screen-256color tmux"
 alias cp="cp -i"                            # confirm before overwriting something
-alias rm="rm -i"                            # confirm before overwriting something
+# alias rm="rm -i"                            # confirm before overwriting something
 alias mv="mv -i"                            # confirm before overwriting something
 
 ## New commands
@@ -174,6 +174,8 @@ alias :x=' exit'
 alias q=' exit'
 alias x=' exit'
 
+#pacman
+alias pe='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 
 ################################################
 # Handy functions
@@ -231,7 +233,7 @@ todo() {
   fi
 }
 
-# Arch latest news
+# Arch latest news. nice to have when something breaks after an update.
 function news() {
   if [ "$PS1" ] && [[ $(ping -c1 www.google.com 2>&-) ]]; then
     # The characters "£, §" are used as metacharacters. They should not be encountered in a feed...

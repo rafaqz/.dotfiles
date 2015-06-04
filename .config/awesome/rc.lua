@@ -577,10 +577,10 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 
 -- {{{ Startup Programs. 
 
--- Session
-awful.util.spawn_with_shell('/home/raf/bin/run-once lxsession')
 -- Auto mount drives
 awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d --desktop --one-screen')
+-- Session
+awful.util.spawn_with_shell('/home/raf/bin/run-once lxsession')
 -- Cut/copy history
 awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
 -- Touchpad monitor - disables when typing

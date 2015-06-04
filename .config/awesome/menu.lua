@@ -12,7 +12,6 @@
  }
 
  local menude7a22a0c94aa64ba2449e520aa20c99 = {
-     {"Anki", "anki", "/usr/share/pixmaps/anki.png" },
      {"LibreOffice Math", "libreoffice --math ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-math.png" },
  }
 
