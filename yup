@@ -1,2 +1,2 @@
-yaourt -Qqe > yaourt
+yaourt -Qqe > ylist
 less yaourt
