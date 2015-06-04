@@ -12,6 +12,7 @@ from ranger.api.commands import *
 
 # You can import any python module as needed.
 import os
+import subprocess
 
 # Any class that is a subclass of "Command" will be integrated into ranger as a
 # command.  Try typing ":my_edit<ENTER>" in ranger!
@@ -56,3 +57,16 @@ class my_edit(Command):
         # This is a generic tab-completion function that iterates through the
         # content of the current directory.
         return self._tab_directory_content()
+
+
+class j(Command):
+    """:j
+
+    Uses autojump to set the current directory.
+    """
+
+    def execute(self):
+        directory = subprocess.check_output(["autojump", self.arg(1)])
+        directory = directory.decode("utf-8", "ignore")
+        directory = directory.rstrip('\n')
+        self.fm.execute_console("cd " + directory)

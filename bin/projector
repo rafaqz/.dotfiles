@@ -6,5 +6,5 @@ EXT="VGA1"
 if (xrandr | grep "$EXT disconnected"); then
     xrandr --output $IN --auto --output $EXT --off 
 else
-    xrandr --output $EXT --mode 1280x1024 --primary --output $IN --off 
+    xrandr --output $EXT --mode 1280x960 --output $IN --off 
 fi

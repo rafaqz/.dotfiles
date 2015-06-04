@@ -48,8 +48,8 @@ URxvt.boldFont:             xft:DejaVu Sans Mono for Powerline:pixelsize=12:anti
 !===============================================
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
-urxvt.scrollBar_right:      true
-urxvt.secondaryScroll:      true
+URxvt.scrollBar_right:      true
+URxvt.secondaryScroll:      true
 
 ! Cursor
 URxvt.cursorBlink:          false
@@ -61,7 +61,7 @@ URxvt.pointerBlank:         true
 ! Misc
 URxvt.saveLines:            8192
 URxvt.perl-lib:             /usr/lib/urxvt/perl/
-urxvt.cutchars:             "`'\",;@&*=|?()<>[]{}"
+URxvt.cutchars:             "`'\",;@&*=|?()<>[]{}"
 URxvt.termName:             rxvt
 
 !===============================================
