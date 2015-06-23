@@ -8,7 +8,7 @@
 
 export PATH="$HOME/bin:$PATH"
 export PATH="${PATH}:/opt/vagrant/bin"
-# export PATH="${PATH}:/home/raf/.gem/ruby/2.1.0/bin/"
+export PATH="${PATH}:/home/raf/.gem/ruby/2.2.0/bin"
 export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
 
@@ -122,6 +122,7 @@ alias d='drush'
 alias rv='ruby -e "print RUBY_VERSION"'
 alias pu='pushd'
 alias po='popd'
+alias be='bundle exec'
 
 alias z='zeus'
 alias z='zeus start'
@@ -146,6 +147,7 @@ alias tmux="TERM=screen-256color tmux"
 alias cp="cp -i"                            # confirm before overwriting something
 # alias rm="rm -i"                            # confirm before overwriting something
 alias mv="mv -i"                            # confirm before overwriting something
+alias reset="echo -ne '\033c'"
 
 ## New commands
 alias da='date "+%A, %B %d, %Y [%T]"'
@@ -218,16 +220,21 @@ todo() {
   fi
 
   if ! (($#)); then
-    cat "$HOME/.todo"
-  elif [[ "$1" == "-l" ]]; then
     nl -b a "$HOME/.todo"
   elif [[ "$1" == "-c" ]]; then
-    > $HOME/.todo
+    while true; do
+      read -p "This will clear all todos, please confirm (yes or no) y/n " yn
+      case $yn in
+        [Yy]* ) > $HOME/.todo; break;;
+        [Nn]* ) break;;
+        * ) echo "Please answer yes or no. ";;
+      esac
+    done
   elif [[ "$1" == "-r" ]]; then
     nl -b a "$HOME/.todo"
     eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}; echo
     read -p "Type a number to remove: " number
-    sed -i ${number}d $HOME/.todo "$HOME/.todo"
+    sed -i ${number}d $HOME/.todo
   else
     printf "%s\n" "$*" >> "$HOME/.todo"
   fi
@@ -307,6 +314,10 @@ function $function_name {
 	return 0
 }"
 	eval "$function"
+}
+
+function ap() {
+  google-chrome --new-window --app=$1
 }
 
 source /usr/share/git/completion/git-completion.bash

@@ -446,11 +446,13 @@ awful.rules.rules = {
                    size_hints_honor = false,
                    keys = clientkeys,
                    buttons = clientbuttons } },
-  --tag programs
+   { rule = { type = "modal" },
+     properties = { size_hints_honor = true, floating = true, ontop = true } },
    { rule = { type = "desktop" },
      properties = { tags[1][tag_bindings['scr']], border_width = 0 } },
+  --tag programs
    { rule = { class = "Google-chrome" },
-     properties = { tag = tags[1][tag_bindings['web']],switchtotag = true, maximized_horizontal = true, maximized_vertical = true, border_width = 0 } },
+     properties = { tag = tags[1][tag_bindings['web']],switchtotag = true, maximized_horizontal = true, maximized_vertical = true } },
    { rule = { name = "Karma - Google Chrome" },
      properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
    -- { rule = { class = "Pcmanfm" },
@@ -578,7 +580,7 @@ client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_n
 -- {{{ Startup Programs. 
 
 -- Auto mount drives
-awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d --desktop --one-screen')
+awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d')
 -- Session
 awful.util.spawn_with_shell('/home/raf/bin/run-once lxsession')
 -- Cut/copy history

@@ -47,7 +47,7 @@ highlight() { command highlight --style=solarized-dark "$@"; test $? = 0 -o $? =
 case "$extension" in
     # Archive extensions:
     7z|a|ace|alz|arc|arj|bz|bz2|cab|cpio|deb|gz|jar|lha|lz|lzh|lzma|lzo|\
-    rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip)
+    rpm|rz|t7z|tar|tbz|tbz2|tgz|tlz|txz|tZ|tzo|war|xpi|xz|Z|zip|kmz)
         try als "$path" && { dump | trim; exit 0; }
         try acat "$path" && { dump | trim; exit 3; }
         try bsdtar -lf "$path" && { dump | trim; exit 0; }
@@ -58,6 +58,12 @@ case "$extension" in
     pdf)
         try pdftotext -l 10 -nopgbrk -q "$path" - && \
             { dump | trim | fmt -s -w $width; exit 0; } || exit 1;;
+    odf|odt|ods|odp|odg|odb)
+        try odt2txt "$path" --width=$width && { dump | trim; exit 0; } || exit 1;;
+    doc|xls|ppt|rtf)
+        try catdoc "$path" && { dump | trim; exit 0; } || exit 1;;
+    docx|xlsx|pptx)
+        try docx2txt.pl < "$path" && { dump | trim; exit 0; } || exit 1;;
     # BitTorrent Files
     torrent)
         try transmission-show "$path" && { dump | trim; exit 5; } || exit 1;;

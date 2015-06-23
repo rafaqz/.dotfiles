@@ -2,6 +2,7 @@
      {"Archive Manager", "file-roller ", "/usr/share/icons/hicolor/16x16/apps/file-roller.png" },
      {"Calculator", "gnome-calculator", "/usr/share/icons/gnome/16x16/apps/accessories-calculator.png" },
      {"ClipIt", "clipit"},
+     {"Disks", "gnome-disks", "/usr/share/icons/hicolor/16x16/apps/gnome-disks.png" },
      {"GPRename", "gprename", "/usr/share/icons/gprename.png" },
      {"Root Terminal", "gksu -l gnome-terminal", "/usr/share/pixmaps/gksu-root-terminal.png" },
      {"Time Tracker", "/usr/bin/hamster", "/usr/share/icons/hicolor/16x16/apps/hamster-time-tracker.png" },
@@ -16,6 +17,7 @@
  }
 
  local menud334dfcea59127bedfcdbe0a3ee7f494 = {
+     {"Document Viewer", "evince ", "/usr/share/icons/hicolor/16x16/apps/evince.png" },
      {"GNU Image Manipulation Program", "gimp-2.8 ", "/usr/share/icons/hicolor/16x16/apps/gimp.png" },
      {"Gcolor2", "gcolor2", "///usr/share/pixmaps/gcolor2/icon.png" },
      {"Image Viewer", "gpicview ", "/usr/share/icons/hicolor/48x48/apps/gpicview.png" },
@@ -39,6 +41,7 @@
  }
 
  local menudf814135652a5a308fea15bff37ea284 = {
+     {"Document Viewer", "evince ", "/usr/share/icons/hicolor/16x16/apps/evince.png" },
      {"LibreOffice", "libreoffice ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-startcenter.png" },
      {"LibreOffice Base", "libreoffice --base ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-base.png" },
      {"LibreOffice Calc", "libreoffice --calc ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-calc.png" },
