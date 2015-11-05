@@ -6,18 +6,23 @@
 ################################################
 ## Paths
 
-export PATH="$HOME/bin:$PATH"
-export PATH="${PATH}:/opt/vagrant/bin"
-export PATH="${PATH}:/home/raf/.gem/ruby/2.2.0/bin"
-export PATH="/opt/bitnami/apps/drupal/drush:/opt/bitnami/sqlite/bin:/opt/bitnami/php/bin:/opt/bitnami/mysql/bin:/opt/bitnami/apache2/bin:/opt/bitnami/common/bin:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
-
+PATH="$HOME/bin:$PATH"
+PATH="$HOME/.local/bin:$PATH"
+PATH="$HOME/.rbenv/bin:$PATH"
+# PATH="$HOME/.stack/programs/x86_64-linux/ghc-7.8.4/bin:$PATH"
+PATH="$HOME/.cabal/bin:$PATH"
+PATH="${PATH}:$HOME/.gem/ruby/2.2.0/bin"
+PATH="${PATH}:/opt/vagrant/bin"
+export PATH
 
 ################################################
 ## Variables
 export EDITOR="vim"
-export BROWSER="google-chrome"
+export BROWSER="firefox"
 
+# export LANG=en_AU.UTF-8
+# export LC_ALL=en_AU.UTF-8
+# export LC_MESSAGES="C"
 
 ################################################
 ## Options
@@ -90,26 +95,27 @@ alias ........='cd ../../../../../../..'
 alias .........='cd ../../../../../../../..'
 
 ## Shortcuts 
-alias vim='vim --servername `openssl rand -hex 12`'
-alias r='ranger'
+alias vim='vim -p --servername `openssl rand -hex 12`'
+alias v='vim'
 alias rc='ranger-cd'
 alias u='urxvtr'
-alias v='vim -p'
-alias k='rake'
-alias vs='vim-server'
+alias mu='mupdf'
 alias g='git'
 alias p='grep -lr --exclude{tags,*.log*,*sprockets*}'
 alias ga='git add'
 alias gb='git branch'
 alias gm='git merge'
 alias gd='git diff'
+alias gi='git init'
 alias gc='git commit'
+alias gcl='git clone'
 alias go='git checkout'
-alias gs='git status'
+alias gst='git status'
 alias gp='git push'
 alias gpu='git push --set-upstream origin master'
 alias gu='git pull'
 alias gl='git log --show-linear-break'
+alias gld='git log -p --show-linear-break'
 alias gls='git log --show-linear-break --stat'
 alias glo='git log --oneline --graph'
 alias gsa='git submodule add'
@@ -123,6 +129,7 @@ alias rv='ruby -e "print RUBY_VERSION"'
 alias pu='pushd'
 alias po='popd'
 alias be='bundle exec'
+alias bi='bundle install'
 
 alias z='zeus'
 alias z='zeus start'
@@ -153,11 +160,10 @@ alias reset="echo -ne '\033c'"
 alias da='date "+%A, %B %d, %Y [%T]"'
 alias du1='du --max-depth=1'
 alias du2='du --max-depth=2'
-alias hist='history | grep'         # requires an argument
+alias h='history | grep'         # requires an argument
 alias openports='ss --all --numeric --processes --ipv4 --ipv6'
 alias pgg='ps -Af | grep'           # requires an argument
 alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
-alias n="note"
 
 ## ls 
 alias ll='ls -lh'                           # list detailed with human-readable sizes
@@ -169,6 +175,9 @@ alias lx='ll -BX'                   # sort by extension
 alias lz='ll -rS'                   # sort by size
 alias lt='ll -rt'                   # sort by date
 alias lm='la | more'
+
+alias t='todotxt-machine'
+alias l='reset'
 
 ## Make Bash error tolerant 
 alias :q=' exit'
@@ -182,6 +191,16 @@ alias pe='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacm
 ################################################
 # Handy functions
 
+# Start ranger if its not already open
+r() {
+    if [ -z "$RANGER_LEVEL" ]
+    then
+        ranger
+    else
+        exit
+    fi
+}
+
 ## cd and ls in one
 cl() {
   dir=$1
@@ -193,50 +212,6 @@ cl() {
     ls
   else
     echo "bash: cl: '$dir': Directory not found"
-  fi
-}
-
-note() {
-  # if file doesn't exist, create it
-  if [[ ! -f $HOME/.notes ]]; then
-    touch "$HOME/.notes"
-  fi
-
-  if ! (($#)); then
-    # no arguments, print file
-    cat "$HOME/.notes"
-  elif [[ "$1" == "-c" ]]; then
-    # clear file
-    > "$HOME/.notes"
-  else
-    # add all arguments to file
-    printf "%s\n" "$*" >> "$HOME/.notes"
-  fi
-}
-
-todo() {
-  if [[ ! -f $HOME/.todo ]]; then
-    touch "$HOME/.todo"
-  fi
-
-  if ! (($#)); then
-    nl -b a "$HOME/.todo"
-  elif [[ "$1" == "-c" ]]; then
-    while true; do
-      read -p "This will clear all todos, please confirm (yes or no) y/n " yn
-      case $yn in
-        [Yy]* ) > $HOME/.todo; break;;
-        [Nn]* ) break;;
-        * ) echo "Please answer yes or no. ";;
-      esac
-    done
-  elif [[ "$1" == "-r" ]]; then
-    nl -b a "$HOME/.todo"
-    eval printf %.0s- '{1..'"${COLUMNS:-$(tput cols)}"\}; echo
-    read -p "Type a number to remove: " number
-    sed -i ${number}d $HOME/.todo
-  else
-    printf "%s\n" "$*" >> "$HOME/.todo"
   fi
 }
 
@@ -276,6 +251,16 @@ jla() { j "$@"; la;}
 jv() { j "$@"; v;}
 jvs() { j "$@"; vs;}
 ju() { j "$@"; u;}
+
+# Opens a note
+n() {
+ vim -c ":Pad new $*" 
+}
+
+# Searches Notes
+nls() {
+ ls -cD ~/Documents/Notes/ | egrep -i "$*"
+}
 
 
 ####################################
@@ -318,6 +303,21 @@ function $function_name {
 
 function ap() {
   google-chrome --new-window --app=$1
+}
+
+function countdown(){
+   date1=$((`date +%s` + $1)); 
+   while [ "$date1" -ne `date +%s` ]; do 
+     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+     sleep 0.1
+   done
+}
+function stopwatch(){
+  date1=`date +%s`; 
+   while true; do 
+    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"; 
+    sleep 0.1
+   done
 }
 
 source /usr/share/git/completion/git-completion.bash
