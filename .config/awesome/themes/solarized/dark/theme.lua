@@ -30,7 +30,7 @@ theme.colors.green   = "#859900ff"
 -- }}}
 
 -- {{{ Styles
-theme.font      = "Terminus 8"
+theme.font      = "Menlo 8"
 
 -- {{{ Colors
 theme.fg_normal  = theme.colors.base02
@@ -44,9 +44,9 @@ theme.bg_systray = theme.colors.yellow
 -- }}}
 
 -- {{{ Borders
-theme.border_width  = "1"
+theme.border_width  = "2"
 theme.border_normal = theme.bg_normal
-theme.border_focus  = theme.colors.orange
+theme.border_focus  = theme.colors.base2
 theme.border_marked = theme.bg_urgent
 -- }}}
 
@@ -64,7 +64,7 @@ theme.mouse_finder_color = theme.colors.green
 -- Variables set for theming the menu:
 -- menu_[bg|fg]_[normal|focus]
 -- menu_[border_color|border_width]
-theme.menu_height = "28"
+theme.menu_height = "25"
 theme.menu_width  = "130"
 -- }}}
 

@@ -48,7 +48,7 @@ beautiful.init("/home/raf/.config/awesome/themes/solarized/dark/theme.lua")
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvtr"
 terminal_cmd = "urxvtr -e "
-editor = "vim"
+editor = "vim -p --servername `openssl rand -hex 12`"
 editor_cmd = terminal_cmd .. editor .. " "
 
 -- Default modkey.
@@ -62,8 +62,8 @@ modkey = "Mod4"
 local layouts =
 {
     awful.layout.suit.floating,        
-    -- awful.layout.suit.tile.bottom,    
-    -- awful.layout.suit.tile,          
+    awful.layout.suit.tile.bottom,    
+    awful.layout.suit.tile,          
     awful.layout.suit.tile.top,  
     awful.layout.suit.tile.left,
     awful.layout.suit.fair.horizontal,
@@ -314,7 +314,7 @@ globalkeys = awful.util.table.join(
     --tag programs
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
     awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('google-chrome') end),
+    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('chromium') end),
     awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['web']], function () awful.util.spawn('firefox') end),
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('gimp') end),
     awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
@@ -329,6 +329,7 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1"    }, "=", function () awful.util.spawn('gnome-calculator') end),
     --ncurses apps and shell script
     awful.key({ modkey, "Mod1",   }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
+    awful.key({ modkey, "Mod1",   }, "y", function () awful.util.spawn_with_shell('urxvt -e todotxt-machine') end),
     awful.key({ modkey, "Mod1"    }, "j", function () awful.util.spawn(terminal) end),
     awful.key({ modkey, "Mod1",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
     awful.key({ modkey, "Mod1",   }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
@@ -341,21 +342,19 @@ globalkeys = awful.util.table.join(
     awful.key({ modkey, "Mod1"    }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '-p ~/.vim_runtime/vimrcs/*') end),
     awful.key({ modkey, "Mod1"    }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
     awful.key({ modkey, "Mod1"    }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
-    --lampp and solr
-    awful.key({ modkey, "Mod1"    }, "[", function () awful.util.spawn_with_shell('urxvtr -title bitnami -e sudo /opt/bitnami/ctlscript.sh restart') end),
-    awful.key({ modkey, "Mod1"    }, "]", function () awful.util.spawn_with_shell('drush cc all --root=/opt/bitnami/apps/drupal/htdocs/') end),
-    awful.key({ modkey, "Mod1", "Control"    }, "w", function () awful.util.spawn('google-chrome --new-window --app=https://weatherspark.com/#!graphs;a=Australia/VIC/Melbourne') end),
-    awful.key({ modkey, "Mod1"    }, "w", function () awful.util.spawn('google-chrome --new-window --app=http://chrome.wunderground.com') end),
-    awful.key({ modkey, "Mod1"    }, "e", function () awful.util.spawn('google-chrome --new-window --app=http://gmail.com') end),
-    awful.key({ modkey, "Mod1"    }, "d", function () awful.util.spawn('google-chrome --new-window --app=http://drive.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "s", function () awful.util.spawn('google-chrome --new-window --app=http://docs.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "g", function () awful.util.spawn('google-chrome --new-window --app=http://github.com') end),
-    awful.key({ modkey, "Mod1"    }, "q", function () awful.util.spawn('google-chrome --new-window --app=http://128.199.114.95') end),
-    awful.key({ modkey, "Mod1"    }, "c", function () awful.util.spawn('google-chrome --new-window --app=http://calendar.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "t", function () awful.util.spawn('google-chrome --new-window --app=http://translate.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "z", function () awful.util.spawn('google-chrome --new-window --app=http://duolingo.com') end),
-    awful.key({ modkey, "Mod1"    }, "a", function () awful.util.spawn('google-chrome --new-window --app=http://maps.google.com.au') end),
-    awful.key({ modkey, "Mod1"    }, "b", function () awful.util.spawn('google-chrome --new-window --app=http://thepiratebay.am') end)
+
+
+    awful.key({ modkey, "Mod1",   }, "z", function () awful.util.spawn_with_shell('zotero') end),
+    awful.key({ modkey, "Mod1",   }, "e", function () awful.util.spawn_with_shell('google-earth') end),
+    awful.key({ modkey, "Mod1",   }, "w", function () awful.util.spawn('chromium --new-window --app=https://weatherspark.com/#!graphs;a=Australia/VIC/Melbourne') end),
+    awful.key({ modkey, "Mod1"    }, "d", function () awful.util.spawn('chromium --new-window --app=http://drive.google.com') end),
+    awful.key({ modkey, "Mod1"    }, "s", function () awful.util.spawn('chromium --new-window --app=http://docs.google.com') end),
+    awful.key({ modkey, "Mod1"    }, "g", function () awful.util.spawn('chromium --new-window --app=http://github.com') end),
+    awful.key({ modkey, "Mod1"    }, "q", function () awful.util.spawn('chromium --new-window --app=http://128.199.114.95') end),
+    awful.key({ modkey, "Mod1"    }, "t", function () awful.util.spawn('chromium --new-window --app=http://translate.google.com') end),
+    awful.key({ modkey, "Mod1"    }, "z", function () awful.util.spawn('chromium --new-window --app=http://duolingo.com') end),
+    awful.key({ modkey, "Mod1"    }, "a", function () awful.util.spawn('chromium --new-window --app=http://maps.google.com.au') end),
+    awful.key({ modkey, "Mod1"    }, "b", function () awful.util.spawn('chromium --new-window --app=http://thepiratebay.am') end)
 )
 
 
@@ -447,11 +446,17 @@ awful.rules.rules = {
                    keys = clientkeys,
                    buttons = clientbuttons } },
    { rule = { type = "modal" },
-     properties = { size_hints_honor = true, floating = true, ontop = true } },
+     properties = { size_hints_honor = false, floating = false, ontop = false } },
+   { rule = { type = "modal" },
+     properties = { size_hints_honor = false, floating = false, ontop = false } },
    { rule = { type = "desktop" },
      properties = { tags[1][tag_bindings['scr']], border_width = 0 } },
   --tag programs
    { rule = { class = "Google-chrome" },
+     properties = { tag = tags[1][tag_bindings['web']],switchtotag = true, maximized_horizontal = true, maximized_vertical = true } },
+   { rule = { class = "Firefox" },
+     properties = { tag = tags[1][tag_bindings['web']],switchtotag = true, maximized_horizontal = true, maximized_vertical = true } },
+   { rule = { class = "chromium" },
      properties = { tag = tags[1][tag_bindings['web']],switchtotag = true, maximized_horizontal = true, maximized_vertical = true } },
    { rule = { name = "Karma - Google Chrome" },
      properties = { tag = tags[1][tag_bindings['gra']],switchtotag = true } },
@@ -584,14 +589,14 @@ awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d')
 -- Session
 awful.util.spawn_with_shell('/home/raf/bin/run-once lxsession')
 -- Cut/copy history
-awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
--- Touchpad monitor - disables when typing
--- awful.util.spawn_with_shell('/home/raf/bin/run-once syndaemon -t -k -i 2 -d &')
+-- awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
 -- Battery monitor
 awful.util.spawn_with_shell('/home/raf/bin/run-once slimebattery')
+-- Touchpad monitor - disables when typing
+-- awful.util.spawn_with_shell('/home/raf/bin/run-once syndaemon -t -k -i 2 -d &')
 -- Task timer
-awful.util.spawn_with_shell('/home/raf/bin/run-once hamster')
+-- awful.util.spawn_with_shell('/home/raf/bin/run-once hamster')
 -- Fix for virtualbox
-awful.util.spawn_with_shell('/home/raf/bin/vboxmodprobes.sh')
+-- awful.util.spawn_with_shell('/home/raf/bin/vboxmodprobes.sh')
 -- Update menu
 awful.util.spawn_with_shell('xdg_menu --format awesome > ~/.config/awesome/menu.lua')

@@ -18,11 +18,14 @@
 
  local menud334dfcea59127bedfcdbe0a3ee7f494 = {
      {"Document Viewer", "evince ", "/usr/share/icons/hicolor/16x16/apps/evince.png" },
+     {"FontForge", "fontforge ", "/usr/share/icons/hicolor/16x16/apps/fontforge.png" },
      {"GNU Image Manipulation Program", "gimp-2.8 ", "/usr/share/icons/hicolor/16x16/apps/gimp.png" },
      {"Gcolor2", "gcolor2", "///usr/share/pixmaps/gcolor2/icon.png" },
      {"Image Viewer", "gpicview ", "/usr/share/icons/hicolor/48x48/apps/gpicview.png" },
+     {"Image Viewer", "eog ", "/usr/share/icons/hicolor/16x16/apps/eog.png" },
      {"Inkscape", "inkscape ", "/usr/share/icons/hicolor/16x16/apps/inkscape.png" },
      {"LibreOffice Draw", "libreoffice --draw ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-draw.png" },
+     {"ida", "ida ", "/usr/share/pixmaps/ida.png" },
  }
 
  local menuc8205c7636e728d448c2774e6a4a944b = {
@@ -33,6 +36,8 @@
      {"Firefox", "firefox ", "/usr/share/icons/hicolor/16x16/apps/firefox.png" },
      {"Google Chrome", "/usr/bin/google-chrome-stable ", "/usr/share/icons/hicolor/16x16/apps/google-chrome.png" },
      {"Google Earth", "/opt/google/earth/free/google-earth ", "/usr/share/icons/hicolor/16x16/apps/google-earth.png" },
+     {"Jitsi", "/usr/bin/jitsi", "///usr/share/pixmaps/jitsi.svg" },
+     {"Links", "xlinks -g", "/usr/share/pixmaps/links_32x32.xpm" },
      {"Luakit", "luakit ", "/usr/share/pixmaps/luakit.png" },
      {"Nicotine-Plus", "nicotine.py"},
      {"Skype", "skype ", "/usr/share/icons/hicolor/16x16/apps/skype.png" },
@@ -49,11 +54,14 @@
      {"LibreOffice Impress", "libreoffice --impress ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-impress.png" },
      {"LibreOffice Math", "libreoffice --math ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-math.png" },
      {"LibreOffice Writer", "libreoffice --writer ", "/usr/share/icons/hicolor/16x16/apps/libreoffice-writer.png" },
+     {"Wordview Microsoft doc Viewer", "wordview", "/usr/share/pixmaps/wordview.xpm" },
+     {"Zotero", "/usr/bin/zotero ", "/usr/share/icons/hicolor/16x16/apps/zotero.png" },
  }
 
  local menue6f43c40ab1c07cd29e4e83e4ef6bf85 = {
      {"CMake", "cmake-gui ", "/usr/share/icons/hicolor/32x32/apps/CMakeSetup.png" },
-     {"OpenJDK Policy Tool", "/usr/bin/policytool", "/usr/share/icons/hicolor/16x16/apps/java.png" },
+     {"Heimdall", "heimdall-frontend", "/usr/share/icons/gnome/16x16/devices/phone.png" },
+     {"OpenJDK 1.7.0 Policy Tool", "_BINDIR_/policytool"},
      {"Qt4 Assistant ", "assistant-qt4", "/usr/share/icons/hicolor/32x32/apps/assistant-qt4.png" },
      {"Qt4 Designer", "designer-qt4", "/usr/share/icons/hicolor/128x128/apps/designer-qt4.png" },
      {"Qt4 Linguist ", "linguist-qt4", "/usr/share/icons/hicolor/16x16/apps/linguist-qt4.png" },
@@ -76,6 +84,7 @@
      {"File Manager PCManFM", "pcmanfm ", "/usr/share/icons/gnome/16x16/apps/system-file-manager.png" },
      {"GParted", "/usr/bin/gparted_polkit ", "/usr/share/icons/hicolor/16x16/apps/gparted.png" },
      {"Htop", "xterm -e htop", "/usr/share/pixmaps/htop.png" },
+     {"Manage Printing", "/usr/bin/xdg-open http://localhost:631/", "/usr/share/icons/hicolor/16x16/apps/cups.png" },
      {"Oracle VM VirtualBox", "VirtualBox ", "/usr/share/icons/hicolor/16x16/mimetypes/virtualbox.png" },
      {"Startup Disk Creator", "usb-creator-kde"},
      {"UXTerm", "uxterm", "/usr/share/pixmaps/xterm-color_48x48.xpm" },
