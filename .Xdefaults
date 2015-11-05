@@ -2,18 +2,16 @@
 ! Xft settings 
 !===============================================
 
-/* Xft.dpi:        96 */
-/* Xft.antialias:  true */
-/* Xft.rgba:       rgb */
-/* Xft.hinting:    true */
-/* Xft.hintstyle:  hintslight */
-
+Xft.dpi:        96
+Xft.antialias:  true
+Xft.rgba:       rgb
+Xft.hinting:    true
+Xft.hintstyle:  hintmedium
 !===============================================
 ! Urxvt Settings
 !===============================================
 !
-URxvt.meta8:False
-URxvt.loginShell: true
+URxvt.meta8:                false
 URxvt.transparent:          false
 URxvt.urgentOnBell:         true
 URxvt.visualBell:           true
@@ -22,30 +20,38 @@ URxvt.loginShell:           true
 !===============================================
 !Layout
 !===============================================
-URxvt.internalBorder:       4
+URxvt.internalBorder:       0
 URxvt.lineSpace:            1
 
 !===============================================
 ! Fonts
 !===============================================
-/* URxvt.letterSpace: -1 */
-URxvt.allow_bold:           false
-URxvt.font:                 xft:DejaVu Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true
-URxvt.boldFont:             xft:DejaVu Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true
-/* URxvt.font:                 xft:Menlo for Powerline:Regular:pixelsize=12:antialiase=true:autohinting=true */
-/* URxvt.boldFont:             xft:Menlo for Powerline:Bold:pixelsize=12:antialiase=true:autohinting=true */
-/* URxvt.font:                 xft:Sauce Code Powerline:pixelsize=12:autohinting=true */
-/* URxvt.boldFont:             xft:Sauce Code Powerline Bold:pixelsize=12:autohinting=true */
-/* URxvt.font:                 xft:Droid Sans Mono for Powerline:pixelsize=12antialiase=true:autohinting=true:Regular */
-/* URxvt.boldFont:             xft:Droid Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true:Bold */
-/* URxvt.font:                 xft:FuraMono-Regular Powerline:pixelsize=12 */
-/* URxvt.boldFont:             xft:FuraMono-Bold Powerline:pixelsize=12 */
-/* URxvt.font:                 xft:Meslo LG M Regular for Powerline:pixelsize=12:antialiase=true:autohinting=true */
-/* URxvt.font:                 xft:Inconsolata for Powerline:pixelsize=14:antialiase=true:autohinting=true */
+URxvt.letterSpace: -1
+URxvt.allow_bold:           true
+/* URxvt.font:                 xft:DejaVu Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true */
+/* URxvt.boldFont:             xft:DejaVu Sans Mono for Powerline:Bold:pixelsize=13:antialiase=true:autohinting=true */
+/* URxvt.font:                 xft:Inconsolata for Powerline:pixelsize=15:antialiase=true:autohinting=true */
+/* URxvt.font:                 xft:DejaVu Sans Mono:pixelsize=13:antialiase=true:autohinting=true */
+/* URxvt.boldFont:             xft:DejaVu Sans Mono:pixelsize=13:antialiase=true:autohinting=true */
+/* URxvt.font:                 xft:Menlo for Powerline:Regular:pixelsize=14:antialiase=true:autohinting=true */
+/* URxvt.boldFont:             xft:Menlo for Powerline:Bold:pixelsize=14:antialiase=true:autohinting=true */
+/* URxvt.font:                 xft:Sauce Code Powerline:pixelsize=13:autohinting=true */
+/* URxvt.boldFont:             xft:Sauce Code Powerline Bold:pixelsize=13:autohinting=true */
+URxvt.font:                 xft:Droid Sans Mono for Powerline:pixelsize=14antialiase=true:autohinting=true:Regular
+URxvt.boldFont:             xft:Droid Sans Mono for Powerline:pixelsize=14:antialiase=true:autohinting=true:Bold
+/* URxvt.font:                 xft:Fantasque Sans Mono:pixelsize=13antialiase=true:autohinting=true:Regular */
+/* URxvt.boldFont:             xft:Fantasque Sans Mono:pixelsize=13:antialiase=true:autohinting=true:Bold */
+/* URxvt.font:                 xft:Anonymice Powerline:pixelsize=16antialiase=true:autohinting=true:Regular */
+/* URxvt.boldFont:             xft:Anonymice Powerline:pixelsize=16:antialiase=true:autohinting=true:Bold */
+/* URxvt.font:                 xft:FuraMono-Regular Powerline:pixelsize=13 */
+/* URxvt.boldFont:             xft:FuraMono-Bold Powerline:pixelsize=13 */
+/* URxvt.font:                 xft:Meslo LG M Regular for Powerline:pixelsize=13:antialiase=true:autohinting=true */
 
 !===============================================
-! Scrollbar
+! Behaviour
 !===============================================
+
+! Scrollbar
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
 URxvt.scrollBar_right:      true
@@ -62,14 +68,14 @@ URxvt.pointerBlank:         true
 URxvt.saveLines:            8192
 URxvt.perl-lib:             /usr/lib/urxvt/perl/
 URxvt.cutchars:             "`'\",;@&*=|?()<>[]{}"
-URxvt.termName:             rxvt
+URxvt.termName:             rxvt-unicode
 
 !===============================================
 ! URLs
 !===============================================
 URxvt.underlineUrls:        true
-URxvt.url-select.launcher:  google-chrome-stable
-URxvt.urlLauncher:          google-chrome-stable
+URxvt.url-select.launcher:  firefox
+URxvt.urlLauncher:          firefox
 URxvt.url-select.underline: true
 URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
 URxvt.matcher.button:       1
@@ -87,7 +93,7 @@ URxvt.keysym.M-s:           perl:keyboard-select:search
 
 URxvt.depth:                24 !(This allows transparency, but breaks image previews in ranger)
 URxvt.dynamicColors:        off
-URxvt.fading: k0
+URxvt.fading: 30
 URxvt.background: #002b36
 URxvt.foreground: #657b83
 URxvt.fadeColor: #002b36
