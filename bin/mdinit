@@ -1,0 +1,8 @@
+#!/bin/bash
+# Copy startup markdown files and rename as the current dir name.
+set -e
+
+repo=${PWD##*/}  
+cp ~/.pandoc/helpers/yaml.md ${repo}.md 
+cp ~/.pandoc/helpers/Makefile .
+mkdir figures

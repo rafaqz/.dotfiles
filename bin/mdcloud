@@ -1,0 +1,13 @@
+#!/bin/bash
+set -e
+
+parent=$1
+repo=$2
+gitcloud $parent $repo
+
+pushd $repo
+  mdinit
+  git add .
+  git commit -m "init repo"
+  git push --set-upstream origin master
+popd
