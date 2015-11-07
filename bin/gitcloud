@@ -1,0 +1,22 @@
+#!/bin/bash
+# Set up a git repo with remote origin.
+
+user="git"
+host="git"
+
+set -e
+
+if test "$#" -ne 2; then
+  echo "Wrong number of args ($#). Provide a parent dir and a repo name."
+  exit
+fi
+
+parent=$1
+repo=$2
+
+ssh git "mkdir $parent; git init --bare $parent/$repo"
+mkdir $repo
+pushd $repo
+  git init
+  git remote add origin $user@$host:$parent/$repo
+popd
