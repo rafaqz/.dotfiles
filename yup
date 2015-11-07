@@ -1,2 +1,2 @@
 yaourt -Qqe > ylist
-less yaourt
+less ylist
