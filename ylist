@@ -1,3 +1,4 @@
+abcde
 abs
 ack
 acpi
@@ -69,6 +70,7 @@ flashplugin
 flex
 fontconfig
 freetype2
+fuse-exfat
 gawk
 gcc
 gcolor2
@@ -181,6 +183,8 @@ pcmanfm
 pcmciautils
 perl
 perl-file-mimeinfo
+perl-musicbrainz-discid
+perl-webservice-musicbrainz
 pkg-config
 pm-utils
 postgresql
