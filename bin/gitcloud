@@ -14,7 +14,7 @@ fi
 parent=$1
 repo=$2
 
-ssh git "mkdir $parent; git init --bare $parent/$repo"
+ssh git "mkdir -p $parent; git init --bare $parent/$repo"
 mkdir $repo
 pushd $repo
   git init
