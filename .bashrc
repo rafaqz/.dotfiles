@@ -17,7 +17,7 @@ export PATH
 
 ################################################
 ## Variables
-export EDITOR="vim"
+export EDITOR="vim -p"
 export BROWSER="firefox"
 
 # export LANG=en_AU.UTF-8
@@ -99,6 +99,7 @@ alias vim='vim -p --servername `openssl rand -hex 12`'
 alias v='vim'
 alias rc='ranger-cd'
 alias u='urxvtr'
+alias y='yaourt'
 alias mu='mupdf'
 alias g='git'
 alias p='grep -lr --exclude{tags,*.log*,*sprockets*}'
@@ -142,39 +143,39 @@ alias zd='zeus dbconsole'
 alias zt='zeus test'
 
 ## Modified commands
-alias diff='colordiff'              # requires colordiff package
+alias diff='colordiff'                 # requires colordiff package
 alias more='less'
 alias df='df -h'
 alias du='du -c -h'
 alias mkdir='mkdir -p -v'
 alias ping='ping -c 5'
 alias dmesg='dmesg -HL'
+alias cp="cp -i"                       # confirm before overwriting something
+# alias rm="rm -i"                     # confirm before overwriting something
+alias mv="mv -i"                       # confirm before overwriting something
+alias reset="echo -ne '\033c'"
 alias feh='feh --auto-zoom --geometry 500x375 --sort filename'
 alias tmux="TERM=screen-256color tmux"
-alias cp="cp -i"                            # confirm before overwriting something
-# alias rm="rm -i"                            # confirm before overwriting something
-alias mv="mv -i"                            # confirm before overwriting something
-alias reset="echo -ne '\033c'"
 
 ## New commands
-alias da='date "+%A, %B %d, %Y [%T]"'
-alias du1='du --max-depth=1'
-alias du2='du --max-depth=2'
-alias h='history | grep'         # requires an argument
+alias da='date "+%A, %B %d, %Y [%T]"'  # print current date
+alias du1='du --max-depth=1'           # file size one folder deep
+alias du2='du --max-depth=2'           # file size two folders deep
+alias h='history | grep'               # requires an argument
+alias pgg='ps -Af | grep'              # requires an argument
 alias openports='ss --all --numeric --processes --ipv4 --ipv6'
-alias pgg='ps -Af | grep'           # requires an argument
 alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"NAME\", \"CLASS\""'
 
 ## ls 
-alias ll='ls -lh'                           # list detailed with human-readable sizes
-alias la='ls -a'                            # list all files
-alias lla='ls -lha'                         # list all detailed with human-readable sizes
-alias lsd="ls /dev | grep sd"
-alias lr='ls -R'                    # recursive ls
-alias lx='ll -BX'                   # sort by extension
-alias lz='ll -rS'                   # sort by size
-alias lt='ll -rt'                   # sort by date
-alias lm='la | more'
+alias ll='ls -lh'                      # list detailed with human-readable sizes
+alias la='ls -a'                       # list all files
+alias lla='ls -lha'                    # list all detailed with human-readable sizes
+alias lsd="ls /dev | grep sd"          # list all drives
+alias lr='ls -R'                       # recursive ls
+alias lx='ll -BX'                      # sort by extension
+alias lz='ll -rS'                      # sort by size
+alias lt='ll -rt'                      # sort by date
+alias lm='la | less'                   # pipe to less
 
 alias t='todotxt-machine'
 alias l='reset'
@@ -253,13 +254,12 @@ jvs() { j "$@"; vs;}
 ju() { j "$@"; u;}
 
 # Opens a note
-n() {
- vim -c ":Pad new $*" 
+n() { 
+  vim -c ":call Note('~/Documents/', '$*')" 
 }
-
 # Searches Notes
-nls() {
- ls -cD ~/Documents/Notes/ | egrep -i "$*"
+nls() { 
+  ls -cD ~/Documents/notes/ | egrep -i "$*" 
 }
 
 
@@ -311,7 +311,9 @@ function countdown(){
      echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
      sleep 0.1
    done
+   vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3
 }
+
 function stopwatch(){
   date1=`date +%s`; 
    while true; do 
