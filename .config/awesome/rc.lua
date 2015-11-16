@@ -298,63 +298,63 @@ globalkeys = awful.util.table.join(
             awful.util.getdir("cache") .. "/history_eval")
         end),
     -- Menubar
-    awful.key({ modkey },            "s", function() menubar.show() end),
+    awful.key({ modkey },            "s", function() menubar.show() end)
 
-    ---------------------------
-    -- Custom
+    -----------------------------
+    ---- Custom
     
-    awful.key({ modkey            }, "d",     function () awful.util.spawn('xcalib -invert -alter') end),
-    awful.key({ modkey            }, "[",     function () mywibox[mouse.screen].visible = true end),
-    awful.key({ modkey            }, "]",     function () mywibox[mouse.screen].visible = false end),
-    awful.key({ modkey            }, "\\",     function () mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible end),
-    awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell("/home/raf/bin/projector") end),
-    awful.key({                   }, "Print", function () awful.util.spawn("scrot -e 'mv $f /home/raf/Pictures/scrots/ 2>/dev/null'") end),
-    awful.key({ "Control"         }, "Print", function () awful.util.spawn("/home/raf/bin/scrot-select") end),
+    --awful.key({ modkey            }, "d",     function () awful.util.spawn('xcalib -invert -alter') end),
+    --awful.key({ modkey            }, "[",     function () mywibox[mouse.screen].visible = true end),
+    --awful.key({ modkey            }, "]",     function () mywibox[mouse.screen].visible = false end),
+    --awful.key({ modkey            }, "\\",     function () mywibox[mouse.screen].visible = not mywibox[mouse.screen].visible end),
+    --awful.key({                   }, "XF86Display", function () awful.util.spawn_with_shell("/home/raf/bin/projector") end),
+    --awful.key({                   }, "Print", function () awful.util.spawn("/home/raf/bin/screenshot") end),
+    --awful.key({ "Control"         }, "Print", function () awful.util.spawn("/home/raf/bin/screenshot-select") end),
 
-    --tag programs
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('chromium') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['web']], function () awful.util.spawn('firefox') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('gimp') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --calc') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['med']], function () awful.util.spawn('vlc') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['med']], function () awful.util.spawn('clementine') end),
-    awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('transmission-gtk') end),
-    awful.key({ modkey, "Mod1",  "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('nicotine.py') end),
-    awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
-    --other programs
-    awful.key({ modkey, "Mod1"    }, "-", function () awful.util.spawn('gcolor2') end),
-    awful.key({ modkey, "Mod1"    }, "=", function () awful.util.spawn('gnome-calculator') end),
-    --ncurses apps and shell script
-    awful.key({ modkey, "Mod1",   }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
-    awful.key({ modkey, "Mod1",   }, "y", function () awful.util.spawn_with_shell('urxvt -e todotxt-machine') end),
-    awful.key({ modkey, "Mod1"    }, "j", function () awful.util.spawn(terminal) end),
-    awful.key({ modkey, "Mod1",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
-    awful.key({ modkey, "Mod1",   }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
-    awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
-    awful.key({ modkey, "Mod1",   }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
-    awful.key({ modkey, "Mod1",   }, "'", function () awful.util.spawn_with_shell(terminal_cmd .. 'htop') end),
-    --config
-    awful.key({ modkey, "Mod1"    }, "n", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/awesome/rc.lua') end),
-    awful.key({ modkey, "Mod1"    }, "m", function () awful.util.spawn_with_shell(editor_cmd .. '~/.bashrc') end),
-    awful.key({ modkey, "Mod1"    }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '-p ~/.vim_runtime/vimrcs/*') end),
-    awful.key({ modkey, "Mod1"    }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
-    awful.key({ modkey, "Mod1"    }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
+    ----tag programs
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['file']], function () awful.util.spawn('pcmanfm') end),
+    --awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['file']], function () awful.util.spawn_with_shell('urxvtr -e sudo pcmanfm') end),
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['web']], function () awful.util.spawn('chromium') end),
+    --awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['web']], function () awful.util.spawn('firefox') end),
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['gra']], function () awful.util.spawn('gimp') end),
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --writer') end),
+    --awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['doc']], function () awful.util.spawn('libreoffice --calc') end),
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['med']], function () awful.util.spawn('vlc') end),
+    --awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['med']], function () awful.util.spawn('clementine') end),
+    --awful.key({ modkey, "Mod1"    }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('transmission-gtk') end),
+    --awful.key({ modkey, "Mod1",  "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('nicotine.py') end),
+    --awful.key({ modkey, "Mod1", "Control" }, tag_keys[tag_bindings['tor']], function () awful.util.spawn('skype') end),
+    ----other programs
+    --awful.key({ modkey, "Mod1"    }, "-", function () awful.util.spawn('gcolor2') end),
+    --awful.key({ modkey, "Mod1"    }, "=", function () awful.util.spawn('gnome-calculator') end),
+    ----ncurses apps and shell script
+    --awful.key({ modkey, "Mod1",   }, "h", function () awful.util.spawn_with_shell('urxvtr -hold -e cal -3') end),
+    --awful.key({ modkey, "Mod1",   }, "y", function () awful.util.spawn_with_shell('urxvt -e todotxt-machine') end),
+    --awful.key({ modkey, "Mod1"    }, "j", function () awful.util.spawn(terminal) end),
+    --awful.key({ modkey, "Mod1",   }, "k", function () awful.util.spawn_with_shell(editor_cmd) end),
+    --awful.key({ modkey, "Mod1",   }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'ranger') end),
+    --awful.key({ modkey, "Mod1", "Control" }, "l", function () awful.util.spawn_with_shell(terminal_cmd .. 'sudo ranger') end),
+    --awful.key({ modkey, "Mod1",   }, ";", function () awful.util.spawn_with_shell('wicd-gtk -n') end),
+    --awful.key({ modkey, "Mod1",   }, "'", function () awful.util.spawn_with_shell(terminal_cmd .. 'htop') end),
+    ----config
+    --awful.key({ modkey, "Mod1"    }, "n", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/awesome/rc.lua') end),
+    --awful.key({ modkey, "Mod1"    }, "m", function () awful.util.spawn_with_shell(editor_cmd .. '~/.bashrc') end),
+    --awful.key({ modkey, "Mod1"    }, ",", function () awful.util.spawn_with_shell(editor_cmd .. '-p ~/.vim_runtime/vimrcs/*') end),
+    --awful.key({ modkey, "Mod1"    }, ".", function () awful.util.spawn_with_shell(editor_cmd .. '~/.config/ranger/rc.conf') end),
+    --awful.key({ modkey, "Mod1"    }, "/", function () awful.util.spawn_with_shell(editor_cmd .. '~/.Xdefaults') end),
 
 
-    awful.key({ modkey, "Mod1",   }, "z", function () awful.util.spawn_with_shell('zotero') end),
-    awful.key({ modkey, "Mod1",   }, "e", function () awful.util.spawn_with_shell('google-earth') end),
-    awful.key({ modkey, "Mod1",   }, "w", function () awful.util.spawn('chromium --new-window --app=https://weatherspark.com/#!graphs;a=Australia/VIC/Melbourne') end),
-    awful.key({ modkey, "Mod1"    }, "d", function () awful.util.spawn('chromium --new-window --app=http://drive.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "s", function () awful.util.spawn('chromium --new-window --app=http://docs.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "g", function () awful.util.spawn('chromium --new-window --app=http://github.com') end),
-    awful.key({ modkey, "Mod1"    }, "q", function () awful.util.spawn('chromium --new-window --app=http://128.199.114.95') end),
-    awful.key({ modkey, "Mod1"    }, "t", function () awful.util.spawn('chromium --new-window --app=http://translate.google.com') end),
-    awful.key({ modkey, "Mod1"    }, "z", function () awful.util.spawn('chromium --new-window --app=http://duolingo.com') end),
-    awful.key({ modkey, "Mod1"    }, "a", function () awful.util.spawn('chromium --new-window --app=http://maps.google.com.au') end),
-    awful.key({ modkey, "Mod1"    }, "b", function () awful.util.spawn('chromium --new-window --app=http://thepiratebay.am') end)
+    --awful.key({ modkey, "Mod1",   }, "z", function () awful.util.spawn_with_shell('zotero') end),
+    --awful.key({ modkey, "Mod1",   }, "e", function () awful.util.spawn_with_shell('google-earth') end),
+    --awful.key({ modkey, "Mod1",   }, "w", function () awful.util.spawn('chromium --new-window --app=https://weatherspark.com/#!graphs;a=Australia/VIC/Melbourne') end),
+    --awful.key({ modkey, "Mod1"    }, "d", function () awful.util.spawn('chromium --new-window --app=http://drive.google.com') end),
+    --awful.key({ modkey, "Mod1"    }, "s", function () awful.util.spawn('chromium --new-window --app=http://docs.google.com') end),
+    --awful.key({ modkey, "Mod1"    }, "g", function () awful.util.spawn('chromium --new-window --app=http://github.com') end),
+    --awful.key({ modkey, "Mod1"    }, "q", function () awful.util.spawn('chromium --new-window --app=http://128.199.114.95') end),
+    --awful.key({ modkey, "Mod1"    }, "t", function () awful.util.spawn('chromium --new-window --app=http://translate.google.com') end),
+    --awful.key({ modkey, "Mod1"    }, "z", function () awful.util.spawn('chromium --new-window --app=http://duolingo.com') end),
+    --awful.key({ modkey, "Mod1"    }, "a", function () awful.util.spawn('chromium --new-window --app=http://maps.google.com.au') end),
+    --awful.key({ modkey, "Mod1"    }, "b", function () awful.util.spawn('chromium --new-window --app=http://thepiratebay.am') end)
 )
 
 
@@ -589,7 +589,7 @@ awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d')
 -- Session
 awful.util.spawn_with_shell('/home/raf/bin/run-once lxsession')
 -- Cut/copy history
--- awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
+awful.util.spawn_with_shell('/home/raf/bin/run-once clipit -n')
 -- Battery monitor
 awful.util.spawn_with_shell('/home/raf/bin/run-once slimebattery')
 -- Touchpad monitor - disables when typing
