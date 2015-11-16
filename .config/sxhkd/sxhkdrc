@@ -1,0 +1,50 @@
+# Assign existing keys
+XF86MonBrightnessUp
+  xbacklight -inc $(bc <<< scale=6; $((xbacklight)+5)/5)
+XF86MonBrightnessDown
+  xbacklight -dec $(bc <<< scale=6; $((xbacklight)+5)/5)
+XF86AudioRaiseVolume
+  amixer set Master playback 1+
+XF86AudioLowerVolume
+  amixer set Master playback 1-
+# Mute
+XF86AudioMute
+  amixer set Master toggle
+XF86TouchpadToggle
+  synclient TouchpadOff=`synclient -l | grep -ce TouchpadOff.*0`
+XF86ScreenSaver
+  slock
+XF86Display 
+  projector
+{_,ctrl} + Print 
+  {screenshot, screenshot-select}
+
+# Run core aps
+super + alt + {_,ctrl} + o 
+  {pcmanfm, urxvtr -e sudo pcmanfm}
+super + alt + {_,ctrl} + p
+  {firefox, google-chrome}
+super + alt + {_,ctrl} + 7 
+  {vlc, clementine}
+super + alt + 6 
+  gimp
+super + alt + {_,ctrl} + 8 
+  libreoffice {--writer, --calc}
+super + alt + {_,ctrl} + 9 
+  {transmission-gtk, nicotine.py}
+
+# Run others
+super + alt + {z,e,semicolon,minus,equal}
+  {zotero, google-earth, wicd-gtk -n, gcolor2, gnome-calculator}
+super + alt + i  
+  xcalib -invert -alter
+
+# In a terminal
+super + alt + {j,c,t,apostrophe}
+  urxvtr { ,-e -hold cal -3, -e todotxt-machine, -e htop}
+super + alt + {_,ctrl} + l 
+  urxvtr -e {ranger, sudo ranger}
+
+# In vim
+super + alt + {k,n,m,comma,period,/)
+  urxvtr -e vim -p --servername `openssl rand -hex 12` { ,~/.config/awesome/rc.lua,~/.bashrc,~/.vim_runtime/vimrcs/*,~/.config/ranger/rc.conf,~/.Xresources ~/.xinintrc}
