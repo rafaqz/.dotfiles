@@ -1,3 +1,0 @@
-#!/bin/sh
-sleep 0.1 
-scrot -s 'window-shot-%s.png' -e 'mv $f /home/raf/Pictures/scrots'
