@@ -189,6 +189,7 @@ alias x=' exit'
 #pacman
 alias pe='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 
+
 ################################################
 # Handy functions
 
@@ -259,7 +260,28 @@ n() {
 }
 # Searches Notes
 nls() { 
-  ls -cD ~/Documents/notes/ | egrep -i "$*" 
+  ls -cD ~/Documents/notes/ | grep -Ei "$*" 
+}
+
+function ap() {
+  chromium --new-window --app=$1
+}
+
+function countdown(){
+   date1=$((`date +%s` + $1)); 
+   while [ "$date1" -ne `date +%s` ]; do 
+     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
+     sleep 0.1
+   done
+   vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3
+}
+
+function stopwatch(){
+  date1=`date +%s`; 
+   while true; do 
+    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"; 
+    sleep 0.1
+   done
 }
 
 
@@ -300,28 +322,6 @@ function $function_name {
 }"
 	eval "$function"
 }
-
-function ap() {
-  google-chrome --new-window --app=$1
-}
-
-function countdown(){
-   date1=$((`date +%s` + $1)); 
-   while [ "$date1" -ne `date +%s` ]; do 
-     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
-     sleep 0.1
-   done
-   vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3
-}
-
-function stopwatch(){
-  date1=`date +%s`; 
-   while true; do 
-    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"; 
-    sleep 0.1
-   done
-}
-
 source /usr/share/git/completion/git-completion.bash
 __git_shortcut  ga   add
 __git_shortcut  gf   fetch
