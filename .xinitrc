@@ -48,12 +48,12 @@ runonce clipit &
 pcmanfm -d &
 # Key commands
 sxhkd &
-# exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
-case $WM in
-awesome)
-  exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr 
-	;;
-xmonad)
-  exec xmonad
-	;;
-esac
+# case $WM in
+# awesome)
+#   exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr 
+# 	;;
+# xmonad)
+#   exec xmonad
+# 	;;
+# esac
+exec xmonad
