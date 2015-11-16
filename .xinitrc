@@ -11,17 +11,49 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-# bind media keys, touchpad disable etc. See .xbindkeysrc file
-xbindkeys
+# Key bindings
+# sxhkd
 
-# remap capslock and escape keys etc. See .Xmodmap
+# Remap capslock and escape keys etc. See .Xmodmap
 xmodmap ~/.Xmodmap
+
+# Use pointer as cursor (for xmonad)
+xsetroot -cursor_name left_ptr
+
+# Disable trackpad while typing. 2 seconds 
+# -i 2 sets the idle time to 2 seconds. The idle time specifies how many seconds to 
+#  wait after the last key-press before enabling the touchpad again.
+# -t tells the daemon not to disable mouse movement when typing and only disable tapping and scrolling.
+# -k tells the daemon to ignore modifier keys when monitoring keyboard activity (e.g.: allows Ctrl+Left Click).
+# -d starts as a daemon, in the background.
+syndaemon -t -k -i 2 -d &
+
+# Merge Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
+
+# Compositing
+hsetroot
+xcompmgr -n & 
 
 # gtk2 files for qt
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
-# source .xprofile for autostarting applications
-[ -f /etc/xprofile ] && source /etc/xprofile
-[ -f ~/.xprofile ] && source ~/.xprofile
-
-exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
+# Battery monitor
+slimebattery &
+# Session
+lxsession &
+# Clipboard
+runonce clipit &
+# Auto mount drives
+pcmanfm -d &
+# Key commands
+sxhkd &
+# exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr
+case $WM in
+awesome)
+  exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr 
+	;;
+xmonad)
+  exec xmonad
+	;;
+esac
