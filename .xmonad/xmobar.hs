@@ -1,10 +1,6 @@
--- xmobar config used by Vic Fryzel
--- Author: Vic Fryzel
--- http://github.com/vicfryzel/xmonad-config
-------------------------------------------------------------------------
+-- xmobar config
 
--- Solarized colors and borders
---
+-- Solarized colors and borders, here as reference until
 
 -- Dark
 -- base0 = "#657b83ff"
@@ -29,7 +25,7 @@
 
 -- This is setup for dual 1920x1080 monitors, with the right monitor as primary
 Config {
-    font = "xft:Droid Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true:Regular",
+    font = "xft:Droid Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true:Regular"
     -- font = "xft:Fantasque Sans Mono:pixelsize=15:antialiase=true:autohinting=true:Bold",
     -- font = "xft:Menlo for Powerline:Regular:pixelsize=13:antialiase=true:autohinting=true",
     -- font = "xft:DejaVu Sans Mono for Powerline:Bold:pixelsize=13:antialiase=true:autohinting=true",
@@ -37,9 +33,7 @@ Config {
     -- font = "xft:FuraMono-Bold Powerline:pixelsize=13",
     , bgColor = "#002b36"
     , fgColor = "#586e75"
-    -- , position = TopW L 100
     , position = Static { xpos = 0, ypos = 0, width = 1366, height = 16 }
-    -- lowerOnStart = True,
     , commands = [
         Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#073642","-l","#073642","-n","#073642","-w","3"] 10,
@@ -49,5 +43,5 @@ Config {
     ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %multicpu%   %memory%   <fc=#839496>%date%</fc>   %YMML%"
+    , template = "%StdinReader% }{ | %multicpu%   %memory% | <fc=#93a1a1>%date%</fc> | %YMML%"
 }
