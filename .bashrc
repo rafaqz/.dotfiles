@@ -17,7 +17,8 @@ export PATH
 
 ################################################
 ## Variables
-export EDITOR="vim -p"
+export SHELL="/bin/bash"
+export EDITOR="vim -p --servername `openssl rand -hex 12`"
 export BROWSER="firefox"
 
 # export LANG=en_AU.UTF-8
@@ -201,6 +202,10 @@ r() {
     else
         exit
     fi
+}
+
+dic() {
+  sdcv $@ | less
 }
 
 ## cd and ls in one
