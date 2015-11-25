@@ -2,11 +2,14 @@
 ! Xft settings 
 !===============================================
 
+*international: true
 Xft.dpi:        96
 Xft.antialias:  true
-Xft.rgba:       rgb
+Xft.rgba:       rgba
 Xft.hinting:    true
 Xft.hintstyle:  hintmedium
+Xft.lcdfilter:  lcddefault
+
 !===============================================
 ! URxvt Settings
 !===============================================
@@ -54,8 +57,8 @@ URxvt.boldFont:             xft:Droid Sans Mono for Powerline:pixelsize=14:antia
 ! Scrollbar
 URxvt.scrollStyle:          rxvt
 URxvt.scrollBar:            false
-URxvt.scrollBar_right:      true
-URxvt.secondaryScroll:      true
+URxvt.scrollBar_right:      false
+URxvt.secondaryScroll:      false
 
 ! Cursor
 URxvt.cursorBlink:          false
