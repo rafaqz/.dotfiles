@@ -2,3 +2,4 @@
 .config/ranger/tagged
 .config/ranger/bookmarks
 .config/ranger/__pycache__
+tags*
