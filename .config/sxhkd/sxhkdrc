@@ -7,7 +7,6 @@ XF86AudioRaiseVolume
   amixer set Master playback 1+
 XF86AudioLowerVolume
   amixer set Master playback 1-
-# Mute
 XF86AudioMute
   amixer set Master toggle
 XF86TouchpadToggle
@@ -23,28 +22,56 @@ XF86Display
 super + alt + {_,ctrl} + o 
   {pcmanfm, urxvtr -e sudo pcmanfm}
 super + alt + {_,ctrl} + p
-  {firefox, google-chrome}
+  {firefox, chromium}
 super + alt + {_,ctrl} + 7 
   {vlc, clementine}
-super + alt + 6 
+super + alt +            8 
   gimp
-super + alt + {_,ctrl} + 8 
-  libreoffice {--writer, --calc}
 super + alt + {_,ctrl} + 9 
+  libreoffice {--writer, --calc}
+super + alt + {_,ctrl} + 0 
   {transmission-gtk, nicotine.py}
 
 # Run others
-super + alt + {z,e,semicolon,minus,equal}
-  {zotero, google-earth, wicd-gtk -n, gcolor2, gnome-calculator}
-super + alt + i  
-  xcalib -invert -alter
+super + alt + {j,z,e,b,h,c,a,s,i,semicolon,minus,underscore,equal}
+  {\ 
+    urxvtr,\
+    zotero,\ 
+    google-earth,\ 
+    baobab,\ 
+    hamster,\ 
+    owncloud,\ 
+    lxappearance,\ 
+    skype,\ 
+    xcalib -invert -alter,\ 
+    wicd-gtk -n,\ 
+    gcolor2,\ 
+    gpick,\ 
+    speedcrunch\ 
+  }
 
 # In a terminal
-super + alt + {j,c,t,apostrophe}
-  urxvtr { ,-e -hold cal -3, -e todotxt-machine, -e htop}
-super + alt + {_,ctrl} + l 
-  urxvtr -e {ranger, sudo ranger}
+super + alt + {_,ctrl} + {l,t,bracketleft} 
+  urxvtr -e { ,sudo }{\ 
+    ranger,\ 
+    todotxt-machine,\ 
+    htop,\ 
+  }
 
-# In vim
-super + alt + {k,n,m,comma,period,/)
-  urxvtr -e vim -p --servername `openssl rand -hex 12` { ,~/.config/awesome/rc.lua,~/.bashrc,~/.vim_runtime/vimrcs/*,~/.config/ranger/rc.conf,~/.Xresources ~/.xinintrc}
+# Hold terminal open
+super + alt + {_,ctrl} + {bracketright,apostrophe} 
+  urxvtr -hold -e { ,sudo }{\ 
+    powertop,\
+    cal --color -3,\ 
+  }
+
+# In vim (server mode with a random id)
+super + alt + {k,w,n,m,comma,period,slash}
+  urxvt -e vim -p --servername `openssl rand -hex 12` { ,\
+    ~/Documents/notes/words.md,\ 
+    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/awesome/rc.lua ~/.config/sxhkd/sxhkdrc, \ 
+    ~/.bashrc,\ 
+    ~/.vim_runtime/vimrcs/*,\ 
+    ~/.config/ranger/rc.conf,\ 
+    ~/.Xdefaults ~/.xinitrc\ 
+  }
