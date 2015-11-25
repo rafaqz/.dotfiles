@@ -7,4 +7,5 @@
 # This is setup to display on dual 1920x1080 monitors, with the right-side
 # monitor as primary.  Adjust margin as necessary for other resolutions/setups.
 
-stalonetray -i 12 --window-type normal --grow-gravity W --geometry 12x1+700 --window-strut none --background "#002b36" --icon-gravity NE
+killall stalonetray
+sleep 2; stalonetray -i 12 --window-type normal --grow-gravity W --geometry 12x1+660 --window-strut none --background "#002b36" --icon-gravity NE
