@@ -1,42 +1,48 @@
 -- xmonad config used by Vic Fryzel
--- Author: Vic Fryzel
+-- Author: Vijtkc Fryzel
 -- http://github.com/vicfryzel/xmonad-config
 
 import System.IO
 import System.Exit
+import Control.Monad (liftM, join)
+import Data.IORef
+import Data.List
 import XMonad
-import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
+import XMonad.Actions.CycleWindows
+import XMonad.Actions.Navigation2D
+import qualified XMonad.Actions.FlexibleResize as F
+import XMonad.Actions.WithAll
+import XMonad.Layout.ResizableTile
 import XMonad.Hooks.DynamicLog
+import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
-import XMonad.Hooks.SetWMName
+import XMonad.Hooks.Minimize
+import XMonad.Layout.BoringWindows
 import XMonad.Layout.Fullscreen
-import XMonad.Layout.NoBorders
--- import XMonad.Layout.Spiral
--- import XMonad.Layout.Tabbed
--- import XMonad.Layout.ThreeColumns
+import XMonad.Layout.Maximize
+import XMonad.Layout.Minimize
+import XMonad.Layout.Named
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
-
+import qualified Data.Set        as S
 
 ------------------------------------------------------------------------
--- Solarized colors and borders
---
+-- Solarized theme
 
 -- Dark
 base0   = "#657b83"
 base1   = "#586e75"
 base2   = "#073642"
 base3   = "#002b36"
-
 -- Light
 base00  = "#839496"
 base01  = "#93a1a1"
 base02  = "#eee8d5"
 base03  = "#fdf6e3"
-
+-- Colors
 yellow  = "#b58900"
 orange  = "#cb4b16"
 red     = "#dc322f"
@@ -48,236 +54,158 @@ green   = "#859900"
 
 myNormalBorderColor  = base2
 myFocusedBorderColor = base3
-
--- Color of current window title in xmobar.
 xmobarTitleColor = base01
--- Color of current workspace in xmobar.
+xmobarUrgentColor = orange
 xmobarCurrentWorkspaceColor = blue
-
--- Width of the window border in pixels.
 myBorderWidth = 0
-
-------------------------------------------------------------------------
--- Config
--- The preferred terminal program, which is used in a binding below and by
--- certain contrib modules.
---
-myTerminal = "urxvtr"
-
--- The command to lock the screen or show the screensaver.
-myScreensaver = "slock"
-
--- The command to take a selective screenshot, where you select
--- what you'd like to capture on the screen.
-mySelectScreenshot = "screenshot-select"
-
--- The command to take a fullscreen screenshot.
-myScreenshot = "screenshot"
-
--- The command to use as a launcher, to launch commands that don't have
--- preset keybindings.
 myLauncher = "$(yeganesh -x -- -fn 'xft:Droid Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base02 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ orange ++ "')"
 
+------------------------------------------------------------------------
+-- Terminal
+myTerminal = "urxvtr"
 
 ------------------------------------------------------------------------
--- Workspaces
--- The default number of workspaces (virtual screens) and their names.
---
-myWorkspaces = ["u:term","i:txt","o:file","p:web","7:media","8:img","9:doc","0:tor"]
-
+-- Workspaces - all right hand keys for easier selection
+myWorkspaces = ["trm","txt","fle","web","med","img","doc","tor"]
 
 ------------------------------------------------------------------------
 -- Window rules
--- Execute arbitrary actions and WindowSet manipulations when managing
--- a new window. You can use this to, for example, always float a
--- particular program, or have a client always appear on a particular
--- workspace.
---
--- To find the property name associated with a program, use
--- > xprop | grep WM_CLASS
--- and click on the client you're interested in.
---
--- To match on the WM_NAME, you can use 'title' in the same way that
--- 'className' and 'resource' are used below.
---
-myManageHook = composeAll
-    [ resource  =? "desktop_window" --> doIgnore
-    , className =? "stalonetray"    --> doIgnore
-    , className =? "gnome-calculator"     --> doFloat
-    , className =? "File Operation Progress"      --> doFloat
-    , resource  =? "gpicview"       --> doFloat
-    , className =? "Chromium"       --> doShift "p:web"
-    , className =? "Google-chrome"  --> doShift "p:web"
-    , className =? "Firefox"        --> doShift "p:web"
-    , className =? "Karma - Google Chrome" --> doShift "p:web"
-    , className =? "Vlc" --> doShift "7:media"
-    , className =? "Clementine"   --> doShift "7:media"
-    , className =? "GNU Image Manipulation Program"--> doShift "8:img"
-    , className =? "libreoffice"    --> doShift "9:doc"
-    , className =? "Skype" --> doShift "0:tor"
-    , className =? "Transmission" --> doShift "0:tor"
-    , className =? "Torrent Options" --> doShift "0:tor"
-    , className =? "Nicotine.py" --> doShift "0:tor"
-    , className =? "Hamster" --> doShift "0:tor"
-    , className =? "VirtualBox"     --> doShift "0:tor"
-    -- , classRole = "gimp-toolbox" }, properties = { floating = true, ontop = true}, },
-    -- , classRole = "gimp-dock" --> doFloat
-    -- , classInstance = "Download" --> doFloat
-    -- , classInstance = "GtkFileChooserDialog" --> doFloat
-    , isFullscreen --> (doF W.focusDown <+> doFullFloat)]
+myManageHook = composeAll . concat $
+  [
+      [ resource  =? "desktop_window" --> doIgnore ]
+    , [ className =? "stalonetray"    --> doIgnore ]
+    , [ className =? x --> doFloat         | x <- float]
+    , [ className =? x --> doShift "web"   | x <- web  ]
+    , [ className =? x --> doShift "media" | x <- media]
+    , [ className =? x --> doShift "img"   | x <- img  ]
+    , [ className =? x --> doShift "doc"   | x <- doc  ]
+    , [ className =? x --> doShift "tor"   | x <- tor  ]
+    , [ (className =? "Gimp" <&&> fmap (x `isSuffixOf`) role) --> doFloat | x <- gimp]
+    -- , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
+  ]
+  where role  = stringProperty "WM_WINDOW_ROLE"
+        web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
+        media = ["Vlc", "Clementine", "Skype","Googleearth-bin"]
+        doc   = ["libreoffice"]
+        img   = ["Gimp"]
+        tor   = ["Nicotine.py", "Torrent Options", "Transmission","Hamster"]
+        float = ["stalonetray", "gnome-calculator", "File Operation Progress", "gpicview"]
+        gimp  = ["gimp-toolbox", "gimp-dock"]
 
 ------------------------------------------------------------------------
 -- Layouts
--- You can specify and transform your layouts by modifying these values.
--- If you change layout bindings be sure to use 'mod-shift-space' after
--- restarting (with 'mod-q') to reset your layout state to the new
--- defaults, as xmonad preserves your old layout settings by default.
---
--- The available layouts.  Note that each layout is separated by |||,
--- which denotes layout choice.
---
-
-myLayout = avoidStruts ( tiled ||| Mirror tiled ||| Full ) |||
-           noBorders (fullscreenFull Full)
+myLayout = vert ||| horiz ||| full
   where
-     -- default tiling algorithm partitions the screen into two panes
-     tiled   = Tall nmaster delta ratio
+     tiled = maximize $ boringWindows $ minimize $ ResizableTall nmaster delta ratio []
+     vert  = named "vert" $ avoidStruts $ tiled
+     horiz = named "horz" $ avoidStruts $ Mirror tiled
+     full  = named "full" $ boringWindows $ minimize $ fullscreenFull Full
 
      -- The default number of windows in the master pane
      nmaster = 1
-
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
-
      -- Percent of screen to increment by when resizing panes
      delta   = 3/100
 
+data WindowOpacity = Window Rational
+
 ------------------------------------------------------------------------
 -- Key bindings
---
--- modMask lets you specify which modkey you want to use. The default
--- is mod1Mask ("left alt").  You may also consider using mod3Mask
--- ("right alt"), which does not conflict with emacs keybindings. The
--- "windows key" is usually mod4Mask.
---
 myModMask = mod4Mask
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
-  ----------------------------------------------------------------------
-  -- Custom key bindings
-  --
-
-  -- Start a terminal.  Terminal to start is specified by myTerminal variable.
-  [ ((modMask .|. shiftMask, xK_Return),
-     spawn $ XMonad.terminal conf)
 
   -- Spawn the launcher using command specified by myLauncher.
-  -- Use this to launch programs without a key binding.
-  , ((modMask, xK_r),
-     spawn myLauncher)
+  [ ((modMask, xK_Return), spawn myLauncher)
 
+  -- Minimize
+  , ((modMask,                 xK_n), withFocused minimizeWindow)
+  , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
+  -- Maximize
+  , ((modMask, xK_backslash), withFocused (sendMessage . maximizeRestore))
 
-  --------------------------------------------------------------------
-  -- Standard xmonad key bindings
-  --
+  -- Close focused window, but not other copies of it.
+  , ((modMask, xK_c), kill)
 
-  -- Close focused window.
-  , ((modMask, xK_c),
-     kill)
+  -- Rotate windows
+  , ((modMask                , xK_bracketleft),  rotUnfocusedUp)
+  , ((modMask                , xK_bracketright), rotUnfocusedDown)
+  , ((modMask .|. controlMask, xK_bracketleft),  rotFocusedUp)
+  , ((modMask .|. controlMask, xK_bracketright), rotFocusedDown)
 
   -- Cycle through the available layout algorithms.
-  , ((modMask, xK_space),
-     sendMessage NextLayout)
-
+  , ((modMask,                 xK_space), sendMessage NextLayout)
   --  Reset the layouts on the current workspace to default.
-  , ((modMask .|. shiftMask, xK_space),
-     setLayout $ XMonad.layoutHook conf)
-
+  , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
   -- Resize viewed windows to the correct size.
-  , ((modMask, xK_n),
-     refresh)
+  , ((modMask .|. controlMask, xK_l), refresh) -- Move focus to the next window.  , ((modMask, xK_Tab), focusDown)
+
+  -- , ((modMask,                 xK_l), windowGo R False)
+  -- , ((modMask,                 xK_h), windowGo L False)
+  -- , ((modMask,                 xK_k), windowGo U False)
+  -- , ((modMask,                 xK_j), windowGo D False)
+
+  -- -- Swap adjacent windows
+  -- , ((modMask .|. controlMask, xK_l), windowSwap R False)
+  -- , ((modMask .|. controlMask, xK_h), windowSwap L False)
+  -- , ((modMask .|. controlMask, xK_k), windowSwap U False)
+  -- , ((modMask .|. controlMask, xK_j), windowSwap D False)
 
   -- Move focus to the next window.
-  , ((modMask, xK_Tab),
-     windows W.focusDown)
-
-  -- Move focus to the next window.
-  , ((modMask, xK_j),
-     windows W.focusDown)
-
+  , ((modMask, xK_j), focusDown)
   -- Move focus to the previous window.
-  , ((modMask, xK_k),
-     windows W.focusUp  )
+  , ((modMask, xK_k), focusUp)
+  -- Swap the focused window with the next window.
+  , ((modMask .|. controlMask, xK_j), windows W.swapDown)
+  -- Swap the focused window with the previous window.
+  , ((modMask .|. controlMask, xK_k), windows W.swapUp)
 
   -- Move focus to the master window.
-  , ((modMask, xK_m),
-     windows W.focusMaster  )
-
+  , ((modMask,                 xK_m), windows W.focusMaster)
   -- Swap the focused window and the master window.
-  , ((modMask, xK_Return),
-     windows W.swapMaster)
-
-  -- Swap the focused window with the next window.
-  , ((modMask .|. shiftMask, xK_j),
-     windows W.swapDown  )
-
-  -- Swap the focused window with the previous window.
-  , ((modMask .|. shiftMask, xK_k),
-     windows W.swapUp    )
-
-  -- Shrink the master area.
-  , ((modMask, xK_h),
-     sendMessage Shrink)
-
-  -- Expand the master area.
-  , ((modMask, xK_l),
-     sendMessage Expand)
-
-  -- Push window back into tiling.
-  , ((modMask, xK_t),
-     withFocused $ windows . W.sink)
+  , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
 
   -- Increment the number of windows in the master area.
-  , ((modMask, xK_comma),
-     sendMessage (IncMasterN 1))
-
+  , ((modMask, xK_comma), sendMessage (IncMasterN 1))
   -- Decrement the number of windows in the master area.
-  , ((modMask, xK_period),
-     sendMessage (IncMasterN (-1)))
+  , ((modMask, xK_period), sendMessage (IncMasterN (-1)))
 
-  -- Toggle the status bar gap.
-  -- TODO: update this binding with avoidStruts, ((modMask, xK_b),
+  -- Shrink/Expand
+  , ((modMask, xK_h), sendMessage Shrink)
+  , ((modMask, xK_l), sendMessage Expand)
+  , ((modMask, xK_apostrophe), sendMessage MirrorShrink)
+  , ((modMask, xK_semicolon), sendMessage MirrorExpand)
 
-  -- Quit xmonad.
-  , ((modMask .|. shiftMask, xK_q),
-     io (exitWith ExitSuccess))
+  -- Push window back into tiling.
+  , ((modMask,                 xK_BackSpace), withFocused $ windows . W.sink)
+  , ((modMask .|. controlMask, xK_BackSpace), sinkAll)
 
   -- Restart xmonad.
-  , ((modMask, xK_q),
-     restart "xmonad" True)
+  , ((modMask,               xK_q), restart "xmonad" True)
+  -- Quit xmonad.
+  , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
   ]
   ++
-
-  -- mod-[1..9], Switch to workspace N
-  -- mod-shift-[1..9], Move client to workspace N
-  [((m .|. modMask, k), windows $ f i)
-      | (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
-      , (f, m) <- [(W.greedyView, 0), (W.shift, shiftMask)]]
+  -- mod-[x], Switch to workspace N
+  -- mod-shift-[x], Move client to workspace N
+  -- mod-control-shift-[x] @@ Copy client to workspace N
+  [((m .|. modMask, k), windows $ f i) |
+        (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
+      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, shiftMask)]]
   -- ++
-
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
   -- [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
   --     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
   --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
 
-
 ------------------------------------------------------------------------
 -- Mouse bindings
 
 -- True if your focus should follow your mouse cursor.
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = True
+myFocusFollowsMouse = False
 
 -- Whether clicking on a window to focus also passes the click to the window
 myClickJustFocuses :: Bool
@@ -285,67 +213,85 @@ myClickJustFocuses = False
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
   [
-    -- mod-button1, Set the window to floating mode and move by dragging
-    ((modMask, button1),
-     (\w -> focus w >> mouseMoveWindow w))
-
-    -- mod-button2, Raise the window to the top of the stack
-    , ((modMask, button2),
-       (\w -> focus w >> windows W.swapMaster))
-
-    -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modMask, button3),
-       (\w -> focus w >> mouseResizeWindow w))
-
-    -- you may also bind events to the mouse scroll wheel (button4 and button5)
+      ((modMask, button1), (\w -> mouseMoveWindow w))
+    , ((modMask, button2), (\w -> focus w >> windows W.swapMaster))
+    , ((modMask, button3), (\w -> F.mouseResizeWindow w))
   ]
-
 
 ------------------------------------------------------------------------
 -- Status bars and logging
--- Perform an arbitrary action on each internal state change or X event.
--- See the 'DynamicLog' extension for examples.
---
--- To emulate dwm's status bar
---
--- > logHook = dynamicLogDzen
---
---
-
-myLogHook dest = dynamicLogWithPP $ xmobarPP {
+myLogHook dest = dynamicLogWithPP $ defaultPP {
             ppOutput = hPutStrLn dest
-          , ppTitle = xmobarColor xmobarTitleColor "" . shorten 100
+          , ppTitle = xmobarColor xmobarTitleColor "" . shorten 60
+          , ppUrgent = xmobarColor xmobarUrgentColor ""
           , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
-          , ppSep = "   "
+          , ppSep = " | "
       }
 
 ------------------------------------------------------------------------
+-- Fade unfocussed windows
+myFadeHook noFadeSet transSet opacity = fadeOutLogHook $ fadeIf (testCondition noFadeSet transSet) opacity
+fadeBlacklist = title =? "Call with " <||> className =? "Vlc"
+
+testCondition :: IORef (S.Set Window) -> IORef (S.Set Window) -> Query Bool
+testCondition nofadeSet transSet =
+    ((liftM not fadeBlacklist <&&> isUnfocused)
+    <||> (join . asks $ \w -> liftX . io $ S.member w `fmap` readIORef transSet))
+    <&&> (join . asks $ \w -> liftX . io $ S.notMember w `fmap` readIORef nofadeSet)
+
+toggleFade :: Window -> S.Set Window -> S.Set Window
+toggleFade w s | S.member w s = S.delete w s
+               | otherwise = S.insert w s
+
+removeFade :: Window -> S.Set Window -> S.Set Window
+removeFade w s | S.member w s = S.delete w s
+               | otherwise = s
+
+incOpacity :: Rational -> Rational
+incOpacity o | o >= 1.0 = 1.0
+             | otherwise = o + 0.05
+
+decOpacity :: Rational -> Rational
+decOpacity o | o <= 0.0 = 0.0
+             | otherwise = o - 0.05
+------------------------------------------------------------------------
 -- Startup hook
--- Perform an arbitrary action each time xmonad starts or is restarted
--- with mod-q.  Used by, e.g., XMonad.Layout.PerWorkspace to initialize
--- per-workspace layout choices.
---
--- By default, do nothing.
 myStartupHook = do
-    spawn "sleep 0.4; tray"
-    spawn "sleep 0.4 urxvt -e feh --bg-scale /home/raf/Pictures/103_PANA/P1030808.JPG"
-
+    spawn "tray"
+    spawn "background"
 
 ------------------------------------------------------------------------
--- Run xmonad with all the defaults we set up.
---
+-- Event hook
+myEventHook = minimizeEventHook
+
+------------------------------------------------------------------------
+-- Main
 main = do
+  noFadeSet <- newIORef S.empty
+  transSet <- newIORef S.empty
+  opacity <- newIORef (0.8 :: Rational)
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-  xmonad $ defaults xmproc
+  xmonad $ defaults {
+    logHook = myLogHook xmproc
+              >> liftIO (readIORef opacity)
+              >>= myFadeHook noFadeSet transSet
+  }
+    `additionalKeys`
+        [
+           ((mod4Mask .|. controlMask, xK_period),
+          -- Silly transparency key commands
+            withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w)
+                             >> io (modifyIORef transSet $ removeFade w) >> refresh )
+          , ((mod4Mask .|. controlMask, xK_comma),
+            withFocused $ \w -> io (modifyIORef transSet $ toggleFade w)
+                             >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
+          , ((mod4Mask .|. shiftMask, xK_period), liftIO (modifyIORef opacity incOpacity) >> refresh)
+          , ((mod4Mask .|. shiftMask, xK_comma), liftIO (modifyIORef opacity decOpacity) >> refresh)
+        ]
 
 ------------------------------------------------------------------------
--- A structure containing your configuration settings, overriding
--- fields in the default config. Any you don't override, will
--- use the defaults defined in xmonad/XMonad/Config.hs
---
--- No need to modify this.
---
-defaults xmproc = defaultConfig {
+-- Config overrides
+defaults = defaultConfig {
     -- simple stuff
     terminal           = myTerminal,
     focusFollowsMouse  = myFocusFollowsMouse,
@@ -355,15 +301,12 @@ defaults xmproc = defaultConfig {
     workspaces         = myWorkspaces,
     normalBorderColor  = myNormalBorderColor,
     focusedBorderColor = myFocusedBorderColor,
-
     -- key bindings
     keys               = myKeys,
     mouseBindings      = myMouseBindings,
-
     -- hooks, layouts
-    layoutHook         = smartBorders $ myLayout,
-    -- handleEventHook    = myEventHook,
-    logHook            = myLogHook xmproc >> fadeInactiveLogHook 0xddddddff,
+    layoutHook         = myLayout,
+    handleEventHook    = myEventHook,
     manageHook         = manageDocks <+> myManageHook,
     startupHook        = myStartupHook
 }
