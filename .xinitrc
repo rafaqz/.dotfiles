@@ -34,9 +34,10 @@ syndaemon -t -k -i 2 -d &
 # Merge Xresources
 [[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
 
+
 # Compositing
 hsetroot
-compton -f -D 3 & 
+compton -f -D 2 -o 0 & 
 
 # gtk2 files for qt
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
@@ -49,6 +50,8 @@ runonce clipit &
 pcmanfm -d &
 # Key commands
 sxhkd &
+# Keyboard repeat speed
+xset r rate 180 60 
 
 # case $WM in
 # awesome)

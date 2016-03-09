@@ -46,6 +46,7 @@ dhcpcd
 dialog
 diffutils
 dircolors-solarized-git
+dmenu
 docx2txt
 dosfstools
 downgrade
@@ -59,6 +60,7 @@ extundelete
 faience-icon-theme
 fakeroot
 fbida
+feh
 ffmpegthumbnailer
 file
 file-roller
@@ -114,6 +116,7 @@ hdparm
 heimdall
 heroku-toolbelt
 highlight
+hsetroot
 htop
 hub
 hunspell-en
@@ -219,8 +222,10 @@ shadow
 skype
 slimebattery-git
 slock
+stalonetray
 stow
 sudo
+sxhkd-git
 syncbackup
 sysfsutils
 systemd-sysvcompat
@@ -281,7 +286,6 @@ wicd-gtk
 wireless_tools
 wmname
 wpa_supplicant
-xbindkeys
 xcalib
 xclip
 xcompmgr
@@ -294,6 +298,7 @@ xmonad
 xmonad-contrib
 xorg-server
 xorg-server-utils
+xorg-transset
 xorg-xev
 xorg-xinit
 xorg-xkill

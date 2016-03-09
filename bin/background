@@ -1,1 +1,3 @@
-feh --bg-scale /home/raf/Pictures/103_PANA/P1030808.JPG
+#!/bin/sh
+
+feh --bg-scale $HOME/Pictures/103_PANA/P1030808.JPG

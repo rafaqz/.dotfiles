@@ -1,18 +1,12 @@
-
-# If not running interactively, don't do anything
-[ -z "$PS1" ] && return
-
-
 ################################################
 ## Paths
 
 PATH="$HOME/bin:$PATH"
 PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.rbenv/bin:$PATH"
-# PATH="$HOME/.stack/programs/x86_64-linux/ghc-7.8.4/bin:$PATH"
 PATH="$HOME/.cabal/bin:$PATH"
-PATH="${PATH}:$HOME/.gem/ruby/2.2.0/bin"
-PATH="${PATH}:/opt/vagrant/bin"
+# PATH="${PATH}:$HOME/.gem/ruby/2.2.0/bin"
+# PATH="${PATH}:/opt/vagrant/bin"
 export PATH
 
 ################################################
@@ -20,10 +14,6 @@ export PATH
 export SHELL="/bin/bash"
 export EDITOR="vim -p --servername `openssl rand -hex 12`"
 export BROWSER="firefox"
-
-# export LANG=en_AU.UTF-8
-# export LC_ALL=en_AU.UTF-8
-# export LC_MESSAGES="C"
 
 ################################################
 ## Options
@@ -62,9 +52,17 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWCOLORHINTS=
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
-prompt='__git_ps1 "\[\e[40;31m\]@\u\[\e[39;40m\] \w \[\e[30;43m\]" "\\\$\[\e[0m\] "'
+prompt='__git_ps1 "\[\e[40;31m\]@\u\[\e[39;40m\] \w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
 # Don't overwrite, append - autojump uses this 
-export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND ;} history -a;history -c;history -r; $prompt"
+# export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a;history -c;history -r; $prompt"
+export PROMPT_COMMAND="$prompt"
+
+fasd_cache="$HOME/.fasd-init-bash"
+if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+  fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+fi
+source "$fasd_cache"
+unset fasd_cache
 
 ################################################
 # Color 
@@ -77,7 +75,7 @@ if [ -x /usr/bin/dircolors ]; then
   alias grep='grep --color=auto'
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
-  alias pgrep='pgrep --color=auto'
+  # alias pgrep='pgrep'
 fi
 
 ################################################
@@ -98,6 +96,8 @@ alias .........='cd ../../../../../../../..'
 ## Shortcuts 
 alias vim='vim -p --servername `openssl rand -hex 12`'
 alias v='vim'
+alias vs='vim-server'
+alias i='viewnior'
 alias rc='ranger-cd'
 alias u='urxvtr'
 alias y='yaourt'
@@ -181,7 +181,7 @@ alias lm='la | less'                   # pipe to less
 alias t='todotxt-machine'
 alias l='reset'
 
-## Make Bash error tolerant 
+# Make Bash error tolerant 
 alias :q=' exit'
 alias :x=' exit'
 alias q=' exit'
@@ -204,11 +204,13 @@ r() {
     fi
 }
 
-dic() {
-  sdcv $@ | less
+co() {
+  string=$1
+  vim -c "exec 'Unite -input=$string -default-action=start -force-immediately bibtex/file' | exec 'quit'"
 }
 
-## cd and ls in one
+
+# cd and ls in one
 cl() {
   dir=$1
   if [[ -z "$dir" ]]; then
@@ -220,6 +222,16 @@ cl() {
   else
     echo "bash: cl: '$dir': Directory not found"
   fi
+}
+
+# Dictionayy
+dic() {
+  sdcv $@ | less
+}
+
+# Thesaurus
+thes() {
+  sdcv --data-dir ~/.stardict/thesaurus -u "Moby Thesaurus II" $@ | less
 }
 
 # Arch latest news. nice to have when something breaks after an update.
@@ -249,30 +261,17 @@ function news() {
   fi
 }
 
-# Autojump into ranger, ls, vim or urxvtr
-jr() { j "$@"; r;}
-jl() { j "$@"; ls;}
-jll() { j "$@"; ll;}
-jlla() { j "$@"; lla;}
-jla() { j "$@"; la;}
-jv() { j "$@"; v;}
-jvs() { j "$@"; vs;}
-ju() { j "$@"; u;}
 
 # Opens a note
 n() { 
-  vim -c ":call Note('~/Documents/', '$*')" 
-}
-# Searches Notes
-nls() { 
-  ls -cD ~/Documents/notes/ | grep -Ei "$*" 
+  vim -c ":call Note('~/Documents/notes','$1')" 
 }
 
-function ap() {
+app() {
   chromium --new-window --app=$1
 }
 
-function countdown(){
+countdown(){
    date1=$((`date +%s` + $1)); 
    while [ "$date1" -ne `date +%s` ]; do 
      echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
@@ -281,7 +280,7 @@ function countdown(){
    vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3
 }
 
-function stopwatch(){
+stopwatch(){
   date1=`date +%s`; 
    while true; do 
     echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"; 
@@ -289,6 +288,13 @@ function stopwatch(){
    done
 }
 
+hide_cursor(){
+  echo -ne "\033[?25l"
+}
+
+show_cursor(){
+  echo -ne "\033[?25h"
+}
 
 ####################################
 # Git alias completion
@@ -297,13 +303,6 @@ __git_shortcut () {
   n2=${2//-/_}
   type _git_${n2}_shortcut &>/dev/null || make-completion-wrapper _git_$n2 _git_${n2}_shortcut $1 git $2
   complete -o bashdefault -o default -o nospace -F _git_${n2}_shortcut $1
-}
-
-__apt_cache_shortcut () {
-  type _apt_cache_$2_shortcut &>/dev/null || make-completion-wrapper _apt_cache _apt_cache_$2_shortcut $1 apt-cache $2
-  # is not executed automatically. Normally only on first apt-cache <tab>
-  [ ! -f /usr/share/bash-completion/completions/apt-cache ] || source /usr/share/bash-completion/completions/apt-cache
-  complete -F _apt_cache_$2_shortcut $1
 }
 
 function make-completion-wrapper () {
@@ -351,5 +350,8 @@ eval "$(rbenv init -)"
 ## Keychain
 eval $(keychain --eval --agents ssh -Q --quiet id_ecdsa)
 
-# Ranger can be used to choose directories. Nice inside vim...
+# Ranger can be used to choose directories.
 source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
+
+# Fasd
+eval "$(fasd --init auto)"

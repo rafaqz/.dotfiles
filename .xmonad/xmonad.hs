@@ -58,6 +58,8 @@ xmobarTitleColor = base01
 xmobarUrgentColor = orange
 xmobarCurrentWorkspaceColor = blue
 myBorderWidth = 0
+windowOpacity = 0.85 :: Rational
+opacityStep = 0.05
 myLauncher = "$(yeganesh -x -- -fn 'xft:Droid Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base02 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ orange ++ "')"
 
 ------------------------------------------------------------------------
@@ -76,7 +78,7 @@ myManageHook = composeAll . concat $
     , [ className =? "stalonetray"    --> doIgnore ]
     , [ className =? x --> doFloat         | x <- float]
     , [ className =? x --> doShift "web"   | x <- web  ]
-    , [ className =? x --> doShift "media" | x <- media]
+    , [ className =? x --> doShift "med"   | x <- med  ]
     , [ className =? x --> doShift "img"   | x <- img  ]
     , [ className =? x --> doShift "doc"   | x <- doc  ]
     , [ className =? x --> doShift "tor"   | x <- tor  ]
@@ -85,28 +87,29 @@ myManageHook = composeAll . concat $
   ]
   where role  = stringProperty "WM_WINDOW_ROLE"
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
-        media = ["Vlc", "Clementine", "Skype","Googleearth-bin"]
-        doc   = ["libreoffice"]
+        med   = ["Vlc", "Clementine", "Skype"]
+        doc   = ["Libreoffice"]
         img   = ["Gimp"]
-        tor   = ["Nicotine.py", "Torrent Options", "Transmission","Hamster"]
-        float = ["stalonetray", "gnome-calculator", "File Operation Progress", "gpicview"]
+        tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
+        float = ["stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
         gimp  = ["gimp-toolbox", "gimp-dock"]
 
 ------------------------------------------------------------------------
 -- Layouts
 myLayout = vert ||| horiz ||| full
   where
-     tiled = maximize $ boringWindows $ minimize $ ResizableTall nmaster delta ratio []
-     vert  = named "vert" $ avoidStruts $ tiled
-     horiz = named "horz" $ avoidStruts $ Mirror tiled
-     full  = named "full" $ boringWindows $ minimize $ fullscreenFull Full
+     tiled = \n nw -> avoidStruts . named n . maximize . boringWindows . minimize $ ResizableTall nw delta ratio []
+     vert  = tiled "vert" vertmw 
+     horiz = tiled "horz" horizmw 
+     full  = named "full" . boringWindows . minimize $ fullscreenFull Full
 
      -- The default number of windows in the master pane
-     nmaster = 1
+     vertmw = 1
+     horizmw = 2
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
      -- Percent of screen to increment by when resizing panes
-     delta   = 3/100
+     delta   = 5/100
 
 data WindowOpacity = Window Rational
 
@@ -134,28 +137,17 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_bracketleft),  rotFocusedUp)
   , ((modMask .|. controlMask, xK_bracketright), rotFocusedDown)
 
+
   -- Cycle through the available layout algorithms.
   , ((modMask,                 xK_space), sendMessage NextLayout)
   --  Reset the layouts on the current workspace to default.
   , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
   -- Resize viewed windows to the correct size.
-  , ((modMask .|. controlMask, xK_l), refresh) -- Move focus to the next window.  , ((modMask, xK_Tab), focusDown)
-
-  -- , ((modMask,                 xK_l), windowGo R False)
-  -- , ((modMask,                 xK_h), windowGo L False)
-  -- , ((modMask,                 xK_k), windowGo U False)
-  -- , ((modMask,                 xK_j), windowGo D False)
-
-  -- -- Swap adjacent windows
-  -- , ((modMask .|. controlMask, xK_l), windowSwap R False)
-  -- , ((modMask .|. controlMask, xK_h), windowSwap L False)
-  -- , ((modMask .|. controlMask, xK_k), windowSwap U False)
-  -- , ((modMask .|. controlMask, xK_j), windowSwap D False)
-
+  , ((modMask .|. controlMask, xK_r), refresh) 
   -- Move focus to the next window.
-  , ((modMask, xK_j), focusDown)
+  , ((modMask,                 xK_j), focusDown)
   -- Move focus to the previous window.
-  , ((modMask, xK_k), focusUp)
+  , ((modMask,                 xK_k), focusUp)
   -- Swap the focused window with the next window.
   , ((modMask .|. controlMask, xK_j), windows W.swapDown)
   -- Swap the focused window with the previous window.
@@ -174,8 +166,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Shrink/Expand
   , ((modMask, xK_h), sendMessage Shrink)
   , ((modMask, xK_l), sendMessage Expand)
-  , ((modMask, xK_apostrophe), sendMessage MirrorShrink)
-  , ((modMask, xK_semicolon), sendMessage MirrorExpand)
+  , ((modMask .|. controlMask, xK_h), sendMessage MirrorShrink)
+  , ((modMask .|. controlMask, xK_l), sendMessage MirrorExpand)
 
   -- Push window back into tiling.
   , ((modMask,                 xK_BackSpace), withFocused $ windows . W.sink)
@@ -192,7 +184,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- mod-control-shift-[x] @@ Copy client to workspace N
   [((m .|. modMask, k), windows $ f i) |
         (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
-      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, shiftMask)]]
+      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, controlMask)]]
   -- ++
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
@@ -249,16 +241,18 @@ removeFade w s | S.member w s = S.delete w s
 
 incOpacity :: Rational -> Rational
 incOpacity o | o >= 1.0 = 1.0
-             | otherwise = o + 0.05
+             | otherwise = o + opacityStep
 
 decOpacity :: Rational -> Rational
 decOpacity o | o <= 0.0 = 0.0
-             | otherwise = o - 0.05
+             | otherwise = o - opacityStep
 ------------------------------------------------------------------------
 -- Startup hook
 myStartupHook = do
     spawn "tray"
     spawn "background"
+    spawn "redshift-gtk -l -38.53:145.26"
+
 
 ------------------------------------------------------------------------
 -- Event hook
@@ -269,7 +263,7 @@ myEventHook = minimizeEventHook
 main = do
   noFadeSet <- newIORef S.empty
   transSet <- newIORef S.empty
-  opacity <- newIORef (0.8 :: Rational)
+  opacity <- newIORef (windowOpacity)
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
   xmonad $ defaults {
     logHook = myLogHook xmproc
@@ -278,15 +272,15 @@ main = do
   }
     `additionalKeys`
         [
-           ((mod4Mask .|. controlMask, xK_period),
           -- Silly transparency key commands
+           ((mod4Mask .|. controlMask, xK_apostrophe),
             withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w)
                              >> io (modifyIORef transSet $ removeFade w) >> refresh )
-          , ((mod4Mask .|. controlMask, xK_comma),
+          , ((mod4Mask .|. controlMask, xK_semicolon),
             withFocused $ \w -> io (modifyIORef transSet $ toggleFade w)
                              >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
-          , ((mod4Mask .|. shiftMask, xK_period), liftIO (modifyIORef opacity incOpacity) >> refresh)
-          , ((mod4Mask .|. shiftMask, xK_comma), liftIO (modifyIORef opacity decOpacity) >> refresh)
+          , ((mod4Mask, xK_apostrophe), liftIO (modifyIORef opacity incOpacity) >> refresh)
+          , ((mod4Mask, xK_semicolon), liftIO (modifyIORef opacity decOpacity) >> refresh)
         ]
 
 ------------------------------------------------------------------------

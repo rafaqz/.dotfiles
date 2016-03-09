@@ -18,7 +18,7 @@ XF86Display
 {_,ctrl} + Print 
   {screenshot, screenshot-select}
 
-# Run core aps
+# Run core aps 
 super + alt + {_,ctrl} + o 
   {pcmanfm, urxvtr -e sudo pcmanfm}
 super + alt + {_,ctrl} + p
@@ -33,7 +33,7 @@ super + alt + {_,ctrl} + 0
   {transmission-gtk, nicotine.py}
 
 # Run others
-super + alt + {j,z,e,b,h,c,a,s,i,semicolon,minus,underscore,equal}
+super + alt + {j,z,e,b,h,c,a,s,i,minus,equal}
   {\ 
     urxvtr,\
     zotero,\ 
@@ -44,18 +44,23 @@ super + alt + {j,z,e,b,h,c,a,s,i,semicolon,minus,underscore,equal}
     lxappearance,\ 
     skype,\ 
     xcalib -invert -alter,\ 
-    wicd-gtk -n,\ 
     gcolor2,\ 
-    gpick,\ 
     speedcrunch\ 
+  }
+super + alt + shift + {equal,semicolon}
+  {\
+    gpick, \
+    wicd-gtk -n,\ 
   }
 
 # In a terminal
-super + alt + {_,ctrl} + {l,t,bracketleft} 
+super + alt + {_,ctrl} + {l,t,bracketleft,semicolon,a} 
   urxvtr -e { ,sudo }{\ 
     ranger,\ 
     todotxt-machine,\ 
     htop,\ 
+    wicd-curses,\ 
+    alsamixer,\
   }
 
 # Hold terminal open
@@ -72,6 +77,6 @@ super + alt + {k,w,n,m,comma,period,slash}
     ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/awesome/rc.lua ~/.config/sxhkd/sxhkdrc, \ 
     ~/.bashrc,\ 
     ~/.vim_runtime/vimrcs/*,\ 
-    ~/.config/ranger/rc.conf,\ 
+    ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh,\ 
     ~/.Xdefaults ~/.xinitrc\ 
   }

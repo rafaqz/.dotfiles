@@ -61,10 +61,10 @@ modkey = "Mod4"
 -- Table of layouts to cover with awful.layout.inc, order matters.
 local layouts =
 {
-    awful.layout.suit.floating,        
-    awful.layout.suit.tile.bottom,    
-    awful.layout.suit.tile,          
-    awful.layout.suit.tile.top,  
+    awful.layout.suit.floating,
+    awful.layout.suit.tile.bottom,
+    awful.layout.suit.tile,
+    awful.layout.suit.tile.top,
     awful.layout.suit.tile.left,
     awful.layout.suit.fair.horizontal,
     awful.layout.suit.fair,
@@ -89,7 +89,7 @@ end
 tags_names  = {"scr","cod","file","web","gra","doc","med","tor"}
 tag_keys = {"u","i","o","p","7","8","9","0"}
 
--- Copy tags_names array key-value pair to tag_bindings array as value-key, so we only have to specify 
+-- Copy tags_names array key-value pair to tag_bindings array as value-key, so we only have to specify
 -- tag names once and we can use it to call the tag number without a lookup function.
 tag_bindings = {}
 for k,v in pairs(tags_names) do
@@ -102,11 +102,11 @@ tags_layout = {
         awful.layout.suit.tile.bottom,
         awful.layout.suit.tile.bottom,
         awful.layout.suit.tile.bottom,
-        awful.layout.suit.tile.bottom, 
-        awful.layout.suit.tile.bottom, 
         awful.layout.suit.tile.bottom,
-        awful.layout.suit.tile.bottom 
-} 
+        awful.layout.suit.tile.bottom,
+        awful.layout.suit.tile.bottom,
+        awful.layout.suit.tile.bottom
+}
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
@@ -302,7 +302,7 @@ globalkeys = awful.util.table.join(
 
     -----------------------------
     ---- Custom
-    
+
     --awful.key({ modkey            }, "d",     function () awful.util.spawn('xcalib -invert -alter') end),
     --awful.key({ modkey            }, "[",     function () mywibox[mouse.screen].visible = true end),
     --awful.key({ modkey            }, "]",     function () mywibox[mouse.screen].visible = false end),
@@ -492,7 +492,7 @@ awful.rules.rules = {
    { rule = { role = "gimp-toolbox" },
      properties = { floating = true, ontop = true}, },
    { rule = { role = "gimp-dock" },
-     properties = { floating = true, ontop = true}, }, 
+     properties = { floating = true, ontop = true}, },
    { rule = { class = "Skype" },
      properties = { tag = tags[1][tag_bindings['tor']],switchtotag = true },
      callback = awful.client.setslave  },
@@ -504,7 +504,7 @@ awful.rules.rules = {
    { rule = { instance = "Download" },
      properties = { floating = true }, },
    { rule = { instance = "GtkFileChooserDialog" },
-     properties = { floating = true }, },       
+     properties = { floating = true }, },
    { rule = { name = "Find Files" },
      callback = awful.client.setslave  },
 }
@@ -582,7 +582,7 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 
--- {{{ Startup Programs. 
+-- {{{ Startup Programs.
 
 -- Auto mount drives
 awful.util.spawn_with_shell('/home/raf/bin/run-once pcmanfm -d')

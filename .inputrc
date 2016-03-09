@@ -7,6 +7,7 @@ TAB:menu-complete
 ## arrow down
 "\e[B":history-search-forward
 "\C-l": clear-screen
+"\C-x*": glob-expand-word
 
 # Vi mode
 $if mode=vi
@@ -18,3 +19,6 @@ j: history-search-forward
 set keymap vi-insert
 
 $endif
+
+set completion-query-items 2000
+set page-completions off

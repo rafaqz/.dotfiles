@@ -2,7 +2,23 @@
 # Copy startup markdown files and rename as the current dir name.
 set -e
 
-repo=${PWD##*/}  
-cp ~/.pandoc/helpers/yaml.md ${repo}.md 
+parent=${PWD##*/}
+pushd '..'
+grandparent=${PWD##*/}
+popd
+
+unit=${grandparent//_/ } 
+filename="$parent.md"
+
+cp ~/Projects/Uni/Templates/yaml.md $filename
+sed -i "s/{{unit}}/$unit/g" $filename
+
+if [ $# -eq 1 ]
+  then
+    sed -i "s/{{tutor}}/$1/g" $filename
+  else
+    sed -i "s/{{tutor}}//g" $filename
+fi
+
 cp ~/.pandoc/helpers/Makefile .
 mkdir figures

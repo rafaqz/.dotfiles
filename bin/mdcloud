@@ -3,10 +3,11 @@ set -e
 
 parent=$1
 repo=$2
-gitcloud $parent $repo
+arg3=$3
+cloudinit $parent $repo
 
 pushd $repo
-  mdinit
+  mdinit $parent $arg3
   git add .
   git commit -m "init repo"
   git push --set-upstream origin master

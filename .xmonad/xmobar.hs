@@ -23,7 +23,6 @@
 -- cyan = "#2aa198ff"
 -- green = "#859900ff"
 
--- This is setup for dual 1920x1080 monitors, with the right monitor as primary
 Config {
     font = "xft:Droid Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true:Regular"
     -- font = "xft:Fantasque Sans Mono:pixelsize=15:antialiase=true:autohinting=true:Bold",

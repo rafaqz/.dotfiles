@@ -14,12 +14,12 @@ VIM_COUNT=`vim --serverlist | wc -l`
 if [[ "$1" == "" ]]; then
   PROJECT_DIR=`pwd`
   PROJECT_NAME=`basename $(readlink -f .)`
-  vim -c "let project_dir='$PROJECT_DIR'" --servername "$WINDOW_INDEX:$PANE_INDEX:$PROJECT_NAME"
+  vim -c "let project_dir='$PROJECT_DIR'" --servername "$WINDOW_INDEX:$PANE_INDEX:$PROJECT_NAME" --remote-tab "$@"
   exit
 
 # There are no VIM servers running, open a new vim server with the file(s).
 elif [ $VIM_COUNT -eq 0 ]; then
-  vim --servername "$WINDOW_INDEX:$PANE_INDEX" --remote-tab "$@"
+  urxvtr -e vim --servername "$WINDOW_INDEX:$PANE_INDEX" --remote-tab "$@"
   exit
 
 # There is one VIM server, open the file in that server and focus vim (via tmux).
