@@ -2,23 +2,24 @@
 # Copy startup markdown files and rename as the current dir name.
 set -e
 
+filetype=$1
+
 parent=${PWD##*/}
 pushd '..'
 grandparent=${PWD##*/}
 popd
 
 unit=${grandparent//_/ } 
-filename="$parent.md"
+filename="$parent.$filetype"
 
 cp ~/Projects/Uni/Templates/yaml.md $filename
+cp ~/Projects/Uni/Templates/$filetype.makefile Makefile 
 sed -i "s/{{unit}}/$unit/g" $filename
 
-if [ $# -eq 1 ]
+# Tutor
+if [ $# -eq 2 ]
   then
-    sed -i "s/{{tutor}}/$1/g" $filename
+    sed -i "s/{{tutor}}/$2/g" $filename
   else
     sed -i "s/{{tutor}}//g" $filename
 fi
-
-cp ~/.pandoc/helpers/Makefile .
-mkdir figures

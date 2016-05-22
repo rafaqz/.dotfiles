@@ -1,0 +1,12 @@
+#!/bin/bash
+# Set up linked local and remote git repos
+set -e
+
+parent=$1
+repo=$2
+cloudinit $parent $repo
+mkdir $repo
+pushd $repo
+  git init
+  git remote add origin $user@$host:$parent/$repo
+popd

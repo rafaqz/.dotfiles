@@ -1,0 +1,7 @@
+#!/bin/bash
+for file in *.$1; do
+  pdf=${file%%.*}.pdf
+done 
+
+rifle $pdf
+echo $file | entr sh -c "reset && make pdf && pdftotext $pdf - | sed -n '/introduction*$\|Introduction*$/,/ appendix*$\|Appendix*$\|References*$/p' | wc -w"

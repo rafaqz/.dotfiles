@@ -3,12 +3,13 @@ set -e
 
 parent=$1
 repo=$2
-arg3=$3
-cloudinit $parent $repo
+filetype=$3
+arg=$4
+cloudrepo $parent $repo
 
 pushd $repo
-  mdinit $parent $arg3
+  mdinit $filetype $arg
   git add .
-  git commit -m "init repo"
+  git commit -m "init $filetype repo"
   git push --set-upstream origin master
 popd

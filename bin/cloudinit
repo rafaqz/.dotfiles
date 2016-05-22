@@ -1,5 +1,5 @@
 #!/bin/bash
-# Set up a git repo with remote origin.
+# Set up a remote git repo
 
 user="git"
 host="git"
@@ -15,8 +15,3 @@ parent=$1
 repo=$2
 
 ssh git "mkdir -p $parent; git init --bare $parent/$repo"
-mkdir $repo
-pushd $repo
-  git init
-  git remote add origin $user@$host:$parent/$repo
-popd
