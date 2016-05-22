@@ -1,5 +1,4 @@
-#!/bin/sh
-#
+#!/bin/sh 
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
@@ -11,17 +10,16 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
+source $HOME/.environment
+
 # Session
 lxsession &
 
-# Key bindings
-# sxhkd
-
 # Remap capslock and escape keys etc. See .Xmodmap
-xmodmap ~/.Xmodmap
+xmodmap ~/.Xmodmap &
 
 # Use pointer as cursor (for xmonad)
-xsetroot -cursor_name left_ptr
+xsetroot -cursor_name left_ptr &
 
 # Disable trackpad while typing. 2 seconds 
 # -i 2 sets the idle time to 2 seconds. The idle time specifies how many seconds to 
@@ -34,24 +32,19 @@ syndaemon -t -k -i 2 -d &
 # Merge Xresources
 [[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
 
-
 # Compositing
-hsetroot
+hsetroot &
 compton -f -D 2 -o 0 & 
 
-# gtk2 files for qt
-export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
 
 # Battery monitor
-slimebattery &
-# Clipboard
-runonce clipit &
+slimebattery --change-icon &
 # Auto mount drives
 pcmanfm -d &
 # Key commands
 sxhkd &
 # Keyboard repeat speed
-xset r rate 180 60 
+xset r rate 180 60  &
 
 # case $WM in
 # awesome)

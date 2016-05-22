@@ -1,22 +1,8 @@
-################################################
-## Paths
-
-PATH="$HOME/bin:$PATH"
-PATH="$HOME/.local/bin:$PATH"
-PATH="$HOME/.rbenv/bin:$PATH"
-PATH="$HOME/.cabal/bin:$PATH"
-# PATH="${PATH}:$HOME/.gem/ruby/2.2.0/bin"
-# PATH="${PATH}:/opt/vagrant/bin"
-export PATH
-
-################################################
-## Variables
-export SHELL="/bin/bash"
-export EDITOR="vim -p --servername `openssl rand -hex 12`"
-export BROWSER="firefox"
+source $HOME/.environment
 
 ################################################
 ## Options
+
 shopt -s autocd
 shopt -s globstar # For recursive globbing with **/* etc
 
@@ -99,6 +85,9 @@ alias v='vim'
 alias vs='vim-server'
 alias i='viewnior'
 alias rc='ranger-cd'
+alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" --cmd="set preview_files false" --cmd="set preview_directories false" --cmd="set vcs_aware true"'
+
+alias rf='rifle'
 alias u='urxvtr'
 alias y='yaourt'
 alias mu='mupdf'
@@ -132,6 +121,7 @@ alias pu='pushd'
 alias po='popd'
 alias be='bundle exec'
 alias bi='bundle install'
+alias skype='apulse skype'
 
 alias z='zeus'
 alias z='zeus start'
@@ -205,8 +195,7 @@ r() {
 }
 
 co() {
-  string=$1
-  vim -c "exec 'Unite -input=$string -default-action=start -force-immediately bibtex/file' | exec 'quit'"
+  vim -c "exec 'Unite -input=$1 -default-action=start -force-immediately citation/file' | exec 'quit'"
 }
 
 
@@ -261,11 +250,6 @@ function news() {
   fi
 }
 
-
-# Opens a note
-n() { 
-  vim -c ":call Note('~/Documents/notes','$1')" 
-}
 
 app() {
   chromium --new-window --app=$1
