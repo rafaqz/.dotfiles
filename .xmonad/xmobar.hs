@@ -34,10 +34,10 @@ Config {
     , fgColor = "#586e75"
     , position = Static { xpos = 0, ypos = 0, width = 1366, height = 16 }
     , commands = [
-        Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#073642","-l","#073642","-n","#073642","-w","3"] 10,
+        Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run Memory ["-t","Mem: <usedratio>%","-H","8192","-L","4096","-h","#586e75ff","-l","#586e75","-n","#b58900"] 10,
-        Run Date "%a %b %_d %l:%M" "date" 10,
+        Run Date "%a %b %d  %l:%M" "date" 10,
         Run StdinReader
     ]
     , sepChar = "%"

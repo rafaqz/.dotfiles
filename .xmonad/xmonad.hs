@@ -19,12 +19,13 @@ import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
 import XMonad.Layout.BoringWindows
-import XMonad.Layout.Fullscreen
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Named
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Layout.MultiToggle
+import XMonad.Layout.MultiToggle.Instances
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import qualified Data.Set        as S
@@ -77,6 +78,8 @@ myManageHook = composeAll . concat $
       [ resource  =? "desktop_window" --> doIgnore ]
     , [ className =? "stalonetray"    --> doIgnore ]
     , [ className =? x --> doFloat         | x <- float]
+    , [ className =? "rgl" --> doFloat]
+    , [ className =? "R-x11" --> doFloat]
     , [ className =? x --> doShift "web"   | x <- web  ]
     , [ className =? x --> doShift "med"   | x <- med  ]
     , [ className =? x --> doShift "img"   | x <- img  ]
@@ -88,30 +91,27 @@ myManageHook = composeAll . concat $
   where role  = stringProperty "WM_WINDOW_ROLE"
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
         med   = ["Vlc", "Clementine", "Skype"]
-        doc   = ["Libreoffice"]
+        doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
         img   = ["Gimp"]
         tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
-        float = ["stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
+        float = ["rgl", "R-x11", "stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
         gimp  = ["gimp-toolbox", "gimp-dock"]
 
 ------------------------------------------------------------------------
--- Layouts
-myLayout = vert ||| horiz ||| full
+-- Layouts-
+myLayout = mkToggle (single FULL) (vert ||| horiz)
   where
-     tiled = \n nw -> avoidStruts . named n . maximize . boringWindows . minimize $ ResizableTall nw delta ratio []
-     vert  = tiled "vert" vertmw 
-     horiz = tiled "horz" horizmw 
-     full  = named "full" . boringWindows . minimize $ fullscreenFull Full
+     tiled = \name mw -> named name . boringWindows . minimize . avoidStruts $ ResizableTall mw delta ratio []
+     vert  = tiled "vert" vertmasterwindows 
+     horiz = tiled "horz" horizmasterwindows 
 
      -- The default number of windows in the master pane
-     vertmw = 1
-     horizmw = 2
+     vertmasterwindows = 1
+     horizmasterwindows = 2
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
      -- Percent of screen to increment by when resizing panes
      delta   = 5/100
-
-data WindowOpacity = Window Rational
 
 ------------------------------------------------------------------------
 -- Key bindings
@@ -138,6 +138,8 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_bracketright), rotFocusedDown)
 
 
+  , ((modMask, xK_s), sendMessage ToggleStruts)
+  , ((modMask, xK_m), sendMessage $ Toggle FULL)
   -- Cycle through the available layout algorithms.
   , ((modMask,                 xK_space), sendMessage NextLayout)
   --  Reset the layouts on the current workspace to default.
@@ -153,10 +155,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Swap the focused window with the previous window.
   , ((modMask .|. controlMask, xK_k), windows W.swapUp)
 
-  -- Move focus to the master window.
-  , ((modMask,                 xK_m), windows W.focusMaster)
-  -- Swap the focused window and the master window.
-  , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
+  -- -- Move focus to the master window.
+  -- , ((modMask,                 xK_m), windows W.focusMaster)
+  -- -- Swap the focused window and the master window.
+  -- , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
 
   -- Increment the number of windows in the master area.
   , ((modMask, xK_comma), sendMessage (IncMasterN 1))
@@ -249,9 +251,9 @@ decOpacity o | o <= 0.0 = 0.0
 ------------------------------------------------------------------------
 -- Startup hook
 myStartupHook = do
-    spawn "tray"
+    spawn "run-once redshift-gtk -l -38.53:145.26 -t 6200:3700"
     spawn "background"
-    spawn "redshift-gtk -l -38.53:145.26"
+    spawn "tray"
 
 
 ------------------------------------------------------------------------
