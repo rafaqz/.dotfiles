@@ -42,13 +42,14 @@ super + alt + {j,z,e,b,h,c,a,s,i,minus,equal}
     hamster,\ 
     owncloud,\ 
     lxappearance,\ 
-    skype,\ 
+    apulse skype,\ 
     xcalib -invert -alter,\ 
     gcolor2,\ 
     speedcrunch\ 
   }
-super + alt + shift + {equal,semicolon}
+super + alt + shift + {l,equal,semicolon}
   {\
+    urxvtr -e rs,\ 
     gpick, \
     wicd-gtk -n,\ 
   }
@@ -74,9 +75,9 @@ super + alt + {_,ctrl} + {bracketright,apostrophe}
 super + alt + {k,w,n,m,comma,period,slash}
   urxvt -e vim -p --servername `openssl rand -hex 12` { ,\
     ~/Documents/notes/words.md,\ 
-    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/awesome/rc.lua ~/.config/sxhkd/sxhkdrc, \ 
+    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/sxhkd/sxhkdrc, \ 
     ~/.bashrc,\ 
     ~/.vim_runtime/vimrcs/*,\ 
     ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh,\ 
-    ~/.Xdefaults ~/.xinitrc\ 
+    ~/.Xdefaults ~/.xinitrc ~/.Xmodmap \
   }
