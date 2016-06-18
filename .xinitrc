@@ -36,15 +36,18 @@ syndaemon -t -k -i 2 -d &
 hsetroot &
 compton -f -D 2 -o 0 & 
 
-
 # Battery monitor
 slimebattery --change-icon &
 # Auto mount drives
 pcmanfm -d &
 # Key commands
 sxhkd &
+# Notifications
+dunst &
 # Keyboard repeat speed
 xset r rate 180 60  &
+# Batterly low notification.
+pwrnotify 6 &
 
 # case $WM in
 # awesome)

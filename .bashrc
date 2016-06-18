@@ -80,7 +80,7 @@ alias ........='cd ../../../../../../..'
 alias .........='cd ../../../../../../../..'
 
 ## Shortcuts 
-alias vim='vim -p --servername `openssl rand -hex 12`'
+alias vim='vim -p --servername `date +%s`'
 alias v='vim'
 alias vs='vim-server'
 alias i='viewnior'

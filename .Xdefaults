@@ -32,7 +32,6 @@ URxvt.lineSpace:            1
 URxvt.letterSpace: -1
 URxvt.allow_bold:           true
 URxvt.font:                 xft:DejaVu Sans Mono for Powerline:pixelsize=14:antialiase=true:autohinting=true
-URxvt.boldFont:             xft:DejaVu Sans Mono for Powerline:Bold:pixelsize=14:antialiase=true:autohinting=true
 /* URxvt.font:                 xft:Menlo for Powerline:Regular:pixelsize=14:antialiase=true:autohinting=true */
 /* URxvt.boldFont:             xft:Menlo for Powerline:Bold:pixelsize=14:antialiase=true:autohinting=true */
 /* URxvt.font:                 xft:Sauce Code Powerline:pixelsize=14:autohinting=true */
@@ -47,6 +46,7 @@ URxvt.boldFont:             xft:DejaVu Sans Mono for Powerline:Bold:pixelsize=14
 /* URxvt.boldFont:             xft:FuraMono-Bold Powerline:pixelsize=13 */
 /* URxvt.font:                 xft:Meslo LG M Regular for Powerline:pixelsize=13:antialiase=true:autohinting=true */
 /* URxvt.font:                 xft:Inconsolata for Powerline:pixelsize=15:antialiase=true:autohinting=true */
+
 
 !===============================================
 ! Behaviour
@@ -78,7 +78,8 @@ URxvt.underlineUrls:        true
 URxvt.url-select.launcher:  firefox
 URxvt.urlLauncher:          firefox
 URxvt.url-select.underline: true
-URxvt.perl-ext-common:      default,clipboard,url-select,keyboard-select
+URxvt.perl-ext-common:      default,clipboard,matcher,resize-font,keyboard-select
+oh
 URxvt.matcher.button:       1
 
 URxvt.keysym.M-u:           perl:url-select:select_next
