@@ -1,0 +1,10 @@
+#!/bin/bash
+file=$1
+ext="${file##*.}"
+
+if [ $ext = "pdf" ]; then
+  # pdftotext: dash is for output to stdout instead of file
+  pdftotext $file - | sed -n '/introduction$\|Introduction*$/,/Appendix*$\|references*$\|References*$/p' | wc -w
+else
+  pandoc -t plain $file | sed -n '/introduction\|Introduction/,/Appendix\|references\|References/p' | wc -w
+fi
