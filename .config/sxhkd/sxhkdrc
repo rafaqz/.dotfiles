@@ -22,7 +22,7 @@ XF86Display
 super + alt + {_,ctrl} + o 
   {pcmanfm, urxvtr -e sudo pcmanfm}
 super + alt + {_,ctrl} + p
-  {firefox, chromium}
+  {firefox, google-chrome}
 super + alt + {_,ctrl} + 7 
   {vlc, clementine}
 super + alt +            8 
@@ -75,7 +75,7 @@ super + alt + {_,ctrl} + {bracketright,apostrophe}
 super + alt + {k,w,n,m,comma,period,slash}
   urxvt -e vim -p --servername `openssl rand -hex 12` { ,\
     ~/Documents/notes/words.md,\ 
-    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/sxhkd/sxhkdrc, \ 
+    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/sxhkd/sxhkdrc ~/.config/dunst/dunstrc, \ 
     ~/.bashrc,\ 
     ~/.vim_runtime/vimrcs/*,\ 
     ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh,\ 
