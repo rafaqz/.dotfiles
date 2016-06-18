@@ -40,7 +40,7 @@
 #alsa-audio-channels=6
 
 # Software gain (float)
-alsa-gain=1.728000
+alsa-gain=1.953125
 
 [jack] # JACK audio output
 
@@ -918,6 +918,17 @@ alsa-gain=1.728000
 
 # Directory sort order (string)
 #directory-sort=collate
+
+[smb] # SMB input
+
+# SMB user name (string)
+#smb-user=
+
+# SMB password (string)
+#smb-pwd=
+
+# SMB domain (string)
+#smb-domain=
 
 [dvdread] # DVDRead Input (no menu support)
 
@@ -2581,10 +2592,10 @@ alsa-gain=1.728000
 #croppadd-cropbottom=0
 
 # Pixels to crop from left (integer)
-#croppadd-cropleft=0
+croppadd-cropleft=100
 
 # Pixels to crop from right (integer)
-#croppadd-cropright=0
+croppadd-cropright=100
 
 # Pixels to padd to top (integer)
 #croppadd-paddtop=0
@@ -4029,7 +4040,7 @@ qt-privacy-ask=0
 #packetizer=
 
 # VoD server module (string)
-#vod-server=
+vod-server=any
 
 # Use a plugins cache (boolean)
 #plugins-cache=1
