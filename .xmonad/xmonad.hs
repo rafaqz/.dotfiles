@@ -26,6 +26,8 @@ import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
+import XMonad.Actions.UpdatePointer
+import Control.Monad (liftM2)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import qualified Data.Set        as S
@@ -59,7 +61,7 @@ xmobarTitleColor = base01
 xmobarUrgentColor = orange
 xmobarCurrentWorkspaceColor = blue
 myBorderWidth = 0
-windowOpacity = 0.85 :: Rational
+windowOpacity = 0.80 :: Rational
 opacityStep = 0.05
 myLauncher = "$(yeganesh -x -- -fn 'xft:Droid Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base02 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ orange ++ "')"
 
@@ -75,20 +77,19 @@ myWorkspaces = ["trm","txt","fle","web","med","img","doc","tor"]
 -- Window rules
 myManageHook = composeAll . concat $
   [
-      [ resource  =? "desktop_window" --> doIgnore ]
-    , [ className =? "stalonetray"    --> doIgnore ]
+      [ resource  =? "desktop_window"     --> doIgnore ]
+    , [ className =? "stalonetray"        --> doIgnore ]
     , [ className =? x --> doFloat         | x <- float]
-    , [ className =? "rgl" --> doFloat]
-    , [ className =? "R-x11" --> doFloat]
-    , [ className =? x --> doShift "web"   | x <- web  ]
-    , [ className =? x --> doShift "med"   | x <- med  ]
-    , [ className =? x --> doShift "img"   | x <- img  ]
-    , [ className =? x --> doShift "doc"   | x <- doc  ]
-    , [ className =? x --> doShift "tor"   | x <- tor  ]
+    , [ className =? x --> viewShift "web" | x <- web  ]
+    , [ className =? x --> viewShift "med" | x <- med  ]
+    , [ className =? x --> viewShift "img" | x <- img  ]
+    , [ className =? x --> viewShift "doc" | x <- doc  ]
+    , [ className =? x --> viewShift "tor" | x <- tor  ]
     , [ (className =? "Gimp" <&&> fmap (x `isSuffixOf`) role) --> doFloat | x <- gimp]
     -- , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
   ]
   where role  = stringProperty "WM_WINDOW_ROLE"
+        viewShift = doF . liftM2 (.) W.greedyView W.shift
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
         med   = ["Vlc", "Clementine", "Skype"]
         doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
@@ -183,10 +184,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   ++
   -- mod-[x], Switch to workspace N
   -- mod-shift-[x], Move client to workspace N
-  -- mod-control-shift-[x] @@ Copy client to workspace N
   [((m .|. modMask, k), windows $ f i) |
         (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
-      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, controlMask)]]
+      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, shiftMask), (\w -> W.greedyView w . W.shift w, controlMask)]]
   -- ++
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
