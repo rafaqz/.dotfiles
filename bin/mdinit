@@ -13,7 +13,7 @@ unit=${grandparent//_/ }
 filename="$parent.$filetype"
 
 cp ~/Projects/Uni/Templates/yaml.md $filename
-cp ~/Projects/Uni/Templates/$filetype.makefile Makefile 
+ln -s ~/Projects/Uni/Templates/Makefile Makefile 
 sed -i "s/{{unit}}/$unit/g" $filename
 
 # Tutor
