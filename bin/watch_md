@@ -1,4 +1,0 @@
-#!/bin/bash
-make pdf
-rifle *.pdf &
-echo *.$1 | entr sh -c 'reset && make pdf && reset && pdftotext *.pdf - | sed -n "/introduction/,/references/p" | wc -w'

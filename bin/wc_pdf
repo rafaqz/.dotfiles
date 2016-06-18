@@ -1,1 +1,0 @@
-find . -name '*.pdf' | entr sh -c 'reset && pdftotext *.pdf - | sed '/references/q' | wc -w'
