@@ -1,5 +1,5 @@
 ﻿###
-###  vlc 2.2.3
+###  vlc 2.2.4
 ###
 
 ###
@@ -40,7 +40,7 @@
 #alsa-audio-channels=6
 
 # Software gain (float)
-alsa-gain=1.953125
+#alsa-gain=1.000000
 
 [jack] # JACK audio output
 
@@ -3173,7 +3173,7 @@ croppadd-cropright=100
 #sout-avi-subject=
 
 # Encoder (string)
-#sout-avi-encoder=VLC Media Player - 2.2.3 Weatherwax
+#sout-avi-encoder=VLC Media Player - 2.2.4 Weatherwax
 
 # Keywords (string)
 #sout-avi-keywords=
