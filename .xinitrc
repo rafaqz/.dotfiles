@@ -3,6 +3,8 @@
 #
 # Executed by startx (run your window manager from here)
 
+source $HOME/.profile
+
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
     [ -x "$f" ] && . "$f"
@@ -10,13 +12,11 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-source $HOME/.environment
-
 # Session
 lxsession &
 
 # Remap capslock and escape keys etc. See .Xmodmap
-xmodmap ~/.Xmodmap &
+xmodmap $HOME/.Xmodmap &
 
 # Use pointer as cursor (for xmonad)
 xsetroot -cursor_name left_ptr &
@@ -33,7 +33,6 @@ syndaemon -t -k -i 2 -d &
 [[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
 
 # Compositing
-hsetroot &
 compton -f -D 2 -o 0 & 
 
 # Battery monitor
@@ -49,12 +48,4 @@ xset r rate 180 60  &
 # Batterly low notification.
 pwrnotify 6 &
 
-# case $WM in
-# awesome)
-#   exec awesome >> ~/.cache/awesome/stdout 2>> ~/.cache/awesome/stderr 
-# 	;;
-# xmonad)
-#   exec xmonad
-# 	;;
-# esac
 exec xmonad

@@ -1,4 +1,4 @@
-source $HOME/.environment
+#!/bin/sh 
 
 ################################################
 ## Options
@@ -38,9 +38,7 @@ GIT_PS1_SHOWUNTRACKEDFILES=1
 GIT_PS1_SHOWCOLORHINTS=
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
-prompt='__git_ps1 "\[\e[40;31m\]@\u\[\e[39;40m\] \w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
-# Don't overwrite, append - autojump uses this 
-# export PROMPT_COMMAND="${PROMPT_COMMAND:+$PROMPT_COMMAND;} history -a;history -c;history -r; $prompt"
+prompt='__git_ps1 "\[\e[31m\]@\u\[\e[34m\] \w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
 export PROMPT_COMMAND="$prompt"
 
 fasd_cache="$HOME/.fasd-init-bash"
@@ -80,7 +78,7 @@ alias ........='cd ../../../../../../..'
 alias .........='cd ../../../../../../../..'
 
 ## Shortcuts 
-alias vim='vim -p --servername `date +%s`'
+alias vim='vim -p --servername `openssl rand -hex 12`'
 alias v='vim'
 alias vs='vim-server'
 alias i='viewnior'
@@ -224,7 +222,7 @@ thes() {
 }
 
 # Arch latest news. nice to have when something breaks after an update.
-function news() {
+news() {
   if [ "$PS1" ] && [[ $(ping -c1 www.google.com 2>&-) ]]; then
     # The characters "£, §" are used as metacharacters. They should not be encountered in a feed...
     echo -e "$(echo $(curl --silent https://www.archlinux.org/feeds/news/ | sed -e ':a;N;$!ba;s/\n/ /g') | \
@@ -255,29 +253,46 @@ app() {
   chromium --new-window --app=$1
 }
 
-countdown(){
-   date1=$((`date +%s` + $1)); 
-   while [ "$date1" -ne `date +%s` ]; do 
-     echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%H:%M:%S)\r";
-     sleep 0.1
-   done
-   vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3
-}
-
-stopwatch(){
-  date1=`date +%s`; 
-   while true; do 
-    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)\r"; 
-    sleep 0.1
-   done
-}
-
 hide_cursor(){
   echo -ne "\033[?25l"
 }
 
 show_cursor(){
   echo -ne "\033[?25h"
+}
+
+countdown(){
+  reset
+  hide_cursor
+  cmd="clear && echo '$1 Done'"
+  while getopts ":m:" opt; do
+    case $opt in
+      m)
+        cmd="vlc ${HOME}/Music/Boredoms/Pop\ Tatari/boredoms\ -\ 03\ -\ hey\ bore\ hey.mp3"
+        shift
+        ;;
+    esac
+  done
+  IFS=: read -r m s <<<$1
+  date1=$((`date +%s` + m * 60 + s)); 
+  while [ "$date1" -ne `date +%s` ]; do 
+    echo -ne "\033[2K"; printf "\r"
+    echo -ne "$(date -u --date @$(($date1 - `date +%s`)) +%M:%S)";
+    sleep 1
+  done
+  eval $cmd
+  show_cursor 
+}
+
+timer(){
+  reset
+  hide_cursor
+  date1=`date +%s`; 
+  while true; do 
+    echo -ne "\033[2K"; printf "\r"
+    echo -ne "$(date -u --date @$((`date +%s` - $date1)) +%H:%M:%S)"; 
+    sleep 0.1
+  done
 }
 
 ####################################
@@ -339,3 +354,4 @@ source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
 
 # Fasd
 eval "$(fasd --init auto)"
+
