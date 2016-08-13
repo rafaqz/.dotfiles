@@ -1,12 +1,19 @@
 #!/bin/bash
 set -e
 
-parent=$1
-repo=$2
-filetype=$3
-arg=$4
-cloudrepo $parent $repo
+parent=${PWD##*/}
+repo=$1
 
+if [ $# -eq 1 ]
+  then
+    filetype='md'
+  else
+    filetype=$2
+    arg=$3
+fi
+
+cloudrepo $repo
+repo=$1
 pushd $repo
   mdinit $filetype $arg
   git add .

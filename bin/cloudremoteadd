@@ -1,7 +1,17 @@
 #!/bin/bash
 # Set up remote repo and add origin.
+set -e
+if test "$#" -ne 2; then
+  echo "Wrong number of args ($#). Provide a parent dir and a repo name."
+  exit
+fi
 
-parent=$1
-repo=$2
+repo=${PWD##*/}
+pushd '..'
+parent=${PWD##*/}
+popd
+user='git'
+host='git'
+
 cloudinit $parent $repo
 git remote add origin $user@$host:$parent/$repo

@@ -1,0 +1,12 @@
+#!/bin/bash
+
+subject=$1
+video_dir="$HOME/Video/Uni/$subject"
+
+mkdir $subject
+mkdir $video_dir
+cd $subject
+ln -s $video_dir lectures
+mkdir notes
+
+

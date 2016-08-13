@@ -1,17 +1,14 @@
 #!/bin/bash
 # Set up a remote git repo
-
-user="git"
-host="git"
-
 set -e
-
 if test "$#" -ne 2; then
   echo "Wrong number of args ($#). Provide a parent dir and a repo name."
   exit
 fi
 
+user="git"
+host="git"
 parent=$1
 repo=$2
 
-ssh git "mkdir -p $parent; git init --bare $parent/$repo"
+ssh git "mkdir -p $parent && git init --bare $parent/$repo"

@@ -6,15 +6,13 @@
 
 VIM_COUNT=`vim --serverlist | wc -l`
 PROJECT_DIR=`pwd`
-PROJECT_NAME=`date +%s`
-echo "Vim instances: $VIM_COUNT\n"
+SERVER_NAME=`date +%s`
+echo "Vim instances: $VIM_COUNT"
 
 # No arguments were passed in, assume its a "project" and give it a server
 # "name" and set a project_dir in vim
 if [[ "$1" == "" ]]; then
-  echo "Project dir $PROJECT_DIR\n"
-  echo "Timestamp servername: $PROJECT_NAME\n"
-  vim -c "let project_dir='$PROJECT_DIR'" --servername "$PROJECT_NAME" --remote-tab "$@"
+  /bin/vim -c "let project_dir='$PROJECT_DIR'" --servername "$SERVER_NAME"
   exit
 
 # if [[ "$2" == "new" ]]; then
@@ -23,18 +21,15 @@ if [[ "$1" == "" ]]; then
 
 # There are no VIM servers running, open a new vim server with the file(s).
 elif [ $VIM_COUNT -eq 0 ]; then
-  echo "Project dir $PROJECT_DIR\n"
-  echo "Timestamp servername: $PROJECT_NAME\n"
-  vim -c "let project_dir='$PROJECT_DIR'" --servername "$PROJECT_NAME" --remote-tab "$@"
+  /bin/vim -c "let project_dir='$PROJECT_DIR'" --servername "$SERVER_NAME" "$@"
   # urxvtr -e vim -c "let project_dir='$PROJECT_DIR'" ---servername "$PROJECT_NAME" --remote-tab "$@"
-  echo "Zero"
   exit
 
 
 # There is one VIM server, open the file in that server and focus vim (via tmux).
 elif [ $VIM_COUNT -eq 1 ]; then
   SERVER_NAME=`vim --serverlist | grep .`
-  vim --servername "$SERVER_NAME" --remote-tab "$@"
+  /bin/vim --servername "$SERVER_NAME" --remote-tab "$@"
   exit
 
 # There are more than one VIM servers running, choose the appropriate one by
@@ -52,8 +47,7 @@ elif [ $VIM_COUNT -gt 1 ]; then
   last_match_count_winner="0"
 
   # Go through all of the vim servers
-  vim --serverlist | { while read -r servername; do
-    echo $servername
+  /bin/vim --serverlist | { while read -r servername; do
     # Find the "project" directory" of the server in question
     project_dir=`vim --servername "$servername" --remote-expr 'getcwd()'`
     # See if the project directory matches any of the files
@@ -71,7 +65,7 @@ elif [ $VIM_COUNT -gt 1 ]; then
     # file in that vim server and focus the tmux tab.
     if [[ "$server_to_use" != "" ]]; then
       SERVER_NAME=$server_to_use
-      vim --servername "$SERVER_NAME" --remote-tab $1
+      /bin/vim --servername "$SERVER_NAME" --remote-tab "$@"
     fi
 
   }

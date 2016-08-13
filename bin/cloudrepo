@@ -1,12 +1,19 @@
 #!/bin/bash
 # Set up linked local and remote git repos
 set -e
+if test "$#" -ne 1; then
+  echo "Wrong number of args ($#). Provide a repo name."
+  exit
+fi
 
-parent=$1
-repo=$2
-cloudinit $parent $repo
+user='git'
+host='git'
+parent=${PWD##*/}
+repo=$1
+
 mkdir $repo
 pushd $repo
   git init
   git remote add origin $user@$host:$parent/$repo
 popd
+cloudinit $parent $repo

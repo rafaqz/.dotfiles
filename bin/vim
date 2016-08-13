@@ -1,0 +1,4 @@
+#!/bin/sh 
+# Run vim as a server
+
+/bin/vim -p --servername `date +%s` $@

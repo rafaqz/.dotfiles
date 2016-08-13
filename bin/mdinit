@@ -3,14 +3,11 @@
 set -e
 
 filetype=$1
-
-parent=${PWD##*/}
+repo=${PWD##*/}
+filename="$repo.$filetype"
 pushd '..'
-grandparent=${PWD##*/}
+unit=${PWD##*/}
 popd
-
-unit=${grandparent//_/ } 
-filename="$parent.$filetype"
 
 cp ~/Projects/Uni/Templates/yaml.md $filename
 ln -s ~/Projects/Uni/Templates/Makefile Makefile 
