@@ -1,8 +1,8 @@
 # Dotfiles
 
-This repo is configuration for an linux setup built around
+This repo is configuration for a linux setup built around
 -arch linux
--awesome wm
+-xmonad
 -urxvt
 -bash 
 -vim
@@ -10,7 +10,7 @@ This repo is configuration for an linux setup built around
 -pandoc
 -and general cli and X11 apps that I use.
 
-It's a blazing fast, mouse-free work environment where vim-like key commands are the standard.
+It's a blazing fast, mouse-free work environment where vim-like key commands are standard.
 
 Wont eat your kittens. Will frighten your housemates.
 
