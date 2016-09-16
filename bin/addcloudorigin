@@ -1,0 +1,12 @@
+#!/bin/bash
+# Set up remote repo and add origin.
+
+pushd '..'
+parent=${1:-${PWD##*/}}
+popd
+repo=${2:-${PWD##*/}}
+user='git'
+host='git'
+
+git remote rm origin
+git remote add origin $user@$host:$parent/$repo

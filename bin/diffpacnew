@@ -1,0 +1,6 @@
+#!/bin/bash
+
+locate --existing --regex "\.pac(new|save)$" | while read line; do
+  echo $line ${line%.*}
+  vim $line 
+done

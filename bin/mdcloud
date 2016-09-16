@@ -12,8 +12,7 @@ if [ $# -eq 1 ]
     arg=$3
 fi
 
-cloudrepo $repo
-repo=$1
+mkcloudrepo $repo
 pushd $repo
   mdinit $filetype $arg
   git add .

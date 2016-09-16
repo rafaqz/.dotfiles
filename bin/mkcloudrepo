@@ -6,14 +6,11 @@ if test "$#" -ne 1; then
   exit
 fi
 
-user='git'
-host='git'
 parent=${PWD##*/}
 repo=$1
 
-mkdir $repo
+git init $repo
+initcloudrepo $parent $repo
 pushd $repo
-  git init
-  git remote add origin $user@$host:$parent/$repo
+  addcloudorigin $parent $repo
 popd
-cloudinit $parent $repo

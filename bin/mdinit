@@ -6,7 +6,8 @@ filetype=$1
 repo=${PWD##*/}
 filename="$repo.$filetype"
 pushd '..'
-unit=${PWD##*/}
+pwd=${PWD##*/}
+unit=${pwd/_/ }
 popd
 
 cp ~/Projects/Uni/Templates/yaml.md $filename
@@ -16,7 +17,8 @@ sed -i "s/{{unit}}/$unit/g" $filename
 # Tutor
 if [ $# -eq 2 ]
   then
-    sed -i "s/{{tutor}}/$2/g" $filename
+    $tutor=$2
+    sed -i "s/{{tutor}}/$tutor/g" $filename
   else
     sed -i "s/{{tutor}}//g" $filename
 fi

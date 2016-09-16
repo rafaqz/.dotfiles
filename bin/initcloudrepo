@@ -1,0 +1,11 @@
+#!/bin/bash
+# Set up a remote git repo
+
+pushd '..'
+parent=${1:-${PWD##*/}}
+popd
+repo=${2:-${PWD##*/}}
+user="git"
+host="git"
+
+ssh git "if [ ! -e "$parent/$repo" ]; then mkdir -p $parent && git init --bare $parent/$repo; fi"
