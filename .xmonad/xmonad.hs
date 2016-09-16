@@ -249,11 +249,12 @@ decOpacity :: Rational -> Rational
 decOpacity o | o <= 0.0 = 0.0
              | otherwise = o - opacityStep
 ------------------------------------------------------------------------
--- Startup hook
+-- Startup hook: things that for whatever reason break in .xinitrc
 myStartupHook = do
     spawn "run-once redshift-gtk -l -38.53:145.26 -t 6200:3700"
     spawn "background"
     spawn "tray"
+    spawn "run-once cbatticon"
 
 
 ------------------------------------------------------------------------

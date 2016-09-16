@@ -35,8 +35,6 @@ syndaemon -t -k -i 2 -d &
 # Compositing
 compton -f -D 2 -o 0 & 
 
-# Battery monitor
-slimebattery --change-icon &
 # Auto mount drives
 pcmanfm -d &
 # Key commands

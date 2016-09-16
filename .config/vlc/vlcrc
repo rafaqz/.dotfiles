@@ -40,7 +40,7 @@
 #alsa-audio-channels=6
 
 # Software gain (float)
-#alsa-gain=1.000000
+alsa-gain=1.367631
 
 [jack] # JACK audio output
 
@@ -3848,7 +3848,7 @@ qt-privacy-ask=0
 #run-time=0.000000
 
 # Fast seek (boolean)
-#input-fast-seek=0
+input-fast-seek=1
 
 # Playback speed (float)
 #rate=1.000000

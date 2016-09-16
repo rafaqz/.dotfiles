@@ -87,7 +87,6 @@ alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" 
 
 alias rf='rifle'
 alias u='urxvtr'
-alias y='yaourt'
 alias mu='mupdf'
 alias g='git'
 alias p='grep -lr --exclude{tags,*.log*,*sprockets*}'
@@ -325,6 +324,7 @@ function $function_name {
 }"
 	eval "$function"
 }
+
 source /usr/share/git/completion/git-completion.bash
 __git_shortcut  ga   add
 __git_shortcut  gf   fetch
