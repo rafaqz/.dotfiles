@@ -27,8 +27,8 @@ super + alt + {_,ctrl} + 7
   {vlc, clementine}
 super + alt +            8 
   gimp
-super + alt + {_,ctrl} + 9 
-  libreoffice {--writer, --calc}
+super + alt + 9 
+  libreoffice
 super + alt + {_,ctrl} + 0 
   {transmission-gtk, nicotine.py}
 

@@ -1,21 +1,18 @@
 #!/bin/bash
 set -e
 
-parent=${PWD##*/}
 repo=$1
+out_ext=${2:-md}
+arg=$3
 
-if [ $# -eq 1 ]
-  then
-    filetype='md'
-  else
-    filetype=$2
-    arg=$3
-fi
-
+# Set up a git repository with matching cloud repo
 mkcloudrepo $repo
 pushd $repo
+  # Add basic markdown writing components
   mdinit $filetype $arg
+  # Add and commit the new files
   git add .
   git commit -m "init $filetype repo"
+  # Push to the cloud
   git push --set-upstream origin master
 popd

@@ -1,10 +1,13 @@
 #!/bin/bash
 # Set up remote repo and add origin.
 
+# Get parent dir
 pushd '..'
 parent=${1:-${PWD##*/}}
 popd
+# Get current dir
 repo=${2:-${PWD##*/}}
+# Set ssh login details
 user='git'
 host='git'
 

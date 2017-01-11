@@ -1,0 +1,8 @@
+#!/bin/bash
+
+dest=$1
+
+rsync -avhu ~/Documents $dest
+rsync -avhu ~/Pictures $dest
+rsync -avhu ~/Projects $dest
+rsync -avhu ~/zotero_lib $dest

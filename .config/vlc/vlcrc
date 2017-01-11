@@ -40,7 +40,7 @@
 #alsa-audio-channels=6
 
 # Software gain (float)
-alsa-gain=1.367631
+alsa-gain=1.953125
 
 [jack] # JACK audio output
 
@@ -918,17 +918,6 @@ alsa-gain=1.367631
 
 # Directory sort order (string)
 #directory-sort=collate
-
-[smb] # SMB input
-
-# SMB user name (string)
-#smb-user=
-
-# SMB password (string)
-#smb-pwd=
-
-# SMB domain (string)
-#smb-domain=
 
 [dvdread] # DVDRead Input (no menu support)
 

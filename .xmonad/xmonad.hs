@@ -4,30 +4,30 @@
 
 import System.IO
 import System.Exit
-import Control.Monad (liftM, join)
+import Control.Monad (liftM, liftM2, join)
 import Data.IORef
 import Data.List
 import XMonad
 import XMonad.Actions.CycleWindows
 import XMonad.Actions.Navigation2D
-import qualified XMonad.Actions.FlexibleResize as F
 import XMonad.Actions.WithAll
-import XMonad.Layout.ResizableTile
+import XMonad.Actions.UpdatePointer
+import qualified XMonad.Actions.FlexibleResize as F
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.FadeInactive
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
+import XMonad.Hooks.Place
+import XMonad.Layout.ResizableTile
 import XMonad.Layout.BoringWindows
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Named
-import XMonad.Util.Run(spawnPipe)
-import XMonad.Util.EZConfig(additionalKeys)
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Actions.UpdatePointer
-import Control.Monad (liftM2)
+import XMonad.Util.Run(spawnPipe)
+import XMonad.Util.EZConfig(additionalKeys)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import qualified Data.Set        as S
@@ -77,25 +77,27 @@ myWorkspaces = ["trm","txt","fle","web","med","img","doc","tor"]
 -- Window rules
 myManageHook = composeAll . concat $
   [
-      [ resource  =? "desktop_window"     --> doIgnore ]
-    , [ className =? "stalonetray"        --> doIgnore ]
-    , [ className =? x --> doFloat         | x <- float]
-    , [ className =? x --> viewShift "web" | x <- web  ]
-    , [ className =? x --> viewShift "med" | x <- med  ]
-    , [ className =? x --> viewShift "img" | x <- img  ]
-    , [ className =? x --> viewShift "doc" | x <- doc  ]
-    , [ className =? x --> viewShift "tor" | x <- tor  ]
-    , [ (className =? "Gimp" <&&> fmap (x `isSuffixOf`) role) --> doFloat | x <- gimp]
+      [ resource  =? "desktop_window"     --> doIgnore      ]
+    , [ className =? "stalonetray"        --> doIgnore      ]
+    , [ className =? x --> doFloat         | x <- floatClass]
+    , [ className =? x --> viewShift "web" | x <- web       ]
+    , [ className =? x --> viewShift "med" | x <- med       ]
+    , [ className =? x --> viewShift "img" | x <- img       ]
+    , [ className =? x --> viewShift "doc" | x <- doc       ]
+    , [ className =? x --> viewShift "tor" | x <- tor       ]
+    , [ fmap (x `isSuffixOf`) role --> doFloat | x <- gimp  ]
     -- , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
+    -- , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatName ]
   ]
   where role  = stringProperty "WM_WINDOW_ROLE"
         viewShift = doF . liftM2 (.) W.greedyView W.shift
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
         med   = ["Vlc", "Clementine", "Skype"]
         doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
-        img   = ["Gimp"]
+        img   = ["Gimp","Gimp-2.8"]
         tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
-        float = ["rgl", "R-x11", "stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
+        floatClass = ["rgl", "R-x11", "stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
+        floatName = ["Export"]
         gimp  = ["gimp-toolbox", "gimp-dock"]
 
 ------------------------------------------------------------------------
@@ -261,6 +263,11 @@ myStartupHook = do
 -- Event hook
 myEventHook = minimizeEventHook
 
+
+------------------------------------------------------------------------
+-- Placement settings
+myPlacement = withGaps (16,0,16,0) (smart (0.5,0.5))
+
 ------------------------------------------------------------------------
 -- Main
 main = do
@@ -304,6 +311,6 @@ defaults = defaultConfig {
     -- hooks, layouts
     layoutHook         = myLayout,
     handleEventHook    = myEventHook,
-    manageHook         = manageDocks <+> myManageHook,
+    manageHook         = placeHook myPlacement <+> manageDocks <+> myManageHook,
     startupHook        = myStartupHook
 }

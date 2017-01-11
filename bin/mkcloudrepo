@@ -1,5 +1,6 @@
 #!/bin/bash
 # Set up linked local and remote git repos
+
 set -e
 if test "$#" -ne 1; then
   echo "Wrong number of args ($#). Provide a repo name."
@@ -9,8 +10,11 @@ fi
 parent=${PWD##*/}
 repo=$1
 
+# Add folder and intialise
 git init $repo
+# Create the same folder in the cloud
 initcloudrepo $parent $repo
 pushd $repo
+  # Set the local origin to the cloud repo
   addcloudorigin $parent $repo
 popd

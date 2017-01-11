@@ -2,18 +2,22 @@
 # Copy startup markdown files and rename as the current dir name.
 set -e
 
+# Filetype set in first argument
 filetype=$1
 repo=${PWD##*/}
 filename="$repo.$filetype"
+# Build unit name
 pushd '..'
 pwd=${PWD##*/}
 unit=${pwd/_/ }
 popd
 
+# Copy template files
 cp ~/Projects/Uni/Templates/yaml.md $filename
 ln -s ~/Projects/Uni/Templates/Makefile Makefile 
-sed -i "s/{{unit}}/$unit/g" $filename
 
+# Run templating
+sed -i "s/{{unit}}/$unit/g" $filename
 # Tutor
 if [ $# -eq 2 ]
   then

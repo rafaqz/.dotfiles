@@ -85,6 +85,8 @@ alias i='viewnior'
 alias rc='ranger-cd'
 alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" --cmd="set preview_files false" --cmd="set preview_directories false" --cmd="set vcs_aware true"'
 
+# alias xclip="xclip -selection c"
+alias pom='gnome-pomodoro'
 alias rf='rifle'
 alias u='urxvtr'
 alias mu='mupdf'
