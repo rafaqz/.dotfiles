@@ -8,7 +8,6 @@ import Control.Monad (liftM, liftM2, join)
 import Data.IORef
 import Data.List
 import XMonad
-import XMonad.Actions.CycleWindows
 import XMonad.Actions.Navigation2D
 import XMonad.Actions.WithAll
 import XMonad.Actions.UpdatePointer
@@ -20,13 +19,16 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.Minimize
 import XMonad.Hooks.Place
 import XMonad.Layout.ResizableTile
+import XMonad.Layout.Gaps
 import XMonad.Layout.BoringWindows
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Named
+import XMonad.Hooks.UrgencyHook
+import XMonad.Util.NamedWindows
+import XMonad.Util.Run
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.EZConfig(additionalKeys)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
@@ -61,13 +63,13 @@ xmobarTitleColor = base01
 xmobarUrgentColor = orange
 xmobarCurrentWorkspaceColor = blue
 myBorderWidth = 0
-windowOpacity = 0.80 :: Rational
-opacityStep = 0.05
-myLauncher = "$(yeganesh -x -- -fn 'xft:Droid Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base02 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ orange ++ "')"
+myWindowOpacity = 0.80 :: Rational
+myOpacityStep = 0.05
+myLauncher = "$(yeganesh -x -- -fn 'xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base01 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ blue ++ "')"
 
 ------------------------------------------------------------------------
 -- Terminal
-myTerminal = "urxvtr"
+myTerminal = "urxvtcd"
 
 ------------------------------------------------------------------------
 -- Workspaces - all right hand keys for easier selection
@@ -79,42 +81,42 @@ myManageHook = composeAll . concat $
   [
       [ resource  =? "desktop_window"     --> doIgnore      ]
     , [ className =? "stalonetray"        --> doIgnore      ]
-    , [ className =? x --> doFloat         | x <- floatClass]
+    , [ className =? "Dunst"              --> doIgnore      ]
     , [ className =? x --> viewShift "web" | x <- web       ]
+    , [ className =? x --> viewShift "doc" | x <- doc       ]
     , [ className =? x --> viewShift "med" | x <- med       ]
     , [ className =? x --> viewShift "img" | x <- img       ]
-    , [ className =? x --> viewShift "doc" | x <- doc       ]
     , [ className =? x --> viewShift "tor" | x <- tor       ]
-    , [ fmap (x `isSuffixOf`) role --> doFloat | x <- gimp  ]
+    , [ className =? x --> doFloat         | x <- floatClasses]
+    , [ className =? x --> doFloat         | x <- floatTitles]
+    , [ fmap (x `isSuffixOf`) role --> doFloat | x <- floatRoles  ]
     -- , [ isFullscreen --> (doF W.focusDown <+> doFullFloat)]
-    -- , [ stringProperty "WM_NAME" =? x --> doFloat | x <- floatName ]
   ]
   where role  = stringProperty "WM_WINDOW_ROLE"
         viewShift = doF . liftM2 (.) W.greedyView W.shift
+        doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
         med   = ["Vlc", "Clementine", "Skype"]
-        doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
         img   = ["Gimp","Gimp-2.8"]
         tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
-        floatClass = ["rgl", "R-x11", "stalonetray", "gnome-calculator", "File Operation Progress", "viewnior"]
-        floatName = ["Export"]
-        gimp  = ["gimp-toolbox", "gimp-dock"]
+        floatClasses = ["Dunst", "rgl", "R-x11", "File Operation Progress", "viewnior"]
+        floatTitles = ["Export", "Downloads", "Add-ons", "Firefox Preferences"]
+        floatRoles  = ["gimp-toolbox", "gimp-dock"]
 
 ------------------------------------------------------------------------
 -- Layouts-
-myLayout = mkToggle (single FULL) (vert ||| horiz)
+myLayout = boringWindows $ (tile ||| full)
   where
-     tiled = \name mw -> named name . boringWindows . minimize . avoidStruts $ ResizableTall mw delta ratio []
-     vert  = tiled "vert" vertmasterwindows 
-     horiz = tiled "horz" horizmasterwindows 
+     tile = named "tile" . minimize . gaps [gap] $ ResizableTall masterwindows delta ratio []
+     full =  named "full"  . minimize $ Full
 
      -- The default number of windows in the master pane
-     vertmasterwindows = 1
-     horizmasterwindows = 2
+     masterwindows = 1
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
      -- Percent of screen to increment by when resizing panes
      delta   = 5/100
+     gap = (U, 16)
 
 ------------------------------------------------------------------------
 -- Key bindings
@@ -125,30 +127,22 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Spawn the launcher using command specified by myLauncher.
   [ ((modMask, xK_Return), spawn myLauncher)
 
-  -- Minimize
-  , ((modMask,                 xK_n), withFocused minimizeWindow)
-  , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
-  -- Maximize
-  , ((modMask, xK_backslash), withFocused (sendMessage . maximizeRestore))
-
   -- Close focused window, but not other copies of it.
   , ((modMask, xK_c), kill)
 
-  -- Rotate windows
-  , ((modMask                , xK_bracketleft),  rotUnfocusedUp)
-  , ((modMask                , xK_bracketright), rotUnfocusedDown)
-  , ((modMask .|. controlMask, xK_bracketleft),  rotFocusedUp)
-  , ((modMask .|. controlMask, xK_bracketright), rotFocusedDown)
+  -- Minimize
+  , ((modMask,                 xK_n), withFocused minimizeWindow)
+  , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
 
-
-  , ((modMask, xK_s), sendMessage ToggleStruts)
-  , ((modMask, xK_m), sendMessage $ Toggle FULL)
+  -- Toggle topbar
+  , ((modMask,                 xK_g), sendMessage $ ToggleGap U)
   -- Cycle through the available layout algorithms.
   , ((modMask,                 xK_space), sendMessage NextLayout)
   --  Reset the layouts on the current workspace to default.
   , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
-  -- Resize viewed windows to the correct size.
+  -- Resize viewed windows to the rorrect size.
   , ((modMask .|. controlMask, xK_r), refresh) 
+
   -- Move focus to the next window.
   , ((modMask,                 xK_j), focusDown)
   -- Move focus to the previous window.
@@ -158,10 +152,10 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- Swap the focused window with the previous window.
   , ((modMask .|. controlMask, xK_k), windows W.swapUp)
 
-  -- -- Move focus to the master window.
-  -- , ((modMask,                 xK_m), windows W.focusMaster)
-  -- -- Swap the focused window and the master window.
-  -- , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
+  -- Move focus to the master window.
+  , ((modMask,                 xK_m), focusMaster)
+  -- Swap the focused window and the master window.
+  , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
 
   -- Increment the number of windows in the master area.
   , ((modMask, xK_comma), sendMessage (IncMasterN 1))
@@ -195,13 +189,27 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
   --     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
   --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+  --
+  
+myAdditionalKeys opacity transSet noFadeSet = 
+  [ -- Silly transparency key commands
+     ((mod4Mask .|. controlMask, xK_apostrophe),
+      withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w)
+                       >> io (modifyIORef transSet $ removeFade w) >> refresh )
+    , ((mod4Mask .|. controlMask, xK_semicolon),
+      withFocused $ \w -> io (modifyIORef transSet $ toggleFade w)
+                       >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
+    , ((mod4Mask, xK_apostrophe), liftIO (modifyIORef opacity incOpacity) >> refresh)
+    , ((mod4Mask, xK_semicolon), liftIO (modifyIORef opacity decOpacity) >> refresh)
+  ]
+
 
 ------------------------------------------------------------------------
 -- Mouse bindings
 
 -- True if your focus should follow your mouse cursor.
 myFocusFollowsMouse :: Bool
-myFocusFollowsMouse = False
+myFocusFollowsMouse = True
 
 -- Whether clicking on a window to focus also passes the click to the window
 myClickJustFocuses :: Bool
@@ -245,11 +253,12 @@ removeFade w s | S.member w s = S.delete w s
 
 incOpacity :: Rational -> Rational
 incOpacity o | o >= 1.0 = 1.0
-             | otherwise = o + opacityStep
+             | otherwise = o + myOpacityStep
 
 decOpacity :: Rational -> Rational
 decOpacity o | o <= 0.0 = 0.0
-             | otherwise = o - opacityStep
+             | otherwise = o - myOpacityStep
+
 ------------------------------------------------------------------------
 -- Startup hook: things that for whatever reason break in .xinitrc
 myStartupHook = do
@@ -257,12 +266,11 @@ myStartupHook = do
     spawn "background"
     spawn "tray"
     spawn "run-once cbatticon"
-
+    spawn "run-once indicator-kdeconnect"
 
 ------------------------------------------------------------------------
 -- Event hook
 myEventHook = minimizeEventHook
-
 
 ------------------------------------------------------------------------
 -- Placement settings
@@ -273,25 +281,17 @@ myPlacement = withGaps (16,0,16,0) (smart (0.5,0.5))
 main = do
   noFadeSet <- newIORef S.empty
   transSet <- newIORef S.empty
-  opacity <- newIORef (windowOpacity)
+  opacity <- newIORef (myWindowOpacity)
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
-  xmonad $ defaults {
-    logHook = myLogHook xmproc
-              >> liftIO (readIORef opacity)
-              >>= myFadeHook noFadeSet transSet
+
+  xmonad 
+    $ withUrgencyHook LibNotifyUrgencyHook
+    $ defaults 
+      { logHook = myLogHook xmproc
+        >> liftIO (readIORef opacity)
+        >>= myFadeHook noFadeSet transSet
   }
-    `additionalKeys`
-        [
-          -- Silly transparency key commands
-           ((mod4Mask .|. controlMask, xK_apostrophe),
-            withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w)
-                             >> io (modifyIORef transSet $ removeFade w) >> refresh )
-          , ((mod4Mask .|. controlMask, xK_semicolon),
-            withFocused $ \w -> io (modifyIORef transSet $ toggleFade w)
-                             >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
-          , ((mod4Mask, xK_apostrophe), liftIO (modifyIORef opacity incOpacity) >> refresh)
-          , ((mod4Mask, xK_semicolon), liftIO (modifyIORef opacity decOpacity) >> refresh)
-        ]
+    `additionalKeys` myAdditionalKeys opacity transSet noFadeSet
 
 ------------------------------------------------------------------------
 -- Config overrides
@@ -301,10 +301,10 @@ defaults = defaultConfig {
     focusFollowsMouse  = myFocusFollowsMouse,
     clickJustFocuses   = myClickJustFocuses,
     borderWidth        = myBorderWidth,
-    modMask            = myModMask,
-    workspaces         = myWorkspaces,
     normalBorderColor  = myNormalBorderColor,
     focusedBorderColor = myFocusedBorderColor,
+    modMask            = myModMask,
+    workspaces         = myWorkspaces,
     -- key bindings
     keys               = myKeys,
     mouseBindings      = myMouseBindings,
@@ -314,3 +314,12 @@ defaults = defaultConfig {
     manageHook         = placeHook myPlacement <+> manageDocks <+> myManageHook,
     startupHook        = myStartupHook
 }
+
+------------------------------------------------------------------------
+data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
+
+instance UrgencyHook LibNotifyUrgencyHook where
+    urgencyHook LibNotifyUrgencyHook w = do
+        name     <- getName w
+        Just idx <- fmap (W.findTag w) $ gets windowset
+        safeSpawn "notify-send" [show name, "workspace " ++ idx]

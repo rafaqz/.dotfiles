@@ -24,17 +24,17 @@
 -- green = "#859900ff"
 
 Config {
-    font = "xft:Droid Sans Mono for Powerline:pixelsize=12:antialiase=true:autohinting=true:Regular"
-    -- font = "xft:Fantasque Sans Mono:pixelsize=15:antialiase=true:autohinting=true:Bold",
+    font = "xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohinting=true:Regular"
+    -- font = "xft:Fantasque Sans Mono:pixelsize=12:antialiase=true:autohinting=true",
     -- font = "xft:Menlo for Powerline:Regular:pixelsize=13:antialiase=true:autohinting=true",
-    -- font = "xft:DejaVu Sans Mono for Powerline:Bold:pixelsize=13:antialiase=true:autohinting=true",
-    -- font = "xft:Inconsolata for Powerline:pixelsize=15:antialiase=true:autohinting=true",
+    -- font = "xft:DejaVu Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true",
+    -- font = "xft:Inconsolata for Powerline:pixelsize=14:antialiase=true:autohinting=true",
     -- font = "xft:FuraMono-Bold Powerline:pixelsize=13",
     , bgColor = "#002b36"
     , fgColor = "#586e75"
-    , position = Static { xpos = 0, ypos = 0, width = 1366, height = 16 }
+    , position = Static { xpos = 0, ypos = 0, width = 1238, height = 16 }
     , commands = [
-        Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#073642","-l","#073642","-n","#073642","-w","3"] 10,
+        Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#174652","-l","#174652","-n","#073642","-w","3"] 10,
         Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run Memory ["-t","Mem: <usedratio>%","-H","8192","-L","4096","-h","#586e75ff","-l","#586e75","-n","#b58900"] 10,
         Run Date "%a %b %d  %l:%M" "date" 10,
@@ -43,4 +43,6 @@ Config {
     , sepChar = "%"
     , alignSep = "}{"
     , template = "%StdinReader% }{ | %multicpu%   %memory% | <fc=#93a1a1>%date%</fc> | %YMML%"
+    , overrideRedirect = True
+    , persistent =       True    -- enable/disable hiding (True = disabled)
 }
