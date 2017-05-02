@@ -4,15 +4,15 @@ XF86MonBrightnessUp
 XF86MonBrightnessDown
   xbacklight -dec $(bc <<< scale=6; $((xbacklight)+5)/5)
 XF86AudioRaiseVolume
-  amixer set Master playback 1+
+  amixer -q -D pulse set Master playback 1%+
 XF86AudioLowerVolume
-  amixer set Master playback 1-
+  amixer -q -D pulse set Master playback 1%-
 XF86AudioMute
-  amixer set Master toggle
+  amixer set Master playback toggle
 XF86TouchpadToggle
   synclient TouchpadOff=`synclient -l | grep -ce TouchpadOff.*0`
 XF86ScreenSaver
-  slock
+  i3lock -u
 XF86Display 
   projector
 {_,ctrl} + Print 
@@ -20,7 +20,7 @@ XF86Display
 
 # Run core aps 
 super + alt + {_,ctrl} + o 
-  {pcmanfm, urxvtr -e sudo pcmanfm}
+  {pcmanfm, urxvtcd -e sudo pcmanfm}
 super + alt + {_,ctrl} + p
   {firefox, chromium}
 super + alt + {_,ctrl} + 7 
@@ -33,51 +33,53 @@ super + alt + {_,ctrl} + 0
   {transmission-gtk, nicotine.py}
 
 # Run others
-super + alt + {j,z,e,b,h,c,a,s,i,minus,equal}
+super + alt + {a,j,z,e,f,b,h,c,a,i,minus,equal}
   {\ 
-    urxvtr,\
+    pavucontrol,\
+    urxvtcd,\
     zotero,\ 
-    google-earth,\ 
+    google-chrome-stable --app='https://earth.google.com/web/',\ 
+    franz-bin,\ 
     baobab,\ 
     hamster,\ 
     owncloud,\ 
     lxappearance,\ 
-    apulse skype,\ 
     xcalib -invert -alter,\ 
     gcolor2,\ 
     speedcrunch\ 
   }
 super + alt + shift + {l,equal,semicolon}
   {\
-    urxvtr -e rs,\ 
+    urxvtcd -e bash rs,\ 
     gpick, \
-    wicd-gtk -n,\ 
+    urxvtcd -e bash alsamixer\
   }
 
 # In a terminal
-super + alt + {_,ctrl} + {l,t,bracketleft,semicolon,a} 
-  urxvtr -e { ,sudo }{\ 
+super + alt + {_,ctrl} + {l,semicolon,bracketleft,a} 
+  urxvtcd -e { ,sudo }{\ 
     ranger,\ 
-    todotxt-machine,\ 
-    htop,\ 
-    wicd-curses,\ 
-    alsamixer,\
+    pulsemixer,\
+    htop\ 
   }
 
 # Hold terminal open
 super + alt + {_,ctrl} + {bracketright,apostrophe} 
-  urxvtr -hold -e { ,sudo }{\ 
+  urxvtcd -hold -e  bash { ,sudo }{\ 
     powertop,\
-    cal --color -3,\ 
+    cal -3\ 
   }
 
-# In vim (server mode with a random id)
+# In vim (server mode)
 super + alt + {k,w,n,m,comma,period,slash}
-  urxvtr -e vim -p --servername `date +%s` { ,\
+  urxvtcd -e vim { ,\
     ~/Documents/notes/words.md,\ 
     ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/sxhkd/sxhkdrc ~/.config/dunst/dunstrc, \ 
     ~/.bashrc ~/.profile ~/.bash_profile,\ 
-    ~/.vim_runtime/vimrcs/*.*,\ 
-    ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh,\ 
+    ~/.vim_runtime/vimrcs/mapping.vim ~/.vim_runtime/vimrcs/plugins_config.vim ~/.vim_runtime/vimrcs/settings.vim ~/.vim_runtime/vimrcs/filetypes.vim ~/.vim_runtime/vimrcs/functions.vim ,\ 
+    ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh ~/.config/ranger/commands.py ~/.config/ranger/bookmarks,\ 
     ~/.Xdefaults ~/.xinitrc ~/.Xmodmap \
   }
+
+ctrl + alt + {_,shift} + p
+  {clipit -p | clipit, clipit -c | clipit}
