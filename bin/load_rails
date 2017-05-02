@@ -1,7 +1,0 @@
-#!/bin/bash
-cd ~/scratch/ofn
-killall zeus
-rm .zeus.sock
-urxvtr -e zeus start &
-urxvtr -e rake karma:start &
-urxvtr -e zeus server &

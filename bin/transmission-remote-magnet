@@ -1,0 +1,15 @@
+#!/bin/bash
+# transmission-remote-magnet
+# Usage: transmission-remote-magnet <magnet URL>
+#
+# Copyright 2014 Sam Bisbee <sam@sbisbee.com>
+# Modified from http://blog.flo.cx/2011/02/how-to-open-magnet-links-on-a-remote-transmission-daemon-with-one-click/
+
+magnet="$1"
+remote="cloud"
+
+echo ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add '$magnet'" > /home/raf/magnet.log
+ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add $magnet"
+
+# So we can see transmission's response
+sleep 1

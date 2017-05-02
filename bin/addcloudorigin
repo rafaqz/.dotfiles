@@ -9,7 +9,7 @@ popd
 repo=${2:-${PWD##*/}}
 # Set ssh login details
 user='git'
-host='git'
+host='cloud'
 
 git remote rm origin
 git remote add origin $user@$host:$parent/$repo

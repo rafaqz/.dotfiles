@@ -2,19 +2,30 @@
 # Copy startup markdown files and rename as the current dir name.
 set -e
 
+yaml=~/Projects/Uni/Templates/yaml.md
+template=~/Projects/Uni/Templates/template.md
+rsetup=~/Projects/Uni/Templates/r_setup.rmd
+makefile=~/Projects/Uni/Templates/Makefile
 # Filetype set in first argument
-filetype=$1
+filetype=${1:-md}
 repo=${PWD##*/}
 filename="$repo.$filetype"
 # Build unit name
 pushd '..'
 pwd=${PWD##*/}
-unit=${pwd/_/ }
+unit=${pwd//_/ }
 popd
 
 # Copy template files
-cp ~/Projects/Uni/Templates/yaml.md $filename
-ln -s ~/Projects/Uni/Templates/Makefile Makefile 
+cp $yaml $filename
+if [ $filetype = "rmd" ]; then
+  cat $rsetup >> $filename
+else
+  cat $template >> $filename
+fi
+
+# Link makefile
+ln -s $makefile Makefile 
 
 # Run templating
 sed -i "s/{{unit}}/$unit/g" $filename

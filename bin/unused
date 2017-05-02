@@ -1,0 +1,2 @@
+#!/bin/bash
+expac -HM '%-20n\t%10d' $(comm -23 <(pacman -Qqt | sort) <(pacman -Qqg base base-devel | sort)) | less

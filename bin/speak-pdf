@@ -1,0 +1,11 @@
+#!/bin/bash
+file="$1"
+mp3="${file%.*}.mp3"
+if [ ! -f "$mp3" ]; then
+  paper "$file" | sed ':a;N;$!ba;s/\n/ /g' > temp.txt
+  gtts-cli -l 'en-uk' -o "$mp3" -f temp.txt &
+  sleep 2
+fi
+vlc "$mp3" &
+disown
+rm temp.txt

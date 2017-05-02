@@ -2,7 +2,7 @@
 set -e
 
 repo=$1
-out_ext=${2:-md}
+filetype=${2:-md}
 arg=$3
 
 # Set up a git repository with matching cloud repo

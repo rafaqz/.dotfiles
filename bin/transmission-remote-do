@@ -1,0 +1,10 @@
+#!/bin/bash
+# transmission-remote-list
+# Usage: transmission-remote-magnet <magnet URL>
+ 
+remote="cloud"
+
+ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission $@"
+
+# So we can see transmission's response
+sleep 1

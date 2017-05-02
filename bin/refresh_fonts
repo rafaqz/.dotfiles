@@ -1,0 +1,26 @@
+#!/bin/bash
+
+basedir=/usr/X11R6/lib/X11/fonts
+
+cd $basedir
+
+echo "Rebuilding font cache..."
+fc-cache -fv
+echo "...done."
+
+for dir in {TTF,misc,75dpi,Type1,Speedo,100dpi,cyrillic,artwiz-fonts,terminus,lfp-fix,lfp-var,nucleus}
+do
+    
+echo "Rebuilding font index in $dir..."
+cd $dir
+mkfontscale
+mkfontdir
+rm -f encodings.dir
+ln -s /usr/X11R6/lib/X11/fonts/encodings/encodings.dir encodings.dir
+echo "...done."
+
+cd $basedir
+done
+
+echo "Fonts refreshed!  Press any key to exit."
+read KEY

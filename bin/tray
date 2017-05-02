@@ -8,4 +8,4 @@
 # monitor as primary.  Adjust margin as necessary for other resolutions/setups.
 
 killall stalonetray
-stalonetray -i 12 --window-type normal --kludges force_icons_size --grow-gravity W --geometry 12x1+660 --window-strut none --background "#002b36" --icon-gravity NE
+stalonetray -i 12 --window-type normal --kludges force_icons_size --grow-gravity W --geometry 8x1+1238 --window-strut top --background "#002b36" --icon-gravity NE

@@ -7,7 +7,6 @@
 VIM_COUNT=`vim --serverlist | wc -l`
 PROJECT_DIR=`pwd`
 SERVER_NAME=`date +%s`
-echo "Vim instances: $VIM_COUNT"
 
 # No arguments were passed in, assume its a "project" and give it a server
 # "name" and set a project_dir in vim

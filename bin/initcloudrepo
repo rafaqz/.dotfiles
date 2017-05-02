@@ -9,7 +9,7 @@ popd
 repo=${2:-${PWD##*/}}
 # Set ssh login details
 user="git"
-host="git"
+host="cloud"
 
 # Setup a bare git repo in the cloud over ssh
-ssh git "if [ ! -e "$parent/$repo" ]; then mkdir -p $parent && git init --bare $parent/$repo; fi"
+ssh $user@$host "if [ ! -e "$parent/$repo" ]; then mkdir -p $parent && git init --bare $parent/$repo; fi"
