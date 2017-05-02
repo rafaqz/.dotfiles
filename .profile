@@ -8,18 +8,17 @@ PATH="$HOME/.local/bin:$PATH"
 PATH="$HOME/.rbenv/bin:$PATH"
 # PATH="$HOME/.cabal/bin:$PATH"
 PATH="$HOME/bin:$PATH"
+PATH="/opt/zotero/Zotero_linux-x86_64/:$PATH"
 # PATH="${PATH}:$HOME/.gem/ruby/2.2.0/bin"
-# PATH="${PATH}:/opt/vagrant/bin"
 export PATH
 
 ################################################
 ## Variables
 export SHELL="/bin/bash"
-export EDITOR="vim -p --servername `openssl rand -hex 12`"
+export EDITOR="vim"
 export TERMINAL="urxvtr"
 # gtk2 files for qt
 export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
-
 
 if [ -n "$DISPLAY" ]; then
   export BROWSER=firefox
