@@ -1,2 +1,2 @@
 #!/bin/bash
-pdftotext "$1" - | sed -n '/^opinion\|^abstract\|^introduction/I,/^appendix\|^literature cited\|^references\|^bibliography/Ip'
+pdftotext -nopgbrk "$1" - | paper_body
