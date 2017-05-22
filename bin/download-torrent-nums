@@ -1,0 +1,10 @@
+#!/bin/bash
+torrent_nums=$1
+
+files='{'
+while read line; do 
+  files=${files}${line%% *}'*,'
+done < <(transmission-remote-do -t $torrent_nums -l | tail -n +2 | head -n -1 | cut -c71-100)
+files="${files%?}}"
+download-torrents $files
+

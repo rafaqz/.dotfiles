@@ -8,8 +8,5 @@
 magnet="$1"
 remote="cloud"
 
-echo ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add '$magnet'" > /home/raf/magnet.log
-ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add $magnet"
-
-# So we can see transmission's response
-sleep 1
+. ~/.keychain/$HOSTNAME-sh
+echo `date -u` `ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add '$magnet'"` >> ~/magnet.log
