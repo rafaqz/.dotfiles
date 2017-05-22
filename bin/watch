@@ -10,4 +10,4 @@ done
 makeit="make EXT=$in_ext $out_ext"
 eval $makeit
 rifle $out_file
-echo $in_file | entr sh -c "reset && eval $makeit && sleep 1 && count $out_file"
+echo $in_file | entr sh -c "reset && eval $makeit && sleep 1 && wordcount $out_file"

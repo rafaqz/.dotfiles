@@ -1,0 +1,10 @@
+#!/bin/bash
+file=$1
+ext="${file##*.}"
+
+echo -n "Words: "
+if [ $ext = "pdf" ]; then
+  paper $file | wc -w
+else
+  pandoc -t plain $file | paper_body | wc -w
+fi

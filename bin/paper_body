@@ -1,0 +1,8 @@
+#!/bin/bash
+# Sed commands:
+# -n : silent
+# /I : case insensitive
+# /p : print the current pattern space.
+# ^ : match line begginings
+# | : OR
+cat | sed -n '/^opinion\|^abstract\|^introduction/I,/^appendix\|^literature cited\|^references\|^bibliography/Ip'

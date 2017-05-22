@@ -1,0 +1,2 @@
+#!/bin/bash
+cat /tmp/dunst_recent | grep 'summary\|body' | sed 's/^\t.*://g' | sed "s/[',]//g" | tail -n 2 | xclip

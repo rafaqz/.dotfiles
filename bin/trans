@@ -1,3 +1,0 @@
-#!/bin/bash
-transset -n stalonetray 0.75
-transset -n xmobar 0.75
