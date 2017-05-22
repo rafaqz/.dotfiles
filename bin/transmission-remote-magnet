@@ -1,9 +1,6 @@
 #!/bin/bash
 # transmission-remote-magnet
 # Usage: transmission-remote-magnet <magnet URL>
-#
-# Copyright 2014 Sam Bisbee <sam@sbisbee.com>
-# Modified from http://blog.flo.cx/2011/02/how-to-open-magnet-links-on-a-remote-transmission-daemon-with-one-click/
 
 magnet="$1"
 remote="cloud"
