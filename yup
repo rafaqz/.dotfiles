@@ -1,2 +1,3 @@
+#!/bin/bash
 yaourt -Qqe > ylist
-less ylist
+column ylist

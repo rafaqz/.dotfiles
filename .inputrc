@@ -4,21 +4,16 @@ set show-all-if-unmodified on
 TAB:menu-complete
 ## arrow up
 "\e[A":history-search-backward
-## arrow down
 "\e[B":history-search-forward
 "\C-l": clear-screen
 "\C-x*": glob-expand-word
 
 # Vi mode
-$if mode=vi
-
+set editing-mode vi
 set keymap vi-command
 k: history-search-backward
 j: history-search-forward
-
 set keymap vi-insert
-
-$endif
 
 set completion-query-items 2000
 set page-completions off

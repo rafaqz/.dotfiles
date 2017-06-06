@@ -24,12 +24,13 @@ import XMonad.Layout.BoringWindows
 import XMonad.Layout.Maximize
 import XMonad.Layout.Minimize
 import XMonad.Layout.Named
+import XMonad.Layout.NoBorders (noBorders, smartBorders)
 import XMonad.Hooks.UrgencyHook
 import XMonad.Util.NamedWindows
 import XMonad.Util.Run
 import XMonad.Layout.MultiToggle
 import XMonad.Layout.MultiToggle.Instances
-import XMonad.Util.EZConfig(additionalKeys)
+import XMonad.Util.EZConfig (additionalKeys)
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import qualified Data.Set        as S
@@ -57,12 +58,12 @@ blue    = "#268bd2"
 cyan    = "#2aa198"
 green   = "#859900"
 
-myNormalBorderColor  = base2
-myFocusedBorderColor = base3
-xmobarTitleColor = base01
-xmobarUrgentColor = orange
+myNormalBorderColor         = base3
+myFocusedBorderColor        = orange
+xmobarTitleColor            = base01
+xmobarUrgentColor           = orange
 xmobarCurrentWorkspaceColor = blue
-myBorderWidth = 0
+myBorderWidth = 1
 myWindowOpacity = 0.80 :: Rational
 myOpacityStep = 0.05
 myLauncher = "$(yeganesh -x -- -fn 'xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base01 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ blue ++ "')"
@@ -96,7 +97,7 @@ myManageHook = composeAll . concat $
         viewShift = doF . liftM2 (.) W.greedyView W.shift
         doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
-        med   = ["Vlc", "Clementine", "Skype"]
+        med   = ["Vlc", "Lollypop"]
         img   = ["Gimp","Gimp-2.8"]
         tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
         floatClasses = ["Dunst", "rgl", "R-x11", "File Operation Progress", "viewnior"]
@@ -105,7 +106,7 @@ myManageHook = composeAll . concat $
 
 ------------------------------------------------------------------------
 -- Layouts-
-myLayout = boringWindows $ (tile ||| full)
+myLayout = smartBorders . boringWindows $ (tile ||| full)
   where
      tile = named "tile" . minimize . gaps [gap] $ ResizableTall masterwindows delta ratio []
      full =  named "full"  . minimize $ Full
@@ -142,7 +143,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
   -- Resize viewed windows to the rorrect size.
   , ((modMask .|. controlMask, xK_r), refresh) 
-
   -- Move focus to the next window.
   , ((modMask,                 xK_j), focusDown)
   -- Move focus to the previous window.
@@ -183,24 +183,22 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [((m .|. modMask, k), windows $ f i) |
         (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
       , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, shiftMask), (\w -> W.greedyView w . W.shift w, controlMask)]]
-  -- ++
+  ++
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-  -- [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-  --     | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-  --     , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
-  --
+  [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
+      | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
+      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+
   
 myAdditionalKeys opacity transSet noFadeSet = 
   [ -- Silly transparency key commands
-     ((mod4Mask .|. controlMask, xK_apostrophe),
-      withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w)
-                       >> io (modifyIORef transSet $ removeFade w) >> refresh )
-    , ((mod4Mask .|. controlMask, xK_semicolon),
-      withFocused $ \w -> io (modifyIORef transSet $ toggleFade w)
-                       >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
-    , ((mod4Mask, xK_apostrophe), liftIO (modifyIORef opacity incOpacity) >> refresh)
-    , ((mod4Mask, xK_semicolon), liftIO (modifyIORef opacity decOpacity) >> refresh)
+    ((mod4Mask .|. controlMask, xK_apostrophe)
+    , withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w) >> io (modifyIORef transSet $ removeFade w) >> refresh )
+  , ((mod4Mask .|. controlMask, xK_semicolon)
+    , withFocused $ \w -> io (modifyIORef transSet $ toggleFade w) >> io (modifyIORef noFadeSet $ removeFade w) >> refresh )
+  , ((mod4Mask, xK_apostrophe), liftIO (modifyIORef opacity incOpacity) >> refresh)
+  , ((mod4Mask, xK_semicolon), liftIO (modifyIORef opacity decOpacity) >> refresh)
   ]
 
 
@@ -216,10 +214,9 @@ myClickJustFocuses :: Bool
 myClickJustFocuses = False
 
 myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
-  [
-      ((modMask, button1), (\w -> mouseMoveWindow w))
-    , ((modMask, button2), (\w -> focus w >> windows W.swapMaster))
-    , ((modMask, button3), (\w -> F.mouseResizeWindow w))
+  [ ((modMask, button1), (\w -> mouseMoveWindow w))
+  , ((modMask, button2), (\w -> focus w >> windows W.swapMaster))
+  , ((modMask, button3), (\w -> F.mouseResizeWindow w))
   ]
 
 ------------------------------------------------------------------------
@@ -230,7 +227,7 @@ myLogHook dest = dynamicLogWithPP $ defaultPP {
           , ppUrgent = xmobarColor xmobarUrgentColor ""
           , ppCurrent = xmobarColor xmobarCurrentWorkspaceColor ""
           , ppSep = " | "
-      }
+          }
 
 ------------------------------------------------------------------------
 -- Fade unfocussed windows
@@ -258,15 +255,6 @@ incOpacity o | o >= 1.0 = 1.0
 decOpacity :: Rational -> Rational
 decOpacity o | o <= 0.0 = 0.0
              | otherwise = o - myOpacityStep
-
-------------------------------------------------------------------------
--- Startup hook: things that for whatever reason break in .xinitrc
-myStartupHook = do
-    spawn "run-once redshift-gtk -l -38.53:145.26 -t 6200:3700"
-    spawn "background"
-    spawn "tray"
-    spawn "run-once cbatticon"
-    spawn "run-once indicator-kdeconnect"
 
 ------------------------------------------------------------------------
 -- Event hook
@@ -311,8 +299,7 @@ defaults = defaultConfig {
     -- hooks, layouts
     layoutHook         = myLayout,
     handleEventHook    = myEventHook,
-    manageHook         = placeHook myPlacement <+> manageDocks <+> myManageHook,
-    startupHook        = myStartupHook
+    manageHook         = placeHook myPlacement <+> manageDocks <+> myManageHook
 }
 
 ------------------------------------------------------------------------

@@ -25,3 +25,6 @@ if [ -n "$DISPLAY" ]; then
 else 
   export BROWSER=w3m
 fi
+
+# Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_rsa)

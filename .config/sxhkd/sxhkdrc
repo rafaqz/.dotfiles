@@ -1,8 +1,78 @@
+#############################################################################}}}
+# Run core aps {{{
+super + alt + {_,ctrl} + o 
+  {pcmanfm, gksudo pcmanfm}
+super + alt + {_,ctrl} + p
+  {firefox, chromium}
+super + alt + {_,ctrl} + 7 
+  {vlc, lollypop}
+super + alt + 8 
+  gimp
+super + alt + 9 
+  libreoffice
+super + alt + 0 
+  nicotine
+
+#############################################################################}}}
+# Run others {{{
+super + alt + {a,d,j,z,r,e,f,b,v,h,c,a,i,minus,equal,semicolon,x}
+  {\ 
+    pavucontrol,\
+    gksudo gparted,\
+    urxvtcd,\
+    zotero,\ 
+    rstudio-bin,\ 
+    google-chrome-stable --app='https://earth.google.com/web/',\ 
+    franz-bin,\ 
+    baobab,\ 
+    virtualbox,\ 
+    hamster,\ 
+    owncloud,\ 
+    lxappearance,\ 
+    xcalib -invert -alter,\ 
+    gcolor2,\ 
+    speedcrunch,\ 
+    zathura,\
+    clip-notifn
+  }
+
+# Sync clipboards
+ctrl + alt + {_,shift} + p
+
+
+
+super + alt + control + {l,equal,apostrophe,p}
+  {\
+    urxvtcd -e bash rs,\ 
+    gpick, \
+    urxvtcd -e bash alsamixer\
+    clipit -p | clipit, clipit -c | clipit\
+  }
+
+#############################################################################}}}
+# Run in a terminal {{{
+super + alt + {_,ctrl} + {l,apostrophe,bracketleft} 
+  urxvtcd -e { ,sudo }{\ 
+    ranger,\ 
+    pulsemixer,\
+    htop\ 
+  }
+
+#############################################################################}}}
+# Open in vim {{{
+super + alt + {k,w,n,m,comma,slash,period}
+  urxvtcd -e vim { ,\
+    ~/Documents/notes/words.md,\ 
+    ~/.xinitrc ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/dunst/dunstrc, \ 
+    ~/.bashrc ~/.profile ~/.bash_profile,\ 
+    ~/.vim_runtime/vimrcs/mapping.vim ~/.vim_runtime/vimrcs/plugins_config.vim ~/.vim_runtime/vimrcs/settings.vim ~/.vim_runtime/vimrcs/filetypes.vim ~/.vim_runtime/vimrcs/functions.vim ,\ 
+    ~/.Xresources ~/.Xmodmap ~/.config/sxhkd/sxhkdrc, \
+    ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh ~/.config/ranger/commands.py
+  }
+
+#############################################################################}}}
 # Assign existing keys
-XF86MonBrightnessUp
-  xbacklight -inc $(bc <<< scale=6; $((xbacklight)+5)/5)
-XF86MonBrightnessDown
-  xbacklight -dec $(bc <<< scale=6; $((xbacklight)+5)/5)
+
 XF86AudioRaiseVolume
   amixer -q -D pulse set Master playback 1%+
 XF86AudioLowerVolume
@@ -17,69 +87,7 @@ XF86Display
   projector
 {_,ctrl} + Print 
   {screenshot, screenshot-select}
-
-# Run core aps 
-super + alt + {_,ctrl} + o 
-  {pcmanfm, urxvtcd -e sudo pcmanfm}
-super + alt + {_,ctrl} + p
-  {firefox, chromium}
-super + alt + {_,ctrl} + 7 
-  {vlc, clementine}
-super + alt +            8 
-  gimp
-super + alt + 9 
-  libreoffice
-super + alt + {_,ctrl} + 0 
-  {transmission-gtk, nicotine.py}
-
-# Run others
-super + alt + {a,j,z,e,f,b,h,c,a,i,minus,equal}
-  {\ 
-    pavucontrol,\
-    urxvtcd,\
-    zotero,\ 
-    google-chrome-stable --app='https://earth.google.com/web/',\ 
-    franz-bin,\ 
-    baobab,\ 
-    hamster,\ 
-    owncloud,\ 
-    lxappearance,\ 
-    xcalib -invert -alter,\ 
-    gcolor2,\ 
-    speedcrunch\ 
-  }
-super + alt + shift + {l,equal,semicolon}
-  {\
-    urxvtcd -e bash rs,\ 
-    gpick, \
-    urxvtcd -e bash alsamixer\
-  }
-
-# In a terminal
-super + alt + {_,ctrl} + {l,semicolon,bracketleft,a} 
-  urxvtcd -e { ,sudo }{\ 
-    ranger,\ 
-    pulsemixer,\
-    htop\ 
-  }
-
-# Hold terminal open
-super + alt + {_,ctrl} + {bracketright,apostrophe} 
-  urxvtcd -hold -e  bash { ,sudo }{\ 
-    powertop,\
-    cal -3\ 
-  }
-
-# In vim (server mode)
-super + alt + {k,w,n,m,comma,period,slash}
-  urxvtcd -e vim { ,\
-    ~/Documents/notes/words.md,\ 
-    ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/sxhkd/sxhkdrc ~/.config/dunst/dunstrc, \ 
-    ~/.bashrc ~/.profile ~/.bash_profile,\ 
-    ~/.vim_runtime/vimrcs/mapping.vim ~/.vim_runtime/vimrcs/plugins_config.vim ~/.vim_runtime/vimrcs/settings.vim ~/.vim_runtime/vimrcs/filetypes.vim ~/.vim_runtime/vimrcs/functions.vim ,\ 
-    ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh ~/.config/ranger/commands.py ~/.config/ranger/bookmarks,\ 
-    ~/.Xdefaults ~/.xinitrc ~/.Xmodmap \
-  }
-
-ctrl + alt + {_,shift} + p
-  {clipit -p | clipit, clipit -c | clipit}
+XF86MonBrightnessUp
+  xbacklight -inc $(bc <<< "scale=6; ($(xbacklight)+4)/4")
+XF86MonBrightnessDown
+  xbacklight -dec $(bc <<< "scale=6; ($(xbacklight)+4)/4")

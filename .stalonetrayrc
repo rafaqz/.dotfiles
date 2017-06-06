@@ -13,7 +13,8 @@
 
 # background <color>         # color can be specified as an HTML hex triplet or
                              # as a name from rgb.txt, note that '#' must be quoted
-background "#777777"
+
+background "#002b36" 
 
 # decorations <decspec>      # set trays window decorations; possible values for
                              # decspec are: all, title, border, none
@@ -34,7 +35,7 @@ fuzzy_edges 0
 
 # geometry <geometry>        # tray's geometry in standard X notation; width and
                              # height are specified in slot_size multiples
-geometry 1x1+0+0
+geometry 8x1+1238
 
 # grow_gravity <gravity>     # one of N, S, E, W, NW, NE, SW, SE; tray will grow
                              # in the direction opposite to one specified by
@@ -55,7 +56,7 @@ icon_size 12
                              # NEW in 0.8.
 log_level err
 
-# kludges kludge[,kludge]    # enable specific kludges to work around
+kludges force_icons_size # enable specific kludges to work around
                              # non-conforming WMs and/or stalonetray bugs.
                              # NEW in 0.8. Argument is a
                              # comma-separated list of
@@ -126,11 +127,11 @@ window_layer normal
                              # windows); mode defines to which screen border tray
                              # will be attached; it can be either top, bottom,
                              # left, right, none or auto (default)
-window_strut auto
+window_strut top
 
 # window_type <type>         # set the EWMH-compatible window type; one of:
                              # desktop, dock, normal, toolbar, utility
-window_type dock
+window_type normal
 
 # xsync [<bool>]             # whether to operate on X server synchronously (SLOOOOW)
 xsync false

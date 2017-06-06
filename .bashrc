@@ -1,14 +1,13 @@
 #!/bin/sh 
 
+# Fix bash keys. WHy is this not loading automatically?
+bind -f  ~/.inputrc
+
 ################################################
 ## Options
 
 shopt -s autocd
 shopt -s globstar # For recursive globbing with **/* etc
-
-# Use vi mode
-set -o vi
-
 
 ################################################
 ## History
@@ -39,10 +38,10 @@ GIT_PS1_SHOWCOLORHINTS=
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
 # prompt='__git_ps1 "\[\e[31m\]@\u\[\e[34m\] \w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
-prompt='__git_ps1 "\[\e[40;31m\]\u\[\e[39;40m\]\w \[\e[30;43m\]" "\\\$\[\e[0m\] "'
+prompt='__git_ps1 "\[\e[40;31m\]\u\[\e[39;40m\]\w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
 
 # Hack to update history on every prompt
-PROMPT_COMMAND="history -a; history -n; $prompt"
+PROMPT_COMMAND="history -a; history -c; history -r; $prompt"
 
 ################################################
 # Color 
@@ -53,7 +52,6 @@ if [ -x /usr/bin/dircolors ]; then
   alias ls='ls --color=auto'
   alias dir='dir --color=auto'
   alias vdir='vdir --color=auto'
-#
   alias grep='grep --color=auto'
   alias fgrep='fgrep --color=auto'
   alias egrep='egrep --color=auto'
@@ -111,6 +109,7 @@ alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"
 alias pe='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 ## Keychain
 alias chain='eval $(keychain --eval --agents ssh -Q --quiet id_rsa)'
+alias e='z'
 
 ## ls 
 alias ll='ls -lh'                      # list detailed with human-readable sizes
@@ -215,3 +214,5 @@ fi
 source "$fasd_cache"
 unset fasd_cache
 
+# SSH keychain
+. ~/.keychain/$HOSTNAME-sh

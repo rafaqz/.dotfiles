@@ -3,7 +3,8 @@
 #
 # Executed by startx (run your window manager from here)
 
-source $HOME/.profile
+################################################################################
+# Setup
 
 if [ -d /etc/X11/xinit/xinitrc.d ]; then
   for f in /etc/X11/xinit/xinitrc.d/*; do
@@ -12,14 +13,20 @@ if [ -d /etc/X11/xinit/xinitrc.d ]; then
   unset f
 fi
 
-# Session
-lxsession &
+# Merge Xresources
+[[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
 
-# Remap capslock and escape keys etc. See .Xmodmap
-xmodmap $HOME/.Xmodmap &
+################################################################################
+# Input 
 
+# Keyboard repeat speed
+xset r rate 180 60  &
 # Use pointer as cursor (for xmonad)
 xsetroot -cursor_name left_ptr &
+# Remap capslock and escape keys etc. See .Xmodmap
+xmodmap $HOME/.Xmodmap &
+# Key commands. See sxhkdrc
+sxhkd &
 
 # Disable trackpad while typing. 2 seconds 
 # -i 2 sets the idle time to 2 seconds. The idle time specifies how many seconds to 
@@ -29,21 +36,23 @@ xsetroot -cursor_name left_ptr &
 # -d starts as a daemon, in the background.
 syndaemon -t -k -i 2 -d &
 
-# Merge Xresources
-[[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
+################################################################################
+# Bling
 
-# Compositing
-compton -f -D 2 -o 0 & 
+compton -f -D 3 -o 0 -m 0.92 & 
+background &
 
-# Auto mount drives
-pcmanfm -d &
-# Key commands
-sxhkd &
 # Notifications
-dunst &
-# Keyboard repeat speed
-xset r rate 180 60  &
-# Batterly low notification.
-pwrnotify 6 &
+dunst -print > /tmp/dunst_recent &
 
+# Tray
+stalonetray &
+redshift-gtk &
+nm-applet &
+indicator-kdeconnect &
+clipit &
+cbatticon &
+
+################################################################################
+# WM
 exec xmonad

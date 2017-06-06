@@ -1,11 +1,10 @@
+# zathurarc-dark
 set smooth_scroll "true"
 set scroll-page-aware "true"
 
-# zathurarc-dark
-
 set font                        "Droid Sans Mono 10"
-set default-bg                  "#fdf6e3" #44
-set default-fg                  "#073642" #01
+set default-bg                  "#151515" #44
+set default-fg                  "#202020" #01
 
 set statusbar-fg                "#707070" #04
 set statusbar-bg                "#202020" #01
@@ -31,15 +30,16 @@ set completion-fg               "#75B5AA" #0C
 set notification-bg             "#90A959" #0B
 set notification-fg             "#151515" #00
 
-set recolor-lightcolor          "#fdf6e3" #00
-set recolor-darkcolor           "#073642" #06
+set recolor-lightcolor          "#002B36" #00
+set recolor-darkcolor           "#839496" #06
 set recolor                     "false"
 
 # setting recolor-keep true will keep any color your pdf has.
 # if it is false, it'll just be black and white
-set recolor-keephue             "true"
+set recolor-keephue             "false"
 
 # Rest of your configs go here:
+
 set browser firefox %s
 
 # set scroll-full-overlap 0.01
@@ -47,4 +47,4 @@ set browser firefox %s
 
 set adjust-open "best-fit"
 
-set guioptions  "" # Nothing visible at startup
+set guioptions                  "" # Nothing visible at startup
