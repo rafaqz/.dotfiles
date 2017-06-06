@@ -1,6 +1,0 @@
-#!/bin/bash
-
-files=$1
-dest=${2:-.}
-
-rsync -av --partial --progress -e "ssh -T -c arcfour -x" cloud@cloud:/home/cloud/Downloads/$files $dest

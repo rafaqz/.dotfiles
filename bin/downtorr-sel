@@ -1,0 +1,7 @@
+#!/bin/bash
+transmission-remote-do -l
+
+echo -n "Chose torrents (eg. 5 or 1,3,7 or 4-6) :"
+echo ""
+  read nums
+  downtorr-nums $nums

@@ -1,0 +1,17 @@
+#!/bin/bash
+torrent_nums=$1
+
+files='{'
+lines=()
+while read line; do 
+  lines+=("$line")
+  files=${files}"'"${line}"',"
+done < <(transmission-remote-do -t $torrent_nums -l | tail -n +2 | head -n -1 | cut -c71-200)
+# If ther is only one line, dont use braces
+if [ ${#lines[@]} == 1 ]; then
+  files="'$lines'"
+else
+  files="${files%?}}"
+fi
+echo $files
+downtorr "$files"

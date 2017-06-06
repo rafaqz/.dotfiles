@@ -7,3 +7,4 @@ remote="cloud"
 
 . ~/.keychain/$HOSTNAME-sh
 echo `date -u` `ssh $remote "/usr/bin/transmission-remote --auth transmission:transmission --add '$magnet'"` >> ~/magnet.log
+notify-send "Torrent Downloaded: $magnet"
