@@ -63,9 +63,9 @@ myFocusedBorderColor        = orange
 xmobarTitleColor            = base01
 xmobarUrgentColor           = orange
 xmobarCurrentWorkspaceColor = blue
-myBorderWidth = 1
-myWindowOpacity = 0.80 :: Rational
-myOpacityStep = 0.05
+myBorderWidth = 0
+myWindowOpacity = 0.84 :: Rational
+myOpacityStep = 0.02
 myLauncher = "$(yeganesh -x -- -fn 'xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohinting=true:Regular' -nb '" ++ base3 ++ "' -nf '" ++ base01 ++ "' -sb '" ++ base01 ++ "' -sf '" ++ blue ++ "')"
 
 ------------------------------------------------------------------------
@@ -106,17 +106,18 @@ myManageHook = composeAll . concat $
 
 ------------------------------------------------------------------------
 -- Layouts-
-myLayout = smartBorders . boringWindows $ (tile ||| full)
+myLayout = smartBorders . boringWindows $ (vert ||| horiz ||| full)
   where
-     tile = named "tile" . minimize . gaps [gap] $ ResizableTall masterwindows delta ratio []
-     full =  named "full"  . minimize $ Full
+     vert = named "vert" . gaps [gap] $ ResizableTall masterwindows delta ratio []
+     horiz = named "horiz" . gaps [gap] . Mirror $ ResizableTall masterwindows delta ratio []
+     full =  named "full" $ Full
 
      -- The default number of windows in the master pane
      masterwindows = 1
      -- Default proportion of screen occupied by master pane
      ratio   = 1/2
      -- Percent of screen to increment by when resizing panes
-     delta   = 5/100
+     delta   = 2/100
      gap = (U, 16)
 
 ------------------------------------------------------------------------
@@ -129,11 +130,12 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   [ ((modMask, xK_Return), spawn myLauncher)
 
   -- Close focused window, but not other copies of it.
+  , ((modMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
   , ((modMask, xK_c), kill)
 
   -- Minimize
-  , ((modMask,                 xK_n), withFocused minimizeWindow)
-  , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
+  -- , ((modMask,                 xK_n), withFocused minimizeWindow)
+  -- , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
 
   -- Toggle topbar
   , ((modMask,                 xK_g), sendMessage $ ToggleGap U)
@@ -142,7 +144,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   --  Reset the layouts on the current workspace to default.
   , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
   -- Resize viewed windows to the rorrect size.
-  , ((modMask .|. controlMask, xK_r), refresh) 
+  , ((modMask .|. controlMask, xK_r), refresh)
   -- Move focus to the next window.
   , ((modMask,                 xK_j), focusDown)
   -- Move focus to the previous window.
@@ -187,11 +189,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
   -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
   -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
   [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-      | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
-      , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+      | (key, sc) <- zip [xK_Left, xK_Right, xK_r] [0..]
+      , (f, m) <- [(W.view, 0), (W.shift, controlMask)]]
 
-  
-myAdditionalKeys opacity transSet noFadeSet = 
+
+myAdditionalKeys opacity transSet noFadeSet =
   [ -- Silly transparency key commands
     ((mod4Mask .|. controlMask, xK_apostrophe)
     , withFocused $ \w -> io (modifyIORef noFadeSet $ toggleFade w) >> io (modifyIORef transSet $ removeFade w) >> refresh )
@@ -272,9 +274,9 @@ main = do
   opacity <- newIORef (myWindowOpacity)
   xmproc <- spawnPipe "xmobar ~/.xmonad/xmobar.hs"
 
-  xmonad 
+  xmonad
     $ withUrgencyHook LibNotifyUrgencyHook
-    $ defaults 
+    $ defaults
       { logHook = myLogHook xmproc
         >> liftIO (readIORef opacity)
         >>= myFadeHook noFadeSet transSet
