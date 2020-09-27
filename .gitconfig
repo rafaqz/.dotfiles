@@ -9,13 +9,20 @@
 	prompt = false
 [alias]
 	d = difftool
-[init]
-	templatedir = ~/.git_template
 [merge]
-	tool = diffconflicts
+	tool = vimdiff
 [mergetool "diffconflicts"]
 	cmd = diffconflicts vim $BASE $LOCAL $REMOTE $MERGED
 	trustExitCode = true
 	keepBackup = false
 [mergetool]
 	keepBackup = false
+[github]
+	user = rafaqz
+[hub]
+	protocol = ssh
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true

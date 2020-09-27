@@ -1,7 +1,0 @@
-#!/bin/bash
-for folder in $@
-do
-  pushd ${folder}
-  git add .
-  popd
-done

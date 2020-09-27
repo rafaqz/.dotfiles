@@ -4,7 +4,8 @@ add Lock = Escape
 keysym Caps_Lock = Escape
 keysym Escape = Caps_Lock
 ! Both menu keys the same
-keysym Menu = Super_R
- 
-keysym XF86Back = Page_Up
-keysym XF86Forward = Page_Down
+!keysym Menu = Super_R
+!keysym XF86Back = Page_Up
+!keysym XF86Forward = Page_Down
+!keycode 107 = Super_R
+keycode 107 = Print Sys_Req Print Sys_Req

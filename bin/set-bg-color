@@ -1,0 +1,8 @@
+#!/bin/bash
+
+BACKGROUND_COLOR=$(head -n 1 ~/.background_color)
+if [ "$BACKGROUND_COLOR" == "light" ]; then
+  echo -e "\033]4;1;#dc322f\007\033]11;rgba:fd00/f600/e300/ffff\007\033]708;rgba:fd00/f600/e300/ffff\007"
+else
+  echo -e "\033]4;1;#dc322f\007\033]11;rgba:0000/2b00/3600/ffff\007\033]708;rgba:0000/2b00/3600/ffff\007' "
+fi

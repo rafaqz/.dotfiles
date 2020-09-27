@@ -51,90 +51,91 @@ python3 test.py ~/Zotero/ zotero url "" 5 | grep "^  URL : ."
 python3 test.py ~/Zotero/ zotero volume "" 5 | grep "^  Volume : ."
 python3 test.py ~/Zotero/ zotero zotero_key "" 5 | grep "^  Zotero key : ."
 
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex abstract | grep "^  Abstract : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex author | grep "^  Author(s) : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex date | grep "^  Date : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex doi | grep "^  DOI : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex duplicate_keys
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex file | grep "^  File(s) : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex isbn | grep "^  ISBN : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex issue | grep "^  Issue : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex key | grep "^  Key : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex language | grep "^  Language : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex notes | grep "^  Notes : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex pages | grep "^  Pages : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex publisher | grep "^  Publisher : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex tags | grep "^  Tags : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex title | grep "^  Title : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex type | grep "^  Type : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex url | grep "^  URL : ."
-python2 test.py ~/Projects/Uni/Citations/Library.bib bibtex volume | grep "^  Volume : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex abstract | grep "^  Abstract : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex author | grep "^  Author(s) : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex date | grep "^  Date : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex doi | grep "^  DOI : ."
+# python2 test.py ~/Uni/Citations/Library.bib bibtex duplicate_keys | grep "^  Key : ."
+# python2 test.py ~/Uni/Citations/Library.bib bibtex file | grep "^  File(s) : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex isbn | grep "^  ISBN : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex issue | grep "^  Issue : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex key | grep "^  Key : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex language | grep "^  Language : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex notes | grep "^  Notes : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex pages | grep "^  Pages : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex publisher | grep "^  Publisher : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex tags | grep "^  Tags : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex title | grep "^  Title : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex type | grep "^  Type : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex url | grep "^  URL : ."
+python2 test.py ~/Uni/Citations/Library.bib bibtex volume | grep "^  Volume : ."
 
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex abstract | grep "^  Abstract : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex author | grep "^  Author(s) : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex date | grep "^  Date : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex doi | grep "^  DOI : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex duplicate_keys
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex file | grep "^  File(s) : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex isbn | grep "^  ISBN : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex issue | grep "^  Issue : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex key | grep "^  Key : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex language | grep "^  Language : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex notes | grep "^  Notes : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex pages | grep "^  Pages : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex publisher | grep "^  Publisher : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex tags | grep "^  Tags : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex title | grep "^  Title : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex type | grep "^  Type : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex url | grep "^  URL : ."
-python3 test.py ~/Projects/Uni/Citations/Library.bib bibtex volume | grep "^  Volume : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex abstract | grep "^  Abstract : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex author | grep "^  Author(s) : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex date | grep "^  Date : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex doi | grep "^  DOI : ."
+# python3 test.py ~/Uni/Citations/Library.bib bibtex duplicate_keys | grep "^  Key : ."
+# python2 test.py ~/Uni/Citations/Library.bib bibtex file | grep "^  File(s) : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex isbn | grep "^  ISBN : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex issue | grep "^  Issue : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex key | grep "^  Key : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex language | grep "^  Language : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex notes | grep "^  Notes : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex pages | grep "^  Pages : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex publisher | grep "^  Publisher : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex tags | grep "^  Tags : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex title | grep "^  Title : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex type | grep "^  Type : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex url | grep "^  URL : ."
+python3 test.py ~/Uni/Citations/Library.bib bibtex volume | grep "^  Volume : ."
 
 ################################################################################
 # Vim Tests
+
 printf "${RED}Test zotero and citation source in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation citation" &
 TASK_PID=$!
 sleep 2
 kill $TASK_PID
 
 printf "${RED}Test zotero and citation_collection in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation_collection citation_collection" &
 TASK_PID=$!
 sleep 2
 kill $TASK_PID
 
 printf "${RED}Test zotero and key in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation/key citation/key" &
 TASK_PID=$!
 sleep 2
 kill $TASK_PID
 
 printf "${RED}Test zotero and author in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation/author citation/author" &
 TASK_PID=$!
 sleep 2
 kill $TASK_PID
 
 printf "${RED}Test zotero and duplicate_keys in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation/duplicate_keys  citation/duplicate_keys" &
 TASK_PID=$!
 sleep 2
 kill $TASK_PID
 
 printf "${RED}Test bitex and key_inner in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$BIBTEX Unite -buffer-name=citation/key_inner citation/key_inner" &
 TASK_PID=$!
 sleep 4
 kill $TASK_PID
 
 printf "${RED}Test fulltext search in vim:${NoColor}"
-rm -f ~/Projects/Uni/Citations/citation_vim_cache
+rm -f ~/Uni/Citations/citation_vim_cache
 urxvt -e /bin/vim -c "$ZOTERO Unite -buffer-name=citation/key -default-action=start -force-immediately citation/file:roygcbpv" &
 TASK_PID=$!
 sleep 6

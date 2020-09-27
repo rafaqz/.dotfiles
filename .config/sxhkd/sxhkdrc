@@ -1,71 +1,67 @@
 #############################################################################}}}
 # Run core aps {{{
-super + alt + {_,ctrl} + o 
-  {pcmanfm, gksudo pcmanfm}
+super + alt + {_,ctrl} + o
+  {nautilus, gksudo nautilus}
 super + alt + {_,ctrl} + p
-  {firefox, chromium}
-super + alt + {_,ctrl} + 7 
+  {GTK_THEME=Arc firefox, chromium}
+super + alt + {_,ctrl} + 7
   {vlc, lollypop}
-super + alt + 8 
+super + alt + 8
   gimp
-super + alt + 9 
+super + alt + 9
   libreoffice
-super + alt + 0 
+super + alt + 0
   nicotine
 
 #############################################################################}}}
 # Run others {{{
-super + alt + {a,d,j,z,r,e,f,b,v,h,c,a,i,minus,equal,semicolon,x}
-  {\ 
+super + alt + {a,d,j,z,r,e,f,b,v,h,c,t,i,minus,equal,semicolon,x,s}
+  {\
     pavucontrol,\
     gksudo gparted,\
     urxvtcd,\
-    zotero,\ 
-    rstudio-bin,\ 
-    google-chrome-stable --app='https://earth.google.com/web/',\ 
-    franz-bin,\ 
-    baobab,\ 
-    virtualbox,\ 
-    hamster,\ 
-    owncloud,\ 
-    lxappearance,\ 
-    xcalib -invert -alter,\ 
-    gcolor2,\ 
-    speedcrunch,\ 
+    zotero,\
+    rstudio-bin,\
+    google-chrome-stable --app='https://earth.google.com/web/',\
+    franz-bin,\
+    baobab,\
+    virtualbox,\
+    hamster,\
+    owncloud,\
+    lxappearance,\
+    xcalib -invert -alter,\
+    gcolor2,\
+    speedcrunch,\
     zathura,\
-    clip-notifn
+    clip-notifn,\
+    arandr\
   }
-
-# Sync clipboards
-ctrl + alt + {_,shift} + p
-
-
 
 super + alt + control + {l,equal,apostrophe,p}
   {\
-    urxvtcd -e bash rs,\ 
+    urxvtcd -e bash -c "source ~/.bashrc; ranger",\
     gpick, \
-    urxvtcd -e bash alsamixer\
-    clipit -p | clipit, clipit -c | clipit\
+    urxvtcd -e bash -c "source ~/.bashrc;alsamixer"\
+    clipit -p | clipit, clipit -c | clipit\ # Sync clipboards
   }
 
 #############################################################################}}}
 # Run in a terminal {{{
-super + alt + {_,ctrl} + {l,apostrophe,bracketleft} 
-  urxvtcd -e { ,sudo }{\ 
-    ranger,\ 
+super + alt + {_,ctrl} + {l,apostrophe,bracketleft}
+  urxvtcd -e bash -c "source ~/.bashrc;"{" ","sudo "}{\
+    "ranger",\
     pulsemixer,\
-    htop\ 
+    htop\
   }
 
 #############################################################################}}}
 # Open in vim {{{
 super + alt + {k,w,n,m,comma,slash,period}
-  urxvtcd -e vim { ,\
-    ~/Documents/notes/words.md,\ 
-    ~/.xinitrc ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/dunst/dunstrc, \ 
-    ~/.bashrc ~/.profile ~/.bash_profile,\ 
-    ~/.vim_runtime/vimrcs/mapping.vim ~/.vim_runtime/vimrcs/plugins_config.vim ~/.vim_runtime/vimrcs/settings.vim ~/.vim_runtime/vimrcs/filetypes.vim ~/.vim_runtime/vimrcs/functions.vim ,\ 
+  urxvtcd -e vim -p { ,\
+    ~/Documents/notes/words.md,\
+    ~/.xinitrc ~/.config/i3/config ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/dunst/dunstrc, \
+    ~/.bashrc ~/.profile ~/.bash_profile,\
+    ~/.config/vimrcs/mapping.vim ~/.config/vimrcs/plugins_config.vim ~/.config/vimrcs/settings.vim ~/.config/vimrcs/filetypes.vim ~/.config/vimrcs/functions.vim ,\
     ~/.Xresources ~/.Xmodmap ~/.config/sxhkd/sxhkdrc, \
     ~/.config/ranger/rc.conf ~/.config/ranger/rifle.conf ~/.config/ranger/scope.sh ~/.config/ranger/commands.py
   }
@@ -83,9 +79,9 @@ XF86TouchpadToggle
   synclient TouchpadOff=`synclient -l | grep -ce TouchpadOff.*0`
 XF86ScreenSaver
   i3lock -u
-XF86Display 
+XF86Display
   projector
-{_,ctrl} + Print 
+{_,ctrl} + Print
   {screenshot, screenshot-select}
 XF86MonBrightnessUp
   xbacklight -inc $(bc <<< "scale=6; ($(xbacklight)+4)/4")

@@ -1,4 +1,0 @@
-[settings]
-file = ~/todo/todo.txt
-archive = ~/todo/done.txt
-colorscheme = solarized-dark

@@ -1,0 +1,8 @@
+#!/bin/bash
+
+# Get parent dir
+pushd '..'
+parent=${1:-${PWD##*/}}
+popd
+# Get current dir
+repo=${2:-${PWD##*/}}

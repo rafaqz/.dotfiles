@@ -1,4 +1,4 @@
-#!/bin/sh 
+#!/bin/sh
 # ~/.xinitrc
 #
 # Executed by startx (run your window manager from here)
@@ -17,41 +17,39 @@ fi
 [[ -f ~/.Xresources ]] && xrdb -merge -I "$HOME/.Xresources"
 
 ################################################################################
-# Input 
+# Input
 
 # Keyboard repeat speed
 xset r rate 180 60  &
+# No beeps
+xset -b
 # Use pointer as cursor (for xmonad)
 xsetroot -cursor_name left_ptr &
-# Remap capslock and escape keys etc. See .Xmodmap
+# Swap capslock and escape keys, menu as super
+# setxkbmap -option caps:swapescape -option
 xmodmap $HOME/.Xmodmap &
 # Key commands. See sxhkdrc
 sxhkd &
-
-# Disable trackpad while typing. 2 seconds 
-# -i 2 sets the idle time to 2 seconds. The idle time specifies how many seconds to 
-#  wait after the last key-press before enabling the touchpad again.
-# -t tells the daemon not to disable mouse movement when typing and only disable tapping and scrolling.
-# -k tells the daemon to ignore modifier keys when monitoring keyboard activity (e.g.: allows Ctrl+Left Click).
-# -d starts as a daemon, in the background.
-syndaemon -t -k -i 2 -d &
+syndaemon -i 1 -d -t -K
 
 ################################################################################
 # Bling
-
-compton -f -D 3 -o 0 -m 0.92 & 
+compton -f -D 3 -o 0 -m 0.92 &
 background &
 
 # Notifications
-dunst -print > /tmp/dunst_recent &
+#dunst -print > /tmp/dunst_recent &
 
 # Tray
 stalonetray &
-redshift-gtk &
+redshift-gtk -l -37.8:145.0 -t 5700:3600 -g 0.8 -m randr -v &
 nm-applet &
-indicator-kdeconnect &
 clipit &
 cbatticon &
+pcmanfm -d &
+kdeconnect-indicator &
+blueman-applet &
+
 
 ################################################################################
 # WM

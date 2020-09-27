@@ -1,15 +1,8 @@
 #!/bin/bash
 # Set up remote repo and add origin.
 
-# Get parent dir
-pushd '..'
-parent=${1:-${PWD##*/}}
-popd
-# Get current dir
-repo=${2:-${PWD##*/}}
-# Set ssh login details
-user='git'
-host='cloud'
+source get_repo_names
+source get_git
 
-git remote rm origin
+git remote rm origin >/dev/null # supress origin does not exist message
 git remote add origin $user@$host:$parent/$repo

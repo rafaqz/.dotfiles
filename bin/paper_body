@@ -4,5 +4,5 @@
 # /I : case insensitive
 # /p : print the current pattern space.
 # ^ : match line begginings
-# | : OR
-cat | sed -n '/^opinion\|^abstract\|^introduction/I,/^appendix\|^literature cited\|^references\|^bibliography/Ip'
+# | : 
+cat | sed -n '/^opinion\|^part\|^abstract\|^introduction/I,/^appendix\|^literature cited\|^references\|^bibliography/Ip'

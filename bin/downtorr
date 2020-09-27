@@ -4,4 +4,5 @@ files=$1
 dest=${2:-.}
 echo $1
 
-rsync -av --partial --progress -e "ssh -T -c arcfour -x" "cloud@cloud:/home/cloud/Downloads/$files" $dest
+rsync -av --partial --progress -e "ssh -T -x" "cloud@cloud:/home/cloud/Downloads/$files" $dest
+# scp -r "cloud@cloud:/home/cloud/Downloads/$files" $dest

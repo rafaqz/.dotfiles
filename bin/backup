@@ -6,3 +6,4 @@ rsync -avhu ~/Documents $dest
 rsync -avhu ~/Pictures $dest
 rsync -avhu ~/Projects $dest
 rsync -avhu ~/Zotero $dest
+rsync -avhu ~/Uni $dest

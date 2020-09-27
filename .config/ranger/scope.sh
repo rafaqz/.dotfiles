@@ -36,7 +36,7 @@ FILE_EXTENSION_LOWER="${FILE_EXTENSION,,}"
 # Settings
 HIGHLIGHT_SIZE_MAX=262143  # 256KiB
 HIGHLIGHT_TABWIDTH=8
-HIGHLIGHT_STYLE='pablo'
+HIGHLIGHT_STYLE='vampire'
 PYGMENTIZE_STYLE='autumn'
 
 
@@ -116,13 +116,13 @@ handle_mime() {
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
             fi
-            if [[ "$( tput colors )" -ge 256 ]]; then
-                local pygmentize_format='terminal' #terminal256
-                local highlight_format='xterm256'
-            else
+            # if [[ "$( tput colors )" -ge 256 ]]; then
+                # local pygmentize_format='terminal256'
+                # local highlight_format='xterm256'
+            # else
                 local pygmentize_format='terminal'
                 local highlight_format='ansi'
-            fi
+            # fi
             highlight --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
                 --style="${HIGHLIGHT_STYLE}" -- "${FILE_PATH}" && exit 5
             # pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5

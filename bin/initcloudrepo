@@ -1,15 +1,8 @@
 #!/bin/bash
 # Set up a remote git repo
 
-# Get parent dir
-pushd '..'
-parent=${1:-${PWD##*/}}
-popd
-# Get current dir
-repo=${2:-${PWD##*/}}
-# Set ssh login details
-user="git"
-host="cloud"
+source get_repo_names
+source get_git
 
 # Setup a bare git repo in the cloud over ssh
 ssh $user@$host "if [ ! -e "$parent/$repo" ]; then mkdir -p $parent && git init --bare $parent/$repo; fi"

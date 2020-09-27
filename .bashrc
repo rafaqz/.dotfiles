@@ -1,8 +1,5 @@
 #!/bin/sh 
 
-# Fix bash keys. WHy is this not loading automatically?
-bind -f  ~/.inputrc
-
 ################################################
 ## Options
 
@@ -38,15 +35,28 @@ GIT_PS1_SHOWCOLORHINTS=
 GIT_PS1_DESCRIBE_STYLE="branch"
 GIT_PS1_SHOWUPSTREAM="auto git"
 # prompt='__git_ps1 "\[\e[31m\]@\u\[\e[34m\] \w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
-prompt='__git_ps1 "\[\e[40;31m\]\u\[\e[39;40m\]\w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
-
-# Hack to update history on every prompt
+prompt='__git_ps1 "\[\e[31m\]\u:\[\w\n\[\e[30;43m\]" "\\\$\[\e[0m\] "'
+#
+# # Hack to update history on every prompt
 PROMPT_COMMAND="history -a; history -c; history -r; $prompt"
+
+################################################
+## Variables
+# export SHELL="/bin/sh"
+export EDITOR="vim"
+export TERMINAL="urxvtcd"
+export TERM="rxvt-unicode-256color"
+export COLORTERM="rxvt-unicode-256color"
+# gtk2 files for qt
+export GTK2_RC_FILES="$HOME/.gtkrc-2.0"
+# node local dir
+export npm_config_prefix=~/.node_modules
+export BROWSER=firefox
 
 ################################################
 # Color 
 # export TERM="rxvt-256color"
-#
+
 if [ -x /usr/bin/dircolors ]; then
   eval "`dircolors ~/.dircolors`"
   alias ls='ls --color=auto'
@@ -74,13 +84,9 @@ alias ........='cd ../../../../../../..'
 alias .........='cd ../../../../../../../..'
 
 ## Shortcuts 
-alias vim='vim -p --servername `date +%s`'
-alias vs='vim-server'
-alias rc='ranger-cd'
-alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" --cmd="set preview_files false" --cmd="set preview_directories false" --cmd="set vcs_aware true"'
-
-# alias xclip="xclip -selection c"
-alias rv='ruby -e "print RUBY_VERSION"'
+alias vim='vim -p'
+alias rc='ranger-cd' 
+alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" --cmd="set preview_files false" --cmd="set preview_directories false" --cmd="set vcs_aware true"' # alias xclip="xclip -selection c"
 
 ## Modified commands
 alias more='less'
@@ -108,8 +114,7 @@ alias xp='xprop | grep "WM_WINDOW_ROLE\|WM_CLASS" && echo "WM_CLASS(STRING) = \"
 ## pacman
 alias pe='expac -HM "%011m\t%-20n\t%10d" $( comm -23 <(pacman -Qqen|sort) <(pacman -Qqg base base-devel|sort) ) | sort -n'
 ## Keychain
-alias chain='eval $(keychain --eval --agents ssh -Q --quiet id_rsa)'
-alias e='z'
+#alias chain='eval $(keychain --eval --agents ssh -Q --quiet id_rsa)'
 
 ## ls 
 alias ll='ls -lh'                      # list detailed with human-readable sizes
@@ -124,8 +129,6 @@ alias lm='la | less'                   # pipe to less
 
 alias q='exit'
 alias pacman-disowned-dirs="comm -23 <(sudo find / \( -path '/dev' -o -path '/sys' -o -path '/run' -o -path '/tmp' -o -path '/mnt' -o -path '/srv' -o -path '/proc' -o -path '/boot' -o -path '/home' -o -path '/root' -o -path '/media' -o -path '/var/lib/pacman' -o -path '/var/cache/pacman' \) -prune -o -type d -print | sed 's/\([^/]\)$/\1\//' | sort -u) <(pacman -Qlq | sort -u)"
-
-
 
 ################################################ }}}
 # Handy functions
@@ -198,21 +201,32 @@ countdown() {
 ################################################
 ## Apps that integrate with the cli
 
-## Rbenv
+# Rbenv
 # eval "$(rbenv init -)"
 
-# Ranger can be used to choose directories.
-source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
 
 # Fasd
 eval "$(fasd --init auto)"
 
-fasd_cache="$HOME/.fasd-init-bash"
-if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-  fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
-fi
-source "$fasd_cache"
-unset fasd_cache
+# fasd_cache="$HOME/.fasd-init-bash"
+# if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+#   fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+# fi
+# source "$fasd_cache"
+# unset fasd_cache
 
 # SSH keychain
 . ~/.keychain/$HOSTNAME-sh
+
+# ~/bin/set-bg-color
+
+# Only execute if shell is interactive
+if ! [ -z "$PS1" ]; then
+  # Fix bash keys. Why is this not loading automatically?
+  bind -f  ~/.inputrc
+  # Ranger can be used to choose directories.
+  # source /usr/share/doc/ranger/examples/bash_automatic_cd.sh
+fi
+
+# Keychain
+eval $(keychain --eval --agents ssh -Q --quiet id_rsa)

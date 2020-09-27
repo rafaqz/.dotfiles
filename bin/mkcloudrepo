@@ -7,14 +7,13 @@ if test "$#" -ne 1; then
   exit
 fi
 
-parent=${PWD##*/}
 repo=$1
 
 # Add folder and intialise
 git init $repo
-# Create the same folder in the cloud
-initcloudrepo $parent $repo
 pushd $repo
+  # Create the same folder in the cloud
+  initcloudrepo
   # Set the local origin to the cloud repo
-  addcloudorigin $parent $repo
+  addcloudorigin
 popd
