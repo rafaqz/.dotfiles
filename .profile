@@ -11,7 +11,6 @@ PATH="$HOME/.cabal/bin:$PATH"
 PATH="$HOME/bin:$PATH"
 PATH="$HOME/.node_modules/bin:$PATH"
 PATH="/opt/julia/bin:$PATH"
-# PATH="$HOME/Uni/Masters/code/julia/:$PATH"
 export PATH
 export QT_PLUGIN_PATH=/usr/lib/kde4/plugins/
 export QT_QPA_PLATFORMTHEME=qt5ct

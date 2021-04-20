@@ -2,7 +2,7 @@
 	email = rafaelschouten@gmail.com
 	name = Rafael Schouten
 [push]
-	default = simple
+	default = current
 [diff]
 	tool = vimdiff
 [difftool]

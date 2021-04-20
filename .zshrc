@@ -135,3 +135,6 @@ export BROWSER="google-chrome"
 export CORRECT_IGNORE=".git"
 export CORRECT_IGNORE=".*"
 
+
+# added by travis gem
+[ ! -s /home/raf/.travis/travis.sh ] || source /home/raf/.travis/travis.sh

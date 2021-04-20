@@ -15,50 +15,43 @@ super + alt + 0
 
 #############################################################################}}}
 # Run others {{{
-super + alt + {a,d,j,z,r,e,f,b,v,h,c,t,i,minus,equal,semicolon,x,s}
+super + alt + {c,a,d,j,z,e,b,h,minus,equal,semicolon,s}
   {\
+    /usr/bin/diodon,\
     pavucontrol,\
     gksudo gparted,\
-    urxvtcd,\
+    alacritty,\
     zotero,\
-    rstudio-bin,\
     google-chrome-stable --app='https://earth.google.com/web/',\
-    franz-bin,\
     baobab,\
-    virtualbox,\
     hamster,\
-    owncloud,\
-    lxappearance,\
-    xcalib -invert -alter,\
     gcolor2,\
     speedcrunch,\
     zathura,\
-    clip-notifn,\
     arandr\
   }
 
 super + alt + control + {l,equal,apostrophe,p}
   {\
-    urxvtcd -e bash -c "source ~/.bashrc; ranger",\
+    alacritty -e bash -c "source ~/.bashrc; ranger",\
     gpick, \
-    urxvtcd -e bash -c "source ~/.bashrc;alsamixer"\
-    clipit -p | clipit, clipit -c | clipit\ # Sync clipboards
+    alacritty -e bash -c "source ~/.bashrc;alsamixer"\
   }
 
 #############################################################################}}}
 # Run in a terminal {{{
 super + alt + {_,ctrl} + {l,apostrophe,bracketleft}
-  urxvtcd -e bash -c "source ~/.bashrc;"{" ","sudo "}{\
+  alacritty -e bash -c "source ~/.bashrc;"{" ","sudo "}{\
     "ranger",\
     pulsemixer,\
     htop\
   }
 
 #############################################################################}}}
-# Open in vim {{{
-super + alt + {k,w,n,m,comma,slash,period}
-  urxvtcd -e vim -p { ,\
-    ~/Documents/notes/words.md,\
+# Open in nvim {{{
+super + alt + {k,n,x,m,comma,slash,period}
+  alacritty -e nvim -p { ,\
+    ~/Documents/notes/notes.md,\
     ~/.xinitrc ~/.config/i3/config ~/.xmonad/xmonad.hs ~/.xmonad/xmobar.hs ~/.config/dunst/dunstrc, \
     ~/.bashrc ~/.profile ~/.bash_profile,\
     ~/.config/vimrcs/mapping.vim ~/.config/vimrcs/plugins_config.vim ~/.config/vimrcs/settings.vim ~/.config/vimrcs/filetypes.vim ~/.config/vimrcs/functions.vim ,\

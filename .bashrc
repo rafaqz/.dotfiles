@@ -87,6 +87,7 @@ alias .........='cd ../../../../../../../..'
 alias vim='vim -p'
 alias rc='ranger-cd' 
 alias rs='ranger --cmd="set column_ratios 0,5,0" --cmd="set draw_borders false" --cmd="set preview_files false" --cmd="set preview_directories false" --cmd="set vcs_aware true"' # alias xclip="xclip -selection c"
+alias w='curl wttr.in/melbourne'
 
 ## Modified commands
 alias more='less'
@@ -102,7 +103,6 @@ alias reset="echo -ne '\033c'"
 alias hide_cursor='echo -ne "\033[?25l"'
 alias show_cursor='echo -ne "\033[?25h"'
 alias feh='feh --auto-zoom --geometry 500x375 --sort filename'
-alias tmux="TERM=screen-256color tmux"
 
 ## New commands
 alias da='date "+%A, %B %d, %Y [%T]"'  # print current date
@@ -143,15 +143,15 @@ r() {
     fi
 }
 
-# Dictionary
-dic() {
-  sdcv $@ | less
+man() {
+    LESS_TERMCAP_md=$'\e[34m' \
+    LESS_TERMCAP_me=$'\e[0m' \
+    LESS_TERMCAP_se=$'\e[0m' \
+    LESS_TERMCAP_so=$'\e[33m' \
+    LESS_TERMCAP_ue=$'\e[0m' \
+    LESS_TERMCAP_us=$'\e[32m' \
+    command man "$@"
 }
-
-# Thesaurus
-thes() {
-  sdcv --data-dir ~/.stardict/thesaurus -u "Moby Thesaurus II" $@ | less
-} 
 
 timer() {
   reset
@@ -163,16 +163,6 @@ timer() {
     sleep 0.1
   done
   show_cursor 
-}
-
-man() {
-    LESS_TERMCAP_md=$'\e[34m' \
-    LESS_TERMCAP_me=$'\e[0m' \
-    LESS_TERMCAP_se=$'\e[0m' \
-    LESS_TERMCAP_so=$'\e[33m' \
-    LESS_TERMCAP_ue=$'\e[0m' \
-    LESS_TERMCAP_us=$'\e[32m' \
-    command man "$@"
 }
 
 countdown() {
@@ -208,12 +198,12 @@ countdown() {
 # Fasd
 eval "$(fasd --init auto)"
 
-# fasd_cache="$HOME/.fasd-init-bash"
-# if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
-#   fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
-# fi
-# source "$fasd_cache"
-# unset fasd_cache
+fasd_cache="$HOME/.fasd-init-bash"
+if [ "$(command -v fasd)" -nt "$fasd_cache" -o ! -s "$fasd_cache" ]; then
+  fasd --init posix-alias bash-hook bash-ccomp bash-ccomp-install >| "$fasd_cache"
+fi
+source "$fasd_cache"
+unset fasd_cache
 
 # SSH keychain
 . ~/.keychain/$HOSTNAME-sh
@@ -230,3 +220,6 @@ fi
 
 # Keychain
 eval $(keychain --eval --agents ssh -Q --quiet id_rsa)
+
+# added by travis gem
+[ ! -s /home/raf/.travis/travis.sh ] || source /home/raf/.travis/travis.sh

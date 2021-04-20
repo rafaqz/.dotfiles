@@ -34,8 +34,9 @@ syndaemon -i 1 -d -t -K
 
 ################################################################################
 # Bling
-compton -f -D 3 -o 0 -m 0.92 &
+
 background &
+urxvtd &
 
 # Notifications
 #dunst -print > /tmp/dunst_recent &
@@ -44,7 +45,6 @@ background &
 stalonetray &
 redshift-gtk -l -37.8:145.0 -t 5700:3600 -g 0.8 -m randr -v &
 nm-applet &
-clipit &
 cbatticon &
 pcmanfm -d &
 kdeconnect-indicator &
@@ -53,4 +53,6 @@ blueman-applet &
 
 ################################################################################
 # WM
+picom --experimental-backends -b -f -D 5 -o 0 -m 0.92 &
+
 exec xmonad
