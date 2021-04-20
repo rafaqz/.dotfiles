@@ -41,7 +41,7 @@ Config { font = "xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohin
     , allDesktops = True    -- show on all desktops
     , pickBroadest = False   -- choose widest display (multi-monitor)
     , commands = [
-        Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3>","-L","30","-H","60","-h","#174652","-l","#174652","-n","#073642","-w","3"] 10,
+        Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3> <total4> <total5> <total6> <total7> <total8> <total9> <total10> <total11>","-L","30","-H","60","-h","#839496","-l","#839496","-n","#839496","-w","3"] 10,
         Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run Memory ["-t","Mem: <usedratio>%","-H","8192","-L","4096","-h","#586e75ff","-l","#586e75","-n","#b58900"] 10,
         Run Date "%a %b %d  %l:%M" "date" 10,
