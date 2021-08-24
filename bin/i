@@ -7,13 +7,14 @@ BACKGROUND_COLOR=${1:-$(head -n 1 ~/.background_color)}
 if [ "$BACKGROUND_COLOR" == light ]; then
   export BACKGROUND_COLOR=dark
   XBCKGROUND="URxvt.background: #002b36"
-  ALACRITTY_BACKGROUND="background: '0x002b36'"
-  ALACRITTY_FOREGROUND="foreground: '0x839496'"
+
+  ALACRITTY_BACKGROUND="background: '0x000000'"
+  ALACRITTY_FOREGROUND="foreground: '0xabb2bf'"
 else
   export BACKGROUND_COLOR="light"
   XBCKGROUND="URxvt.background: #fdf6e3"
-  ALACRITTY_BACKGROUND="background: '0xfdf6e3'"
-  ALACRITTY_FOREGROUND="foreground: '0x586e75'"
+  ALACRITTY_BACKGROUND="background: '0xfafafa'"
+  ALACRITTY_FOREGROUND="foreground: '0x494B53'"
 fi
 
 # Change last line of Xreseources
