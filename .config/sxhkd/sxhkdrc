@@ -1,7 +1,7 @@
 #############################################################################}}}
 # Run core aps {{{
 super + alt + {_,ctrl} + o
-  {nautilus, gksudo nautilus}
+  {dolphin, gksudo dolphin}
 super + alt + {_,ctrl} + p
   {GTK_THEME=Arc firefox, chromium}
 super + alt + {_,ctrl} + 7
@@ -35,14 +35,14 @@ super + alt + control + {l,equal,apostrophe,p}
   {\
     alacritty -e bash -c "source ~/.bashrc; ranger",\
     gpick, \
-    alacritty -e bash -c "source ~/.bashrc;alsamixer"\
+    alacritty -e bash -c "source ~/.bashrc; alsamixer"\
   }
 
 #############################################################################}}}
 # Run in a terminal {{{
 super + alt + {_,ctrl} + {l,apostrophe,bracketleft}
   alacritty -e bash -c "source ~/.bashrc;"{" ","sudo "}{\
-    "ranger",\
+    ranger,\
     pulsemixer,\
     htop\
   }
