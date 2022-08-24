@@ -49,10 +49,11 @@ cbatticon &
 pcmanfm -d &
 kdeconnect-indicator &
 blueman-applet &
+clipit &
 
 
 ################################################################################
 # WM
-picom --experimental-backends -b -f -D 5 -o 0 -m 0.92 &
+picom -b -f -D 5 -o 0 -m 0.92 &
 
 exec xmonad
