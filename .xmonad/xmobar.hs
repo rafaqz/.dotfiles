@@ -29,12 +29,12 @@ Config { font = "xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohin
     -- font = "xft:DejaVu Sans Mono for Powerline:pixelsize=13:antialiase=true:autohinting=true",
     -- font = "xft:Inconsolata for Powerline:pixelsize=14:antialiase=true:autohinting=true",
     -- font = "xft:FuraMono-Bold Powerline:pixelsize=13",
-    -- , position = Static { xpos = 0, ypos = 0, width = 1438, height = 16 }
+    , position = Static { xpos = 1050, ypos = 0, width = 1680, height = 16 }
     , bgColor = "#002b36"
     , fgColor = "#586e75"
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{ | %multicpu%   %memory% | <fc=#93a1a1>%date%</fc> | %YMML%"
+    , template = "%StdinReader% }{ | %multicpu%   %memory% | <fc=#93a1a1>%date%</fc>"
     , lowerOnStart =     True    -- send to bottom of window stack on start
     , overrideRedirect = True
     , persistent =       True    -- enable/disable hiding (True = disabled)
@@ -42,9 +42,9 @@ Config { font = "xft:SauceCodePro Nerd Font:pixelsize=12:antialiase=true:autohin
     , pickBroadest = False   -- choose widest display (multi-monitor)
     , commands = [
         Run MultiCpu ["-t","Cpu: <total0> <total1> <total2> <total3> <total4> <total5> <total6> <total7> <total8> <total9> <total10> <total11>","-L","30","-H","60","-h","#839496","-l","#839496","-n","#839496","-w","3"] 10,
-        Run Weather "YMML" ["-t","<tempC>C <skyCondition>","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
+        -- Run Weather "YMML" ["-t","<tempC>C","-L","64","-H","77","-n","#","-h","#839496","-l","#268bd2"] 36000,
         Run Memory ["-t","Mem: <usedratio>%","-H","8192","-L","4096","-h","#586e75ff","-l","#586e75","-n","#b58900"] 10,
-        Run Date "%a %b %d  %l:%M" "date" 10,
+        Run Date "%a %b %d  %l:%M" "date" 20,
         Run StdinReader
     ]
 }
