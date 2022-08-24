@@ -70,7 +70,7 @@ myLauncher = "$(yeganesh -x -- -fn 'xft:SauceCodePro Nerd Font:pixelsize=12:anti
 
 ------------------------------------------------------------------------
 -- Terminal
-myTerminal = "urxvtcd"
+myTerminal = "alacritty"
 
 ------------------------------------------------------------------------
 -- Workspaces - all right hand keys for easier selection
@@ -98,7 +98,7 @@ myManageHook = composeAll . concat $
         doc   = ["libreoffice", "libreoffice-writer", "libreoffice-calc"]
         web   = ["chromium", "Google-chrome", "Firefox", "Karma - Google Chrome"]
         med   = ["Vlc", "Lollypop"]
-        img   = ["Gimp","Gimp-2.8"]
+        img   = ["Gimp","Gimp-2.10"]
         tor   = ["Nicotine.py", "Torrent Options", "Transmission-gtk","Hamster","Googleearth-bin"]
         floatClasses = ["Dunst", "rgl", "R-x11", "File Operation Progress", "viewnior"]
         floatTitles = ["Export", "Downloads", "Add-ons", "Firefox Preferences"]
@@ -126,71 +126,7 @@ myModMask = mod4Mask
 
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
-  -- Spawn the launcher using command specified by myLauncher.
-  [ ((modMask, xK_Return), spawn myLauncher)
-
-  -- Close focused window, but not other copies of it.
-  , ((modMask .|. shiftMask, xK_Return), spawn $ XMonad.terminal conf)
-  , ((modMask, xK_c), kill)
-
-  -- Minimize
-  -- , ((modMask,                 xK_n), withFocused minimizeWindow)
-  -- , ((modMask .|. controlMask, xK_n), sendMessage RestoreNextMinimizedWin)
-
-  -- Toggle topbar
-  , ((modMask,                 xK_g), sendMessage $ ToggleGap U)
-  -- Cycle through the available layout algorithms.
-  , ((modMask,                 xK_space), sendMessage NextLayout)
-  --  Reset the layouts on the current workspace to default.
-  , ((modMask .|. controlMask, xK_space), setLayout $ XMonad.layoutHook conf)
-  -- Resize viewed windows to the rorrect size.
-  , ((modMask .|. controlMask, xK_r), refresh)
-  -- Move focus to the next window.
-  , ((modMask,                 xK_j), focusDown)
-  -- Move focus to the previous window.
-  , ((modMask,                 xK_k), focusUp)
-  -- Swap the focused window with the next window.
-  , ((modMask .|. controlMask, xK_j), windows W.swapDown)
-  -- Swap the focused window with the previous window.
-  , ((modMask .|. controlMask, xK_k), windows W.swapUp)
-
-  -- Move focus to the master window.
-  , ((modMask,                 xK_m), focusMaster)
-  -- Swap the focused window and the master window.
-  , ((modMask .|. controlMask, xK_m), windows W.swapMaster)
-
-  -- Increment the number of windows in the master area.
-  , ((modMask, xK_comma), sendMessage (IncMasterN 1))
-  -- Decrement the number of windows in the master area.
-  , ((modMask, xK_period), sendMessage (IncMasterN (-1)))
-
-  -- Shrink/Expand
-  , ((modMask, xK_h), sendMessage Shrink)
-  , ((modMask, xK_l), sendMessage Expand)
-  , ((modMask .|. controlMask, xK_h), sendMessage MirrorShrink)
-  , ((modMask .|. controlMask, xK_l), sendMessage MirrorExpand)
-
-  -- Push window back into tiling.
-  , ((modMask,                 xK_BackSpace), withFocused $ windows . W.sink)
-  , ((modMask .|. controlMask, xK_BackSpace), sinkAll)
-
-  -- Restart xmonad.
-  , ((modMask,               xK_q), restart "xmonad" True)
-  -- Quit xmonad.
-  , ((modMask .|. shiftMask, xK_q), io (exitWith ExitSuccess))
-  ]
-  ++
-  -- mod-[x], Switch to workspace N
-  -- mod-shift-[x], Move client to workspace N
-  [((m .|. modMask, k), windows $ f i) |
-        (i, k) <- zip (XMonad.workspaces conf) [xK_u,xK_i,xK_o,xK_p,xK_7,xK_8,xK_9,xK_0]
-      , (f, m) <- [(W.greedyView, 0), (\w -> W.shift w, shiftMask), (\w -> W.greedyView w . W.shift w, controlMask)]]
-  ++
-  -- mod-{w,e,r}, Switch to physical/Xinerama screens 1, 2, or 3
-  -- mod-shift-{w,e,r}, Move client to screen 1, 2, or 3
-  [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
-      | (key, sc) <- zip [xK_Left, xK_Right, xK_r] [0..]
-      , (f, m) <- [(W.view, 0), (W.shift, controlMask)]]
+10
 
 
 myAdditionalKeys opacity transSet noFadeSet =
