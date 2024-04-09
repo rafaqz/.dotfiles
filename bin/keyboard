@@ -1,0 +1,10 @@
+#!/bin/sh
+xset r rate 180 60  &
+# No beeps
+xset -b
+# Use pointer as cursor (for xmonad)
+xsetroot -cursor_name left_ptr &
+# Swap capslock and escape keys, menu as super
+xmodmap $HOME/.Xmodmap &
+# This is done with xmodmap now
+# setxkbmap -option caps:swapescape -option
