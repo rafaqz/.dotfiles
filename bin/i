@@ -6,15 +6,14 @@ filetype=${2:-md}
 BACKGROUND_COLOR=${1:-$(head -n 1 ~/.background_color)}
 if [ "$BACKGROUND_COLOR" == light ]; then
   export BACKGROUND_COLOR=dark
-  XBCKGROUND="URxvt.background: #002b36"
-
-  ALACRITTY_BACKGROUND="background: '0x000000'"
+  # XBCKGROUND="URxvt.background: #002b36"
+  ALACRITTY_BACKGROUND="background: '0x1e2127'"
   ALACRITTY_FOREGROUND="foreground: '0xabb2bf'"
 else
   export BACKGROUND_COLOR="light"
-  XBCKGROUND="URxvt.background: #fdf6e3"
+  # XBCKGROUND="URxvt.background: #fdf6e3"
   ALACRITTY_BACKGROUND="background: '0xfafafa'"
-  ALACRITTY_FOREGROUND="foreground: '0x494B53'"
+  ALACRITTY_FOREGROUND="foreground: '0x494b53'"
 fi
 
 # Change last line of Xreseources
