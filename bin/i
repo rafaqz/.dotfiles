@@ -6,15 +6,15 @@ filetype=${2:-md}
 BACKGROUND_COLOR=${1:-$(head -n 1 ~/.background_color)}
 if [ "$BACKGROUND_COLOR" == light ]; then
   export BACKGROUND_COLOR=dark
-  XBCKGROUND="URxvt.background: #002b36"
+  # XBCKGROUND="URxvt.background: #002b36"
 
-  ALACRITTY_BACKGROUND="background: '0x000000'"
-  ALACRITTY_FOREGROUND="foreground: '0xabb2bf'"
+  ALACRITTY_BACKGROUND="background = '0x000000'"
+  ALACRITTY_FOREGROUND="foreground = '0xabb2bf'"
 else
   export BACKGROUND_COLOR="light"
-  XBCKGROUND="URxvt.background: #fdf6e3"
-  ALACRITTY_BACKGROUND="background: '0xfafafa'"
-  ALACRITTY_FOREGROUND="foreground: '0x494B53'"
+  # XBCKGROUND="URxvt.background: #fdf6e3"
+  ALACRITTY_BACKGROUND="background = '0xfafafa'"
+  ALACRITTY_FOREGROUND="foreground = '0x494B53'"
 fi
 
 # Change last line of Xreseources
@@ -22,9 +22,10 @@ sed -i '$d' ~/.Xresources
 echo $XBCKGROUND >> ~/.Xresources
 # Update X
 xrdb ~/.Xresources
+echo $ALACRITTY_BACKGROUND
 # Change allacritty theme
-sed -i "s/background: .*/$ALACRITTY_BACKGROUND/" ~/.config/alacritty/alacritty.yml
-sed -i "s/foreground: .*/$ALACRITTY_FOREGROUND/" ~/.config/alacritty/alacritty.yml
+sed -i "s/background = .*/$ALACRITTY_BACKGROUND/" ~/.config/alacritty/alacritty.toml
+sed -i "s/foreground = .*/$ALACRITTY_FOREGROUND/" ~/.config/alacritty/alacritty.toml
 
 # Set global bg color variable
 echo "$BACKGROUND_COLOR" > ~/.background_color
