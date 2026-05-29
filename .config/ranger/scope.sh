@@ -36,8 +36,8 @@ FILE_EXTENSION_LOWER="${FILE_EXTENSION,,}"
 # Settings
 HIGHLIGHT_SIZE_MAX=262143  # 256KiB
 HIGHLIGHT_TABWIDTH=8
-HIGHLIGHT_STYLE='vampire'
-PYGMENTIZE_STYLE='autumn'
+HIGHLIGHT_STYLE='nord'
+PYGMENTIZE_STYLE='nord'
 
 
 handle_extension() {
@@ -82,6 +82,25 @@ handle_extension() {
             lynx -dump -- "${FILE_PATH}" && exit 5
             elinks -dump "${FILE_PATH}" && exit 5
             ;; # Continue with next handler on failure
+
+        # JSON
+        json)
+            cat "${FILE_PATH}" | jq -C '.' && exit 5
+            exit 1;;
+
+        # Javascript and Typescript
+        ts|tsx|js|mjs)
+            # Syntax highlight
+            if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
+                exit 2
+            fi
+            if [[ "$( tput colors )" -ge 256 ]]; then
+                local pygmentize_format='terminal256'
+            else
+                local pygmentize_format='terminal'
+            fi
+            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
+            exit 2;;
     esac
 }
 
@@ -116,16 +135,16 @@ handle_mime() {
             if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
                 exit 2
             fi
-            # if [[ "$( tput colors )" -ge 256 ]]; then
-                # local pygmentize_format='terminal256'
-                # local highlight_format='xterm256'
-            # else
+            if [[ "$( tput colors )" -ge 256 ]]; then
+                local pygmentize_format='terminal256'
+                local highlight_format='xterm256'
+            else
                 local pygmentize_format='terminal'
                 local highlight_format='ansi'
-            # fi
+            fi
             highlight --replace-tabs="${HIGHLIGHT_TABWIDTH}" --out-format="${highlight_format}" \
                 --style="${HIGHLIGHT_STYLE}" -- "${FILE_PATH}" && exit 5
-            # pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
+            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
             exit 2;;
 
         # Image
@@ -144,6 +163,20 @@ handle_mime() {
 }
 
 handle_fallback() {
+    case "${FILE_EXTENSION_LOWER}" in
+        ts|tsx|js)
+            # Syntax highlight
+            if [[ "$( stat --printf='%s' -- "${FILE_PATH}" )" -gt "${HIGHLIGHT_SIZE_MAX}" ]]; then
+                exit 2
+            fi
+            if [[ "$( tput colors )" -ge 256 ]]; then
+                local pygmentize_format='terminal256'
+            else
+                local pygmentize_format='terminal'
+            fi
+            pygmentize -f "${pygmentize_format}" -O "style=${PYGMENTIZE_STYLE}" -- "${FILE_PATH}" && exit 5
+            exit 2;;
+    esac
     echo '----- File Type Classification -----' && file --dereference --brief -- "${FILE_PATH}" && exit 5
     exit 1
 }

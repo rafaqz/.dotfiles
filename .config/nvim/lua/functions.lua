@@ -133,6 +133,8 @@ endfun
 
 fun! ToggleBackground()
   let &background = ( &background == "dark"? "light" : "dark" )
+  let b = system('darkman toggle')
+  echo b
   redraw!
 endfun
 

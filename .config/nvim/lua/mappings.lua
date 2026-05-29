@@ -43,8 +43,8 @@ map("x", "do", ":diffget<cr>", { desc = "Diff get" })
 --}}} 
 --{{{ UI Toggles
 map("n", "<leader>h", ":call ToggleHideAll()<cr>", { desc = "Toggle UI visibility" })
-map("n", "<leader>i", ":call ToggleBackground()<cr>", { desc = "Toggle background color" })
-map("n", "<Leader>ll", ":Twilight<cr>", { desc = "Toggle Twilight" })
+map("n", "<leader>i", ":silent call ToggleBackground()<cr>", { desc = "Toggle background color" })
+map("n", "<Leader>tl", ":Twilight<cr>", { desc = "Toggle Twilight" })
 map("n", "<leader>z", ":Goyo<cr>", { desc = "Toggle Goyo (zen mode)" })
 
 --}}} 
@@ -85,6 +85,12 @@ map("n", "<leader>ft", ":RangerTab<cr>", { desc = "Ranger: new tab" })
 map("n", "<leader>fd", ":RangerCD<cr>", { desc = "Ranger: change directory" })
 map("n", "<leader>fl", ":RangerLCD<cr>", { desc = "Ranger: local change directory" })
 
+--}}} 
+--{{{ External
+map("n", "<leader>j", ":!kitty &<cr>", { desc = "Open kitty in a new terminal" })
+map("n", "<leader>n", ":!kitty nvim&<cr>", { desc = "Open nvim new terminal" })
+map("n", "<leader>l", ":!kitty ranger&<cr>", { desc = "Open ranger in a new terminal" })
+map("n", "<leader>;", ":!kitty gemini&<cr>", { desc = "Open gemini in a new terminal" })
 --}}} 
 --{{{ Text manipulation
 map("v", "<leader>ti", [[:s/\<\(\\w\)\(\\w*\)>/\[u\1\L\2/g<cr>]], { desc = "Title case selection" })
