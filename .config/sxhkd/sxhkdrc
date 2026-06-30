@@ -3,7 +3,7 @@
 super + alt + {_,ctrl} + o
   {dolphin, gksudo dolphin}
 super + alt + {_,ctrl} + p
-  {GTK_THEME=Arc firefox, chromium}
+  {GTK_THEME=Arc prime-run firefox, prime-run google-chrome-stable}
 super + alt + {_,ctrl} + 7
   {vlc, lollypop}
 super + alt + 8
